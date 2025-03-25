@@ -1,0 +1,20 @@
+.Btn {
+  display: flex;
+  width: 199px;
+  height: 60px;
+  gap: 10px;
+  border-radius: 20px;
+  background-color: #009379;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  text-decoration: black;
+}
+

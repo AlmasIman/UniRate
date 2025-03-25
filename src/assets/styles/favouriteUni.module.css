@@ -1,0 +1,176 @@
+.mainFavDiv {
+  padding-top: 90px;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.titlePage {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 100%;
+  letter-spacing: -2%;
+}
+.filtersForComparDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  width: 100%;
+  margin: auto;
+  background-color: rgba(229, 244, 242, 1);
+  padding: 24px;
+  align-items: end;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(45, 45, 45, 1);
+  border-radius: 20px;
+}
+.mainDivForSelectingUni {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 78%;
+}
+.selecting {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 
+ */
+.comparisonResult {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.comparisonTable {
+  width: 96%;
+  margin: auto;
+}
+
+.universities {
+  background-color: rgba(20, 174, 130, 0.05);
+  border-width: 1px, 0px, 1px, 0px;
+  border-style: solid;
+  border-color: rgba(20, 174, 130, 0.05);
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  gap: 8px;
+  justify-content: center;
+}
+.uniTit {
+  width: 24%;
+  height: 91px;
+  padding: 8px 16px;
+}
+.uniName {
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.uniContentDiv {
+  gap: 8px;
+  padding: 16px;
+  border-width: 1px, 0px, 1px, 0px;
+  background: rgba(249, 249, 249, 1);
+  border-style: solid;
+  border-color: rgba(20, 174, 130, 0.05);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.uniContent {
+  border-radius: 8px;
+  /* background-color: rgba(255, 255, 255, 1); */
+  width: 24%;
+  padding: 8px 16px;
+}
+.uniContentLoading {
+  background: linear-gradient(
+    98.01deg,
+    #e9e9e9 12.52%,
+    #ffffff 32.73%,
+    #e9e9e9 61.86%,
+    #ffffff 84.55%
+  );
+}
+.facultiesDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rateNa {
+  width: 24%;
+  padding: 8px 16px;
+}
+
+.facultiesP {
+  font-family: "Mulish";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  background: rgba(229, 244, 242, 1);
+  padding: 4px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: fit-content;
+}
+
+/* Switch Container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+/* Hide Default Checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider Background */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(210, 210, 210, 1);
+  transition: 0.4s;
+  border-radius: 25px;
+}
+
+/* Moving Circle */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3.5px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Toggle ON */
+input:checked + .slider {
+  background-color: rgba(0, 147, 121, 1);
+}
+
+/* Move the Circle when ON */
+input:checked + .slider:before {
+  transform: translateX(25px);
+}

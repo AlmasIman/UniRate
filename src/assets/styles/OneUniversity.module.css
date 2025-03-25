@@ -1,0 +1,83 @@
+h1,
+p {
+  font-family: "Poppins";
+}
+
+.uniInfoMainContainer {
+  height: 637px;
+  position: relative;
+}
+.unibox {
+  display: flex;
+  flex-direction: row;
+  gap: 35px;
+  position: absolute;
+  top: 90px;
+  left: 200px;
+  right: 80px;
+}
+.uniImg {
+  width: 620px;
+  height: 457px;
+  border-radius: 20px;
+}
+
+.Title {
+  display: flex;
+  gap: 275px;
+  align-items: center;
+  font-weight: 600;
+  font-size: 38px;
+  line-height: 64px;
+  letter-spacing: -2%;
+}
+
+.rate {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rate p {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: rgba(98, 98, 100, 1);
+}
+
+.starRateGive {
+  width: 24px;
+  height: 24px;
+}
+
+.review {
+  width: 907px;
+  height: 60px;
+  border-radius: 20px;
+  border-width: 1px;
+  gap: 12px;
+  padding-top: 8px;
+  padding-right: 20px;
+  padding-bottom: 8px;
+  padding-left: 20px;
+  border: 1px solid rgba(216, 216, 216, 1);
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0%;
+}
+
+.postBtn {
+  width: 178px;
+  height: 60px;
+  border-radius: 20px;
+  gap: 8px;
+  padding-top: 16px;
+  padding-right: 50px;
+  padding-bottom: 16px;
+  padding-left: 50px;
+  background-color: rgba(0, 147, 121, 1);
+  color: white;
+  border: none;
+}

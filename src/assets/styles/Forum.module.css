@@ -1,0 +1,30 @@
+.mainForum {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 90%;
+  margin: auto;
+}
+.searchDiv p {
+  color: rgba(63, 62, 94, 1);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 182%;
+}
+.searchInput {
+  width: 769px;
+  height: 60px;
+  gap: 12px;
+  border-radius: 20px;
+  padding-top: 8px;
+  padding-right: 20px;
+  padding-bottom: 8px;
+  padding-left: 20px;
+  border-width: 1px;
+  font-family: "Inter";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0%;
+  border: 1px solid rgba(216, 216, 216, 1);
+}

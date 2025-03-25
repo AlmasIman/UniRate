@@ -1,0 +1,63 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+.UniImg {
+  width: 508px;
+  height: 342px;
+  border-radius: 20px;
+}
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.title h5 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: rgba(98, 98, 100, 1);
+}
+.title p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: rgba(98, 98, 100, 1);
+}
+.title h3 {
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 100%;
+  letter-spacing: -2%;
+  color: rgba(45, 45, 45, 1);
+}
+.commentsSections {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.author {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  align-items: center;
+}
+
+.comment {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: rgba(122, 122, 122, 1);
+}
+
+.timsPosted {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: rgba(144, 144, 144, 1);
+}

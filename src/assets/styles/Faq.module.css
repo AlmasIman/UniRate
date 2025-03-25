@@ -1,0 +1,71 @@
+.mainDiv {
+  display: flex;
+  width: 90%;
+  background-color: rgba(229, 244, 242, 1);
+  border-radius: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-top: 30px;
+  padding-right: 120px;
+  padding-bottom: 30px;
+  padding-left: 120px;
+  border-radius: 20px;
+  margin: auto;
+  margin-top: 90px;
+  margin-bottom: 200px;
+}
+.accordion {
+  width: 80%;
+}
+
+.accordionItem {
+  margin-bottom: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.accordionHeader {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.question {
+  font-size: 18px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.accordionContent {
+  padding: 0 15px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.active .accordionContent {
+  max-height: 200px;
+}
+.active .question {
+  color: rgba(0, 147, 121, 1);
+  font-weight: bold;
+}
+
+.answerDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: white;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: rgba(122, 122, 122, 1);
+}

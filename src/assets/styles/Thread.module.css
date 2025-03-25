@@ -1,0 +1,31 @@
+
+
+.threadPath {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+}
+.threadPath hr{
+  height: 14px;
+  border: 1px solid rgba(99, 99, 99, 1);
+}
+
+.forumAdmissnDiv {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.UserCommentsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.UserCommentsList hr{
+  height: 168px;
+  border: 1px solid rgba(230, 232, 236, 1);
+}
+

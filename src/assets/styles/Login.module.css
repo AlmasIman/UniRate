@@ -1,0 +1,86 @@
+.mainBox {
+  display: flex;
+  margin: 0;
+  height: 100vh;
+}
+
+.loginLeftSide {
+  background-color: rgba(45, 45, 45, 1);
+  width: 50%;
+  color: white;
+  display: flex;
+  gap: 35px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.logo {
+  width: 178px;
+  height: 68px;
+  border-radius: 90px;
+  border: none;
+  position: absolute;
+  top: 52px;
+  left: 52px;
+}
+.welcomeLoginIcon {
+  margin-top: 35px;
+}
+
+.greeting {
+  font-family: "DM Sans";
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 48px;
+  letter-spacing: -1%;
+  margin-top: 180px;
+}
+
+.loginLeftSide p {
+  margin-top: 35px;
+  width: 420px;
+}
+
+.loginRightSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  gap: 30px !important;
+  width: 50%;
+}
+
+.loginRightSide h2 {
+  margin-bottom: 52px;
+}
+
+.loginRightSide div {
+  position: relative;
+}
+
+.forgotPassLink {
+  text-decoration: none;
+  color: rgba(45, 45, 45, 1);
+  position: absolute;
+  margin-top: 8px;
+  right: 0;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 12px;
+}
+
+.loginRightSide p {
+  color: #425466;
+  font-size: 14px;
+}
+.donthaveAAcc {
+  text-align: center;
+  margin-top: 50px;
+}
+.loginRightSide p a {
+  color: black;
+  text-decoration: none;
+}

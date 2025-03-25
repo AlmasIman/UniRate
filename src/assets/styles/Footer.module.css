@@ -1,0 +1,99 @@
+.footer {
+  position: relative;
+  background: rgba(45, 45, 45, 1);
+  color: #fff;
+  padding: 40px 80px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 132px 80px 80px 80px;
+}
+
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 25px;
+  letter-spacing: 0px;
+  padding-bottom: 128px;
+
+  & h3 {
+    color: rgba(0, 147, 121, 1);
+    margin-bottom: 10px;
+    font-family: "Poppins";
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0%;
+  }
+
+  & a {
+    color: rgba(163, 163, 163, 1);
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  & a:hover {
+    color: #fff;
+  }
+  & p {
+    margin: 0;
+    color: rgba(163, 163, 163, 1);
+  }
+}
+.logo {
+  font-family: "Rubik";
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: 0px;
+
+  position: absolute;
+  top: 80px;
+}
+
+.footerSocial {
+  display: flex;
+  gap: 15px;
+  margin-top: 23px;
+
+  & svg {
+    color: #24b59c;
+    font-size: 18px;
+    transition: 0.3s;
+  }
+
+  & svg:hover {
+    color: #fff;
+  }
+}
+
+.footerBottom {
+  display: flex;
+  position: absolute;
+  gap: 40px;
+  bottom: 80px;
+  align-items: center;
+  margin-top: 20px;
+  color: rgba(163, 163, 163, 1);
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0%;
+}
+
+.reserved {
+  position: absolute;
+  right: 80px;
+  bottom: 80px;
+  color: rgba(163, 163, 163, 1);
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0%;
+}

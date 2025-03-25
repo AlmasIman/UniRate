@@ -1,0 +1,19 @@
+.login-input-form {
+  width: 434px;
+  height: 46px;
+  border: none;
+  border-radius: 6px;
+  background-color: hsl(210, 38%, 95%);
+  padding-left: 16px; /* Ensure input text also moves */
+
+}
+.login-input-form::placeholder { 
+  font-size: 15px;
+} 
+
+
+.input-form-box p{
+  margin: 30px 0 8px 0;
+  color: #425466;
+  font-size: 14px;
+}

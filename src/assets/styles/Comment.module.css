@@ -1,0 +1,35 @@
+p {
+  margin: 0;
+}
+.status {
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0%;
+  background-color: rgba(230, 232, 236, 1);
+  border-radius: 16px;
+  width: fit-content;
+  padding: 0 6px 0 6px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.comment {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  width: 100%;
+  color: rgba(122, 122, 122, 1);
+}
+
+.postedTime {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: rgba(144, 144, 144, 1);
+}
