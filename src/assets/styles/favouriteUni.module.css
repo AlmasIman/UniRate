@@ -42,12 +42,14 @@
 /* 
  */
 .comparisonResult {
+  width: 100%;
+  margin: auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 .comparisonTable {
-  width: 96%;
+  width: 100%;
   margin: auto;
 }
 
@@ -60,12 +62,12 @@
   flex-direction: row;
   padding: 16px;
   gap: 8px;
-  justify-content: center;
 }
 .uniTit {
   width: 24%;
   height: 91px;
   padding: 8px 16px;
+
 }
 .uniName {
   border-radius: 16px;
@@ -81,12 +83,11 @@
   border-color: rgba(20, 174, 130, 0.05);
   display: flex;
   flex-direction: row;
-  justify-content: center;
 }
 
 .uniContent {
   border-radius: 8px;
-  /* background-color: rgba(255, 255, 255, 1); */
+  background-color: rgba(255, 255, 255, 1);
   width: 24%;
   padding: 8px 16px;
 }
@@ -109,7 +110,6 @@
   width: 24%;
   padding: 8px 16px;
 }
-
 .facultiesP {
   font-family: "Mulish";
   font-weight: 400;
@@ -174,3 +174,4 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(25px);
 }
+

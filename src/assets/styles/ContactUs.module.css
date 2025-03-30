@@ -1,8 +1,50 @@
 .contactMainDiv {
+  padding: 90px 0 90px 0;
   width: 90%;
   margin: auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+.title {
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 38px;
+  line-height: 38px;
+  letter-spacing: 0px;
+}
+
+.paragraphdf {
+  font-family: "Rubik";
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  width: 400px;
+}
+
+.inputsty {
+  width: 252px;
+  height: 60px;
+  gap: 12px;
+  padding-top: 18px;
+  padding-right: 20px;
+  padding-bottom: 18px;
+  padding-left: 20px;
+  border-radius: 20px;
+  border-width: 1px;
+  border: 1px solid rgba(216, 216, 216, 1);
+}
+
+.message {
+  width: 520px;
+  height: 90px;
+  gap: 12px;
+  padding-top: 14px;
+  padding-right: 20px;
+  padding-bottom: 14px;
+  padding-left: 20px;
+  border-radius: 20px;
+  border-width: 1px;
+  border: 1px solid rgba(216, 216, 216, 1);
 }

@@ -4,7 +4,25 @@ import notification from "../assets/icons/Button-2.svg";
 import signout from "../assets/icons/Button-3.svg";
 import header from "../assets/styles/Header.module.css";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 function Header() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Проверяем наличие токена в localStorage
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Удаляем токен
+    setIsAuthenticated(false); // Обновляем состояние
+    navigate("/"); // Перенаправляем на страницу входа
+  };
+
   const links = [
     { name: "Main", path: "/" },
     { name: "Universities", path: "/universities" },
@@ -22,26 +40,42 @@ function Header() {
             <p>{link.name}</p>
           </Link>
         ))}
-        
-        <Link to="/profile">
-          <img src={profile} alt="" className={header.link} />
-        </Link>
 
-        <Link to="/favouriteuniversities">
-          <img src={favorite} alt="" className={header.link} />
-        </Link>
+        {!isAuthenticated && (
+          <>
+            <Link to="/login" className={header.link}>
+              <p>Sign In</p>
+            </Link>
+          </>
+        )}
 
-        <Link to="/notifications">
-          <img src={notification} alt="" className={header.link} />
-        </Link>
+        {isAuthenticated && (
+          <>
+            <Link to="/profile">
+              <img src={profile} alt="Profile" className={header.link} />
+            </Link>
 
-        <Link to="/signout">
-          <img src={signout} alt="" className={header.link} />
-        </Link>
+            <Link to="/favouriteuniversities">
+              <img src={favorite} alt="Favorite" className={header.link} />
+            </Link>
+
+            <Link to="/notifications">
+              <img
+                src={notification}
+                alt="Notifications"
+                className={header.link}
+              />
+            </Link>
+
+            <Link to="/" onClick={handleLogout}>
+              <img src={signout} alt="Sign Out" className={header.link} />
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
 }
 
 export default Header;
-
+``;

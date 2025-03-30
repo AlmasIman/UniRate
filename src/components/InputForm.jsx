@@ -1,7 +1,6 @@
 function Input({ placeholder, nameOfInput, type = "text", value, onChange }) {
   const styles = {
     inputBox: {
-      margin: "30px 0 10px 0",
       color: "rgba(45, 45, 45, 1)",
       fontSize: "14px",
     },

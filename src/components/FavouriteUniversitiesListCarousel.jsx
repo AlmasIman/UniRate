@@ -9,7 +9,7 @@ const universities = [
     id: 1,
     name: "Shymkent University of...",
     description: "Short Description",
-    img: "shym.png",
+    img: "/shym.png",
     rate: "5.0",
     pros: "High employment rate",
   },
@@ -71,18 +71,16 @@ const Carousel = () => {
   };
 
   return (
-    <div className="position-relative container py-5">
-      <div
-        className="d-flex justify-content-end position-absolute top-0 end-0"
-        style={{ gap: "8px" }}
-      >
+    <div className="position-relative " style={{  }}>
+      <div className="d-flex justify-content-end" style={{ gap: "8px" }}>
+        <br />
+        <br />
+        <br />
         <button
           onMouseEnter={(e) =>
             (e.currentTarget.style.border = "2px solid rgba(229, 244, 242, 1)")
           }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.border = "none")
-          }
+          onMouseLeave={(e) => (e.currentTarget.style.border = "none")}
           onClick={handlePrev}
           style={{
             backgroundColor: "white",
@@ -99,9 +97,7 @@ const Carousel = () => {
           onMouseEnter={(e) =>
             (e.currentTarget.style.border = "2px solid rgba(229, 244, 242, 1)")
           }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.border = "none")
-          }
+          onMouseLeave={(e) => (e.currentTarget.style.border = "none")}
           onClick={handleNext}
           style={{
             backgroundColor: "white",
@@ -128,10 +124,17 @@ const Carousel = () => {
                 className={`carousel-item ${
                   groupIndex === Math.floor(activeIndex / 3) ? "active" : ""
                 }`}
+                style={{
+                  height: "550px",
+                }}
               >
                 <div
-                  className="d-flex justify-content-center"
-                  style={{ gap: "32px" }}
+                  className="d-flex "
+                  style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    gap: "32px",
+                  }}
                 >
                   {universities
                     .slice(groupIndex * 3, groupIndex * 3 + 3)
@@ -142,21 +145,30 @@ const Carousel = () => {
                         style={{
                           position: "relative",
                           width: "405px",
-                          height: "476px",
+                          minHeight: "476px",
                           borderRadius: "20px",
                           border: "none",
                           boxShadow:
                             "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05)",
                         }}
                       >
-                        <img src={deleted} alt="favouriteIcon" style={{position: "absolute", right: "12px", top: "12px", cursor: "pointer"}}/>
+                        <img
+                          src={deleted}
+                          alt="favouriteIcon"
+                          style={{
+                            position: "absolute",
+                            right: "12px",
+                            top: "12px",
+                            cursor: "pointer",
+                          }}
+                        />
                         <img
                           src={uni.img}
                           className="card-img-top"
                           style={{
                             borderTopLeftRadius: "20px",
                             borderTopRightRadius: "20px",
-                            width: "405px",
+                            width: "100%",
                             height: "278px",
                           }}
                           alt={uni.name}
@@ -165,37 +177,46 @@ const Carousel = () => {
                           className="card-body"
                           style={{ position: "relative" }}
                         >
-                          <h5
-                            className="card-title"
-                            style={{ margin: "20px 0 12px 0" }}
-                          >
-                            {uni.name}
-                          </h5>
-                          <p
+                          <div
                             style={{
-                              border: "1px solid rgba(45, 45, 45, 1)",
-                              width: "41px",
-                              height: "38px",
-                              textAlign: "center",
-                              paddingTop: "6px",
-                              borderRadius: "4px",
-                              position: "absolute",
-                              right: "30px",
-                              top: "30px",
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "center",
                             }}
                           >
-                            {uni.rate}
-                          </p>
+                            <h5
+                              className="card-title"
+                              style={{ margin: "20px 0 12px 0" }}
+                            >
+                              {uni.name}
+                            </h5>
+                            <p
+                              style={{
+                                border: "1px solid rgba(45, 45, 45, 1)",
+                                width: "41px",
+                                height: "38px",
+                                textAlign: "center",
+                                paddingTop: "6px",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              {uni.rate}
+                            </p>
+                          </div>
+
                           <p
                             className=""
-                            style={{ marginBottom: "12px", paddingRight: "234px" }}
+                            style={{
+                              marginBottom: "12px",
+                              paddingRight: "234px",
+                            }}
                           >
                             {uni.description}
                           </p>
                           <span
                             className="badge"
                             style={{
-                              width: "173px",
                               height: "32px",
                               borderRadius: "8px",
                               backgroundColor: "rgba(229, 244, 242, 1)",
@@ -218,7 +239,7 @@ const Carousel = () => {
           )}
         </div>
       </div>
-      <div className="d-flex justify-content-center mt-3">
+      <div className="d-flex justify-content-center">
         {[...Array(Math.ceil(universities.length / 3))].map((_, index) => (
           <button
             key={index}

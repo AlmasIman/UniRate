@@ -27,6 +27,7 @@ import Profile from "./pages/Profile.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import FAQ from "./pages/FAQ.jsx";
 import Terms from "./pages/TermsAndConditions.jsx";
+import Confirm from "./pages/LoginPages/Confirm.jsx"
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/confirm" element={<Confirm />} />
+        
         <Route path="/" element={<Home />} />
         <Route path="/universities" element={<Universities />} />
         <Route path="/university" element={<University />} />
@@ -47,6 +50,7 @@ function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
+        
 
       </Routes>
     </Router>

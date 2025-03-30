@@ -1,32 +1,84 @@
-.mainBox {
-  display: flex;
-  margin: 0;
-  height: 100vh;
+* {
+  font-family: "Poppins";
 }
 
-.loginLeftSide {
-  background-color: rgba(45, 45, 45, 1);
-  width: 50%;
-  color: white;
+.mainBox {
   display: flex;
-  gap: 35px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  flex-direction: row;
 }
 
 .logo {
-  width: 178px;
-  height: 68px;
-  border-radius: 90px;
+  width: 100px;
+  height: 40px;
+  border-radius: 30px;
   border: none;
   position: absolute;
   top: 52px;
   left: 52px;
 }
+
+.loginLeftSide {
+  background-color: rgba(45, 45, 45, 1);
+  width: 50%;
+  height: 100vh;
+  position: relative;
+}
+
+.loginRightSide {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.loginRightSideForSignUp {
+  width: 50%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  position: absolute;
+}
+
+.contentleftSide {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  align-items: center;
+  text-align: start;
+  padding-top: 25%;
+}
+
+.contentrightSide {
+  color: rgba(39, 39, 46, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-top: 25%;
+  align-items: start;
+}
+.contentrightSideConfirm {
+  gap: 50px;
+  color: rgba(39, 39, 46, 1);
+  display: flex;
+  flex-direction: column;
+  padding-top: 25%;
+}
+
+.signupcontentrightSide {
+  color: rgba(39, 39, 46, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding-top: 8%;
+  align-items: start;
+}
 .welcomeLoginIcon {
-  margin-top: 35px;
+  width: 424px;
+  height: 424px;
 }
 
 .greeting {
@@ -35,52 +87,159 @@
   font-size: 40px;
   line-height: 48px;
   letter-spacing: -1%;
-  margin-top: 180px;
+  width: 473px;
+  height: 53px;
 }
 
-.loginLeftSide p {
-  margin-top: 35px;
-  width: 420px;
+.contentleftSide p {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+  letter-spacing: 0%;
+  width: 473px;
+  height: 60px;
 }
 
-.loginRightSide {
+.forgotPassLink {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 12px;
+  letter-spacing: 0px;
+  text-decoration: none;
+  color: rgba(45, 45, 45, 1);
+  position: absolute;
+  right: 0;
+  top: 104%;
+}
+
+.atLeast8char {
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 12px;
+  letter-spacing: 0px;
+  text-decoration: none;
+  color: rgba(45, 45, 45, 1);
+  margin-top: 5px;
+}
+
+.donthaveAAcc {
+  margin-left: 20%;
+  color: rgba(166, 166, 166, 1);
+}
+.signUpLink {
+  text-decoration: none;
+  color: rgba(45, 45, 45, 1);
+}
+
+.checkboxStyle {
+  width: 20px;
+  height: 20px;
+  accent-color: rgba(0, 147, 121, 1);
+  cursor: pointer;
+}
+
+.termspan {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.codeContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.codeInput {
+  width: 64px;
+  height: 60px;
+  gap: 12px;
+  padding-top: 18px;
+  padding-right: 20px;
+  padding-bottom: 18px;
+  padding-left: 20px;
+  border-radius: 20px;
+  border-width: 1px;
+  border: 1px solid rgba(216, 216, 216, 1);
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  outline: none;
+}
+
+.codeInput:focus {
+  border-color: blue;
+}
+
+.signupLeft {
+  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  gap: 30px !important;
-  width: 50%;
+}
+.confirmH2 {
+  font-size: 28px;
+  color: #27272e;
 }
 
-.loginRightSide h2 {
-  margin-bottom: 52px;
+.createAccParagraph {
+  margin-top: 12px;
+  font-size: 16px;
+  line-height: 25.92px;
+  letter-spacing: 0%;
+  color: #27272e;
 }
 
-.loginRightSide div {
-  position: relative;
-}
-
-.forgotPassLink {
-  text-decoration: none;
-  color: rgba(45, 45, 45, 1);
-  position: absolute;
-  margin-top: 8px;
-  right: 0;
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 12px;
-}
-
-.loginRightSide p {
-  color: #425466;
-  font-size: 14px;
-}
-.donthaveAAcc {
+.resendCode {
+  color: #718096;
   text-align: center;
-  margin-top: 50px;
 }
-.loginRightSide p a {
-  color: black;
-  text-decoration: none;
+.resendCode span {
+  color: #141416;
+  cursor: pointer;
+}
+
+.signupRight {
+  background-color: white;
+  width: 50%;
+  background-image: url("../assets/imgs/unirate1.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover; /* Resize the background image to cover the entire container */
+  background-position: center;
+}
+
+.BtnLong {
+  width: 424px;
+  display: flex;
+  height: 60px;
+  gap: 10px;
+  border-radius: 20px;
+  background-color: #009379;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  text-decoration: black;
+}
+
+.spantext {
+  display: flex;
+  gap: 3px;
+  color: rgba(45, 45, 45, 1);
+  cursor: pointer;
+}
+
+
+.error {
+  font-size: 13px;
+  color: red;
+  margin-top: 10px;
 }

@@ -5,7 +5,6 @@ import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import search from "../assets/icons/search.svg";
 import Button from "../components/Button.jsx";
-import UniversityCarousel from "../components/UniversityCardCarousel.jsx";
 import unistyle from "../assets/styles/university.module.css";
 import MultiRangeSlider from "../components/PriceFilter.jsx";
 import map from "../assets/icons/MapPinLine.svg";
@@ -35,7 +34,7 @@ function Universities() {
       <div className={unistyle.filterBox}>
         <h3 className={unistyle.title}>Filters</h3>
         <div className={unistyle.filter}>
-          <div>
+          <div style={{ width: '23%', }}>
             <div className={unistyle.filterTitle}>
               <img src={map} alt="" />
               <Select
@@ -84,7 +83,7 @@ function Universities() {
             </div>
           </div>
 
-          <div>
+          <div style={{ width: '23%'}}>
             <div className={unistyle.filterTitle}>
               <img src={dollar} alt="" />
               <p>Price</p>
@@ -92,7 +91,7 @@ function Universities() {
             <MultiRangeSlider />
           </div>
 
-          <div>
+          <div style={{ width: '23%'}}>
             <div className={unistyle.filterTitle}>
               <img src={documentfilter} alt="" />
               <p>Price</p>

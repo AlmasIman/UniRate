@@ -12,7 +12,7 @@ import styles from "../assets/styles/Footer.module.css";
 import instagram from "../assets/icons/Instagram.svg";
 import twitter from "../assets/icons/Twitter.svg";
 import linkedin from "../assets/icons/Linkedin.svg";
-import facebook from "../assets/icons/facebook.svg";
+import facebook from "../assets/icons/Facebook.svg";
 
 const Footer = () => {
   return (

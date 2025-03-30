@@ -111,7 +111,7 @@ const CatlogPriceFilter = () => {
             max={maxVal - minGap}
           />
         </div>
-          <img src={minus} alt="" />
+          <img src={minus} alt="" style={{marginRight: '20px'}}/>
         <div className={styles.maxBox}>
           <span>$</span>
           <input

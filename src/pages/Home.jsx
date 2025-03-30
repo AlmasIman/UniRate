@@ -16,7 +16,15 @@ import Footer from "../layouts/Footer.jsx";
 // import StorySrud from "../components/StorysFromStud.jsx";
 import UniversitiesList from "../components/UniversityCardCarousel.jsx";
 import StoriesList from "../components/StoriesList.jsx";
+import { useRef } from "react";
+
 function Home() {
+  const universitiesRef = useRef(null);
+
+  const scrollToUniversities = () => {
+    universitiesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <Header />
@@ -30,7 +38,9 @@ function Home() {
             Discover, Compare, and Choose <br /> the Best Universities Worldwide
             with UniRate
           </p>
-          <Button path="/" content="Discover" contentIcon={Rocket} />
+          <div onClick={scrollToUniversities} >
+            <Button path="/" content="Discover" contentIcon={Rocket} />
+          </div>
           <img src={visuals} alt="" className={homeStyle.bgBagnner} />
         </div>
         <img src={chat} alt="chat-icon" className={homeStyle.chatIcon} />
@@ -65,7 +75,7 @@ function Home() {
         </div>
       </div>
 
-      <div className={homeStyle.uniListContainer}>
+      <div className={homeStyle.uniListContainer} ref={universitiesRef}>
         <p>Most Popular</p>
         <h1>University lists</h1>
 
@@ -73,8 +83,8 @@ function Home() {
           <UniversitiesList />
         </div>
       </div>
-      
-      <div className={homeStyle.uniListContainer}>
+
+      <div className={homeStyle.uniListContainer2}>
         <p>See how our landing page platform is making an impact.</p>
         <h1>Real Stories from Satisfied Students</h1>
 

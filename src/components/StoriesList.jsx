@@ -109,7 +109,7 @@ const StoriesList = () => {
                         />
                         <div
                           className="card-body"
-                          style={{ position: "relative" }}
+                          style={{ position: "relative", textAlign: "center" }}
                         >
                           <h5
                             className="card-title"
@@ -117,11 +117,25 @@ const StoriesList = () => {
                           >
                             {uni.name}
                           </h5>
-                          <p style={{fontFamily: 'Inter',fontWeight: '400', fontSize: '14px', lineHeight: '160%', color: 'rgba(55, 65, 81, 1)'}}>{uni.status}</p>
-                          <p className="" style={{ marginBottom: "12px" }}>
-                           {`"${uni.review}"`}
+                          <p
+                            style={{
+                              fontFamily: "Inter",
+                              fontWeight: "400",
+                              fontSize: "14px",
+                              lineHeight: "160%",
+                              color: "rgba(55, 65, 81, 1)",
+                              width: '60%',
+                              margin: 'auto'
+
+                            }}
+                          >
+                            {uni.status}
                           </p>
                         </div>
+
+                        <p className="" style={{ marginBottom: "12px", textAlign: 'center' }}>
+                          {`"${uni.review}"`}
+                        </p>
                       </div>
                     ))}
                 </div>

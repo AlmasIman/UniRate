@@ -45,6 +45,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 1060px;
 }
 .inputBox p {
   font-weight: 400;
@@ -68,19 +69,12 @@ h1 {
   margin-bottom: 32px;
 }
 
+.inputPassword {
+  width: 100% !important;
+}
 .infoUpdateSection {
   display: grid;
   grid-template-columns: repeat(2, 540px);
-}
-.selectCategory {
-  width: 1060px;
-  height: 60px;
-  justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 20px;
-  border-width: 1px;
-  border: 1px solid rgba(216, 216, 216, 1);
 }
 .h1Title {
   font-family: "DM Sans";
@@ -109,10 +103,10 @@ h1 {
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: 0%;
   text-align: center;
   color: rgba(0, 147, 121, 1);
   margin: auto;
+  cursor: pointer;
 }
 
 .container {
@@ -128,4 +122,37 @@ h1 {
 
 .mainLoginandsecuritySection {
   padding-left: 20%;
+}
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.popupContent {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  text-align: center;
+}
+
+.popupButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.popupButtons p {
+  cursor: pointer;
+  color: red;
 }
