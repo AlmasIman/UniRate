@@ -1,11 +1,9 @@
 import Header from "../layouts/Header";
 import homeStyle from "../assets/styles/Home.module.css";
-import chat from "../assets/icons/chat.svg";
 import visuals from "../assets/icons/Visuals.svg";
 import { Link } from "react-router-dom";
 import Button from "../components/Button.jsx";
 import Rocket from "../assets/icons/RocketLaunch.svg";
-import Carousel from "../components/Carousel.jsx";
 import Card from "../components/OurFeatureCard.jsx";
 import money from "../assets/icons/money.svg";
 import chat2 from "../assets/icons/chat2.svg";
@@ -17,6 +15,7 @@ import Footer from "../layouts/Footer.jsx";
 import UniversitiesList from "../components/UniversityCardCarousel.jsx";
 import StoriesList from "../components/StoriesList.jsx";
 import { useRef } from "react";
+import Chatbot from "../components/Chatbot.jsx";
 
 function Home() {
   const universitiesRef = useRef(null);
@@ -38,39 +37,39 @@ function Home() {
             Discover, Compare, and Choose <br /> the Best Universities Worldwide
             with UniRate
           </p>
-          <div onClick={scrollToUniversities} >
+          <div onClick={scrollToUniversities}>
             <Button path="/" content="Discover" contentIcon={Rocket} />
           </div>
           <img src={visuals} alt="" className={homeStyle.bgBagnner} />
         </div>
-        <img src={chat} alt="chat-icon" className={homeStyle.chatIcon} />
+        <Chatbot />
       </div>
 
       <div className={homeStyle.ourFeature}>
         <h2 className={homeStyle.ourFeatureh2}>Our Feature</h2>
         <p className={homeStyle.ourFeatureParag}>
-          Something special ab our features
+        Discover the Smart Way to Choose Your Future University
         </p>
         <div className={homeStyle.ourFeatureCARDDiv}>
           <Card
-            featureIcon={point}
-            cardTitle="Donec vitae."
-            cardDescription="Search and compare universities worldwide based on programs, rankings, and more"
-          />
-          <Card
             featureIcon={map}
-            cardTitle="Donec vitae."
-            cardDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nunc vestibulum ect"
+            cardTitle="University Search & Comparison."
+            cardDescription="Search and compare universities based on programs, rankings, and location to find the best fit for you."
           />
           <Card
             featureIcon={money}
-            cardTitle="Donec vitae."
-            cardDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nunc vestibulum ect"
+            cardTitle="Financial Calculator."
+            cardDescription="Plan your budget with our financial calculator, which helps you estimate tuition, living expenses, and other costs."
+          />
+          <Card
+            featureIcon={point}
+            cardTitle="University Rankings."
+            cardDescription="View up-to-date rankings and compare universities by reputation in various disciplines."
           />
           <Card
             featureIcon={chat2}
-            cardTitle="Donec vitae."
-            cardDescription="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nunc vestibulum ect"
+            cardTitle="Connect with Students & Alumni."
+            cardDescription="Engage with real students and alumni to get valuable advice and insights to guide your decisions."
           />
         </div>
       </div>
@@ -88,9 +87,7 @@ function Home() {
         <p>See how our landing page platform is making an impact.</p>
         <h1>Real Stories from Satisfied Students</h1>
 
-        <div className={homeStyle.studDiv}>
-          <StoriesList />
-        </div>
+        <StoriesList />
       </div>
 
       <div className={homeStyle.newsletterMainDiv}>

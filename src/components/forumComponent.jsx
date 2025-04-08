@@ -3,13 +3,15 @@ import forumCom from "../assets/styles/forumComponent.module.css";
 import ava1 from "/ava3.png";
 import like from "../assets/icons/like.svg";
 import EmptyBtn from "../components/EmptyBtn.jsx";
+import Comment from "../components/Comment.jsx";
+
 function ForumComponent() {
   return (
     <div className={forumCom.main}>
       <img src="/astana.png" alt="" className={forumCom.UniImg} />
       <div className={forumCom.commentsSections}>
         <div className={forumCom.title}>
-          <div style={{display: 'flex', gap: '3px', alignItems:'center'}}>
+          <div style={{ display: "flex", gap: "3px", alignItems: "center" }}>
             <h5>Thread</h5>
             <img src={messages} alt="" />
             <p>10 comments</p>
@@ -18,7 +20,6 @@ function ForumComponent() {
           <h3>Admission</h3>
           <p>Navigating University Admissions: Your Guide to Success</p>
         </div>
-
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           <div className={forumCom.author}>
             <img src={ava1} alt="" />

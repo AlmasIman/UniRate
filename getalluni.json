@@ -1,0 +1,475 @@
+[
+  {
+    "id": 3,
+    "name": "Eurasian National University",
+    "description": "Евразийский Национальный Университет имени Л.Н. Гумилёва (ENU) — один из ведущих университетов Казахстана, расположенный в Астане. Университет предлагает программы по инженерии, гуманитарным и естественным наукам.",
+    "location": "Астана, Казахстан",
+    "rating": 0,
+    "baseCost": 1000000,
+    "website": "https://enu.kz",
+    "accreditation": null,
+    "contactEmail": "info@enu.kz",
+    "logoUrl": "https://enu.kz/logo.png",
+    "ratingCount": 2500,
+    "militaryDepartment": true,
+    "dormitory": true,
+    "militaryDepartmentCost": null,
+    "dormitoryCost": null,
+    "universityAddress": null,
+    "faculty": []
+  },
+  {
+    "id": 4,
+    "name": "string",
+    "description": "string",
+    "location": "string",
+    "rating": 0,
+    "baseCost": 0,
+    "website": "string",
+    "accreditation": null,
+    "contactEmail": "string",
+    "logoUrl": "string",
+    "ratingCount": 0,
+    "militaryDepartment": true,
+    "dormitory": true,
+    "militaryDepartmentCost": null,
+    "dormitoryCost": null,
+    "universityAddress": null,
+    "faculty": []
+  },
+  {
+    "id": 5,
+    "name": "string",
+    "description": "string",
+    "location": "string",
+    "rating": 0,
+    "baseCost": 0,
+    "website": "string",
+    "accreditation": null,
+    "contactEmail": "string",
+    "logoUrl": "string",
+    "ratingCount": 0,
+    "militaryDepartment": true,
+    "dormitory": true,
+    "militaryDepartmentCost": null,
+    "dormitoryCost": null,
+    "universityAddress": null,
+    "faculty": [
+      {
+        "facultyDto": {
+          "id": 11,
+          "name": "фвымыфмфым",
+          "description": "фСВФЫВС",
+          "contactEmail": "ыфаыфвавфы",
+          "contactPhoneNumber": "+123213123123",
+          "baseCost": 5,
+          "universityId": 5,
+          "commonName": null
+        },
+        "specialtyDtos": []
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "string",
+    "description": "string",
+    "location": "string",
+    "rating": 0,
+    "baseCost": 0,
+    "website": "string",
+    "accreditation": null,
+    "contactEmail": "string",
+    "logoUrl": "string",
+    "ratingCount": 0,
+    "militaryDepartment": true,
+    "dormitory": true,
+    "militaryDepartmentCost": null,
+    "dormitoryCost": null,
+    "universityAddress": null,
+    "faculty": []
+  },
+  {
+    "id": 7,
+    "name": "exemple",
+    "description": "lorem ispum lorem ispum lorem ispum lorem ispum lorem ispum",
+    "location": "Almaty",
+    "rating": 0,
+    "baseCost": 120000,
+    "website": "string",
+    "accreditation": null,
+    "contactEmail": "string",
+    "logoUrl": "https://i.postimg.cc/cC276VML/kbtu.jpg",
+    "ratingCount": 0,
+    "militaryDepartment": true,
+    "dormitory": true,
+    "militaryDepartmentCost": null,
+    "dormitoryCost": null,
+    "universityAddress": null,
+    "faculty": []
+  },
+  {
+    "id": 1,
+    "name": "Suleyman Demirel University",
+    "description": "Suleyman Demirel University (SDU) — частный университет в Казахстане, основанный в 1996 году, известный своими программами в IT, бизнесе и инженерии.",
+    "location": "Алматы, Казахстан",
+    "rating": 5,
+    "baseCost": 1200000,
+    "website": "https://sdu.edu.kz",
+    "accreditation": null,
+    "contactEmail": "info@sdu.edu.kz",
+    "logoUrl": "https://sdu.edu.kz/logo.png",
+    "ratingCount": 1,
+    "militaryDepartment": false,
+    "dormitory": true,
+    "militaryDepartmentCost": null,
+    "dormitoryCost": null,
+    "universityAddress": {
+      "id": 1,
+      "city": "Алматы",
+      "region": "Алматинская область",
+      "fullAddress": "ул. Абылай хана 1/1, Каскелен, Казахстан",
+      "universityId": 1
+    },
+    "faculty": [
+      {
+        "facultyDto": {
+          "id": 1,
+          "name": "Факультет инженерии и естественных наук",
+          "description": "Факультет предлагает программы по компьютерным наукам, математике, инженерии и естественным наукам.",
+          "contactEmail": "engineering@sdu.edu.kz",
+          "contactPhoneNumber": "+77771112233",
+          "baseCost": 1200000,
+          "universityId": 1,
+          "commonName": null
+        },
+        "specialtyDtos": [
+          {
+            "id": 1,
+            "name": "Компьютерные науки",
+            "description": "Изучение алгоритмов, структур данных, искусственного интеллекта и машинного обучения.",
+            "facultyId": 1,
+            "courses": [
+              {
+                "id": 1,
+                "name": "Искусственный интеллект",
+                "description": "Основы нейросетей, глубокого обучения и компьютерного зрения.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 500000,
+                "studyMode": "Очное",
+                "requirements": "Опыт программирования, знание математики",
+                "universityId": null
+              },
+              {
+                "id": 2,
+                "name": "Блокчейн и криптовалюты",
+                "description": "Основы технологии блокчейна, смарт-контракты и DeFi.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 400000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              },
+              {
+                "id": 3,
+                "name": "Цифровой маркетинг",
+                "description": "Изучение SEO, SMM, контекстной рекламы и аналитики.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 250000,
+                "studyMode": "Онлайн",
+                "requirements": "Нет",
+                "universityId": null
+              },
+              {
+                "id": 4,
+                "name": "Анализ данных",
+                "description": "Основы работы с данными, машинное обучение, Python и SQL.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 350000,
+                "studyMode": "Очное",
+                "requirements": "Математический анализ, знание Python",
+                "universityId": null
+              },
+              {
+                "id": 5,
+                "name": "Веб-разработка",
+                "description": "Изучение HTML, CSS, JavaScript, React и backend-технологий.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 300000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "name": "Программная инженерия",
+            "description": "Разработка программного обеспечения, веб-приложений и мобильных приложений.",
+            "facultyId": 1,
+            "courses": [
+              {
+                "id": 1,
+                "name": "Искусственный интеллект",
+                "description": "Основы нейросетей, глубокого обучения и компьютерного зрения.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 500000,
+                "studyMode": "Очное",
+                "requirements": "Опыт программирования, знание математики",
+                "universityId": null
+              },
+              {
+                "id": 2,
+                "name": "Блокчейн и криптовалюты",
+                "description": "Основы технологии блокчейна, смарт-контракты и DeFi.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 400000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              },
+              {
+                "id": 3,
+                "name": "Цифровой маркетинг",
+                "description": "Изучение SEO, SMM, контекстной рекламы и аналитики.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 250000,
+                "studyMode": "Онлайн",
+                "requirements": "Нет",
+                "universityId": null
+              },
+              {
+                "id": 4,
+                "name": "Анализ данных",
+                "description": "Основы работы с данными, машинное обучение, Python и SQL.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 350000,
+                "studyMode": "Очное",
+                "requirements": "Математический анализ, знание Python",
+                "universityId": null
+              },
+              {
+                "id": 5,
+                "name": "Веб-разработка",
+                "description": "Изучение HTML, CSS, JavaScript, React и backend-технологий.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 300000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "name": "Информационные системы",
+            "description": "Изучение баз данных, сетевой безопасности и облачных технологий.",
+            "facultyId": 1,
+            "courses": [
+              {
+                "id": 1,
+                "name": "Искусственный интеллект",
+                "description": "Основы нейросетей, глубокого обучения и компьютерного зрения.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 500000,
+                "studyMode": "Очное",
+                "requirements": "Опыт программирования, знание математики",
+                "universityId": null
+              },
+              {
+                "id": 2,
+                "name": "Блокчейн и криптовалюты",
+                "description": "Основы технологии блокчейна, смарт-контракты и DeFi.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 400000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              },
+              {
+                "id": 3,
+                "name": "Цифровой маркетинг",
+                "description": "Изучение SEO, SMM, контекстной рекламы и аналитики.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 250000,
+                "studyMode": "Онлайн",
+                "requirements": "Нет",
+                "universityId": null
+              },
+              {
+                "id": 4,
+                "name": "Анализ данных",
+                "description": "Основы работы с данными, машинное обучение, Python и SQL.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 350000,
+                "studyMode": "Очное",
+                "requirements": "Математический анализ, знание Python",
+                "universityId": null
+              },
+              {
+                "id": 5,
+                "name": "Веб-разработка",
+                "description": "Изучение HTML, CSS, JavaScript, React и backend-технологий.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 300000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "name": "Математика и статистика",
+            "description": "Подготовка специалистов в области аналитики данных, математического моделирования и статистики.",
+            "facultyId": 1,
+            "courses": [
+              {
+                "id": 1,
+                "name": "Искусственный интеллект",
+                "description": "Основы нейросетей, глубокого обучения и компьютерного зрения.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 500000,
+                "studyMode": "Очное",
+                "requirements": "Опыт программирования, знание математики",
+                "universityId": null
+              },
+              {
+                "id": 2,
+                "name": "Блокчейн и криптовалюты",
+                "description": "Основы технологии блокчейна, смарт-контракты и DeFi.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 400000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              },
+              {
+                "id": 3,
+                "name": "Цифровой маркетинг",
+                "description": "Изучение SEO, SMM, контекстной рекламы и аналитики.",
+                "durationYears": 0,
+                "language": "Английский",
+                "tuitionFee": 250000,
+                "studyMode": "Онлайн",
+                "requirements": "Нет",
+                "universityId": null
+              },
+              {
+                "id": 4,
+                "name": "Анализ данных",
+                "description": "Основы работы с данными, машинное обучение, Python и SQL.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 350000,
+                "studyMode": "Очное",
+                "requirements": "Математический анализ, знание Python",
+                "universityId": null
+              },
+              {
+                "id": 5,
+                "name": "Веб-разработка",
+                "description": "Изучение HTML, CSS, JavaScript, React и backend-технологий.",
+                "durationYears": 1,
+                "language": "Английский",
+                "tuitionFee": 300000,
+                "studyMode": "Очное",
+                "requirements": "Базовые знания программирования",
+                "universityId": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "facultyDto": {
+          "id": 2,
+          "name": "Факультет бизнеса и социальных наук",
+          "description": "Программы в области экономики, менеджмента, международных отношений и социальных наук.",
+          "contactEmail": "business@sdu.edu.kz",
+          "contactPhoneNumber": "+77772223344",
+          "baseCost": 1100000,
+          "universityId": 1,
+          "commonName": null
+        },
+        "specialtyDtos": []
+      },
+      {
+        "facultyDto": {
+          "id": 3,
+          "name": "Факультет педагогики и гуманитарных наук",
+          "description": "Подготовка специалистов в области образования, лингвистики и гуманитарных наук.",
+          "contactEmail": "education@sdu.edu.kz",
+          "contactPhoneNumber": "+77773334455",
+          "baseCost": 1000000,
+          "universityId": 1,
+          "commonName": null
+        },
+        "specialtyDtos": []
+      },
+      {
+        "facultyDto": {
+          "id": 4,
+          "name": "Факультет права",
+          "description": "Юридические программы, включая международное право и правоведение.",
+          "contactEmail": "law@sdu.edu.kz",
+          "contactPhoneNumber": "+77774445566",
+          "baseCost": 1150000,
+          "universityId": 1,
+          "commonName": null
+        },
+        "specialtyDtos": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Kazakh-British Technical University",
+    "description": "Казахско-Британский Технический Университет (КБТУ) — один из ведущих технических университетов Казахстана, специализирующийся в области нефтегазового дела, IT, финансов и инжиниринга.",
+    "location": "Алматы, Казахстан",
+    "rating": 5,
+    "baseCost": 1400000,
+    "website": "https://kbtu.edu.kz",
+    "accreditation": null,
+    "contactEmail": "info@kbtu.kz",
+    "logoUrl": "https://kbtu.edu.kz/logo.png",
+    "ratingCount": 1,
+    "militaryDepartment": true,
+    "dormitory": true,
+    "militaryDepartmentCost": null,
+    "dormitoryCost": null,
+    "universityAddress": null,
+    "faculty": [
+      {
+        "facultyDto": {
+          "id": 10,
+          "name": "Факультет педагогики и гуманитарных наук",
+          "description": "Подготовка специалистов в области образования, лингвистики и гуманитарных наук.",
+          "contactEmail": "education@sdu.edu.kz",
+          "contactPhoneNumber": "+77773334455",
+          "baseCost": 1000000,
+          "universityId": 2,
+          "commonName": null
+        },
+        "specialtyDtos": []
+      }
+    ]
+  }
+]

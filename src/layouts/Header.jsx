@@ -6,7 +6,7 @@ import header from "../assets/styles/Header.module.css";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { getCurrentUser } from "../services/authService";
 function Header() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
@@ -30,6 +30,14 @@ function Header() {
     { name: "Financial calculator", path: "/calculator" },
     { name: "Contacts", path: "/contacts" },
   ];
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await getCurrentUser();
+      setIsAuthenticated(!!user);
+    };
+
+    checkAuth();
+  }, []);
 
   return (
     <header className={header.navbar}>

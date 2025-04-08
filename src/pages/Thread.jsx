@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"; // to access the forumId from the URL
 import Footer from "../layouts/Footer";
 import Header from "../layouts/Header";
 import Select from "react-select";
@@ -6,12 +8,84 @@ import messages from "../assets/icons/messages.svg";
 import Button from "../components/Button.jsx";
 import Comment from "../components/Comment.jsx";
 import EmptyBtn from "../components/EmptyBtn.jsx";
+import { getCurrentUser } from "../services/authService.js"; // Предполагается, что эта функция находится в utils/auth
+
 function Thread() {
+  const { forumId } = useParams(); // Access the forumId from the URL
+  const [forum, setForum] = useState(null); // State to store the forum data
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+
   const cityOptions = [
     { value: "NU", label: "NU" },
     { value: "SDU", label: "SDU" },
     { value: "AstanaIT", label: "AstanaIT" },
   ];
+
+  useEffect(() => {
+    // Fetch the specific forum based on forumId
+    fetch(`https://unirate.kz/university/open-api/forums/${forumId}`)
+      .then((response) => response.json())
+      .then((data) => setForum(data))
+      .catch((error) => console.error("Error fetching forum:", error));
+  }, [forumId]);
+
+  const handlePostComment = async () => {
+    if (newComment.trim() === "") return;
+  
+    try {
+      const currentUser = await getCurrentUser();
+  
+      if (!currentUser || !currentUser.id) {
+        console.error("User not authenticated");
+        return;
+      }
+  
+      const requestBody = {
+        forumId: forumId,
+        userId: currentUser.id,
+        comment: newComment,
+        rating: 0,
+      };
+  
+      console.log("Sending request with:", requestBody);
+  
+      const response = await fetch("https://unirate.kz/university/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to post comment. Server responded: ${errorText}`);
+      }
+  
+      const newPostedComment = await response.json();
+      setComments((prevComments) => [
+        ...prevComments,
+        { text: newPostedComment.comment, id: newPostedComment.id, replies: [] },
+      ]);
+  
+      setNewComment("");
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+  const handlePostReply = (commentId, replyText) => {
+    if (replyText.trim()) {
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? { ...comment, replies: [...comment.replies, replyText] }
+            : comment
+        )
+      );
+    }
+  };
+
   return (
     <>
       <Header />
@@ -23,18 +97,14 @@ function Thread() {
           <hr />
           <p>Admission</p>
           <hr />
-          <p>SDU</p>
+          <p>{forum ? forum.name : "Loading..."}</p>
         </div>
         <div>
           <p>University name</p>
-          <div
-            style={{
-              width: "326px",
-            }}
-          >
+          <div style={{ width: "326px" }}>
             <Select
               options={cityOptions}
-              placeholder="Search for Uni" // Custom placeholder
+              placeholder="Search for Uni"
               styles={{
                 control: (base) => ({
                   ...base,
@@ -61,8 +131,6 @@ function Thread() {
         </div>
       </div>
       <br />
-      <br />
-      <br />
       <div
         style={{
           width: "73%",
@@ -72,90 +140,94 @@ function Thread() {
           gap: "130px",
         }}
       >
-        <div>
-          <div
-            style={{
-              display: "flex",
-              gap: "3px",
-              alignItems: "center",
-              fontSize: "16px",
-              color: "rgba(98, 98, 100, 1)",
-            }}
-          >
-            <img src={messages} alt="" />
-            <p>10 comments</p>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "4px",
-              color: "rgba(122, 122, 122, 1)",
-              fontSize: "16px",
-            }}
-          >
-            <h3 style={{ fontSize: "28px", color: "rgba(45, 45, 45, 1)" }}>
-              Admission
-            </h3>
-            <p>Navigating University Admissions: Your Guide to Success</p>
-            <p>
-              The only moment, the only life we have is in the NOW. What
-              happened a few moments or several years ago is gone, what will
-              happen this evening, or next month when we go on holidays is not
-              here yet.
-            </p>
-          </div>
-        </div>
-
-        <div className={threadStyle.commentSectionDiv}>
-          <h3>Add a comment</h3>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <input
-              type="text"
-              placeholder="Share your thought"
-              style={{
-                width: "81%",
-                borderRadius: "20px",
-                border: "1px solid rgba(216, 216, 216, 1)",
-                paddingLeft: "20px",
-              }}
-            />
-            <Button content="Post it" />
-          </div>
-        </div>
-
-        <div className={threadStyle.UserCommentsList}>
-          <h3>Add a comment</h3>
-          <Comment />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "28px",
-              paddingLeft: "63px",
-            }}
-          >
-            <hr />
-            <Comment />
-          </div>
-          <Comment />
-
-          <div style={{ margin: "auto" }}>
-            <br />
-            <EmptyBtn content="Load more 100+" />
-          </div>
-        </div>
+        {forum && (
+          <>
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "16px",
+                  color: "rgba(98, 98, 100, 1)",
+                }}
+              >
+                <img src={messages} alt="" />
+                <p>{comments.length} comments</p>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  color: "rgba(122, 122, 122, 1)",
+                  fontSize: "16px",
+                }}
+              >
+                <h3 style={{ fontSize: "28px", color: "rgba(45, 45, 45, 1)" }}>
+                  {forum.name}
+                </h3>
+                <p>{forum.description}</p>
+              </div>
+            </div>
+            <div className={threadStyle.commentSectionDiv}>
+              <h3>Add a comment</h3>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <input
+                  type="text"
+                  placeholder="Share your thought"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  style={{
+                    width: "81%",
+                    borderRadius: "20px",
+                    paddingLeft: "20px",
+                    border: "1px solid rgba(216, 216, 216, 1)",
+                  }}
+                />
+                <div onClick={handlePostComment}>
+                  <Button content="Post it" />
+                </div>
+              </div>
+            </div>
+            <div className={threadStyle.UserCommentsList}>
+              <h3>Comments</h3>
+              {comments.length === 0 ? (
+                <p>No comments yet</p>
+              ) : (
+                comments.map((comment) => (
+                  <div key={comment.id} style={{ marginTop: "32px" }}>
+                    <Comment
+                      text={comment.text}
+                      onReply={(replyText) =>
+                        handlePostReply(comment.id, replyText)
+                      }
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        paddingLeft: "63px",
+                      }}
+                    >
+                      {comment.replies &&
+                        comment.replies.map((reply, index) => (
+                          <div key={index} style={{ marginTop: "16px" }}>
+                            <Comment
+                              text={reply}
+                              onReply={(replyText) =>
+                                handlePostReply(comment.id, replyText)
+                              }
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ))
+              )}
+              {comments.length > 3 && <EmptyBtn content="Load more" />}
+            </div>
+          </>
+        )}
       </div>
-      <br />
-
       <Footer />
     </>
   );

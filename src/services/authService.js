@@ -19,17 +19,20 @@ export const login = async (email, password) => {
       email,
       password,
     });
-    if (response.data?.token) {
-      localStorage.setItem("token", response.data.token);
-      return response.data;
+    
+    console.log('API Response:', response.data); 
+    if (response.data) {
+      localStorage.setItem("token", response.data); 
+      return { token: response.data }; 
     } else {
       throw new Error("Invalid login response");
     }
   } catch (error) {
-    // Обрабатываем возможные ошибки
     if (error.response) {
+      console.error("Error response:", error.response.data); 
       throw new Error(error.response.data?.message || "Login failed");
     } else {
+      console.error("Error:", error);
       throw new Error("Server error, please try again later");
     }
   }

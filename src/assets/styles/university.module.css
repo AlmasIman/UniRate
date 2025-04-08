@@ -284,3 +284,20 @@ label {
     text-align: center;
   }
 }
+.searchReasult {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.studDiv {
+  display: flex;
+  flex-direction: row;
+  font-family: "Poppins";
+  gap: 10px
+
+}
+
+.content {
+  width: 450px;
+}

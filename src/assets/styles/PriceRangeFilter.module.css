@@ -1,6 +1,5 @@
 .doubleSliderBox {
   border-radius: 10px;
-  padding: 20px;
 }
 
 .rangeSlider {
@@ -62,6 +61,7 @@ input[type="range"]::-moz-range-thumb {
 .inputBox {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   gap: 10px;
 }
@@ -69,7 +69,6 @@ input[type="range"]::-moz-range-thumb {
 .minBox,
 .maxBox {
   position: relative;
-  width: 50%;
   display: flex;
   align-items: center;
 }
@@ -126,10 +125,9 @@ input[type="number"] {
 
 .minInput,
 .maxInput {
-  width: 100px;
   height: 48px;
-  min-width: 100px;
-  max-width: 100px;
+  min-width: 120px;
+  max-width: 150px;
   padding: 12px 20px;
   border-width: 1px;
   border-radius: 16px !important; 

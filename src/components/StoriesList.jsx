@@ -2,54 +2,49 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 const universities = [
   {
-    id: 1,
-    name: "Lauren M.",
-    status: "Visual Communication Student at Maple College",
-    img: "/avatar_placeholder.png",
-    review:
-      "The UniRate has become an essential tool in my academic journey. It provides everything I need to navigate my choices efficiently and effortlessly.",
+    "id": 1,
+    "name": "Aisulu K.",
+    "status": "2nd Year Medical Student at Farabi University",
+    "img": "/avatar_placeholder.png",
+    "review": "If UniRate had existed when I applied, it would’ve saved me so much time and stress. Comparing programs is so much easier now."
   },
   {
-    id: 2,
-    name: "Lauren M.",
-    status: "Graphic Design Major at Crestwood University",
-    img: "/avatar_placeholder2.png",
-    review:
-      "The UniRate has truly transformed my college search experience. It offers all the resources I need to explore options quickly and effectively.",
+    "id": 2,
+    "name": "Timur R.",
+    "status": "1st Year Economics Student at KIMEP University",
+    "img": "/avatar_placeholder2.png",
+    "review": "Back then, comparing universities was a mess. UniRate would’ve made my decision process way faster and more confident."
   },
   {
-    id: 3,
-    name: "Lauren M.",
-    status: "Interaction Design Scholar at Riverstone University",
-    img: "/ava3.png",
-    review:
-      "Using the UniRate has been a game changer for me. It has all the features I require to make informed decisions about my education in no time.",
+    "id": 3,
+    "name": "Madina S.",
+    "status": "Freshman in Architecture at KazGASA",
+    "img": "/ava3.png",
+    "review": "I had no idea where to start with my uni search. If UniRate was around, I would’ve felt so much more prepared and informed."
   },
   {
-    id: 4,
-    name: "Lauren M.",
-    status: "Interaction Design Scholar at Riverstone University",
-    img: "/ava4.png",
-    review:
-      "Using the UniRate has been a game changer for me. It has all the features I require to make informed decisions about my education in no time.",
+    "id": 4,
+    "name": "Daniyar T.",
+    "status": "3rd Year Computer Science Student at Satbayev University",
+    "img": "/ava4.png",
+    "review": "I really needed a tool like UniRate during high school. That financial calculator would’ve helped me and my parents a lot."
   },
   {
-    id: 5,
-    name: "Lauren M.",
-    status: "Interaction Design Scholar at Riverstone University",
-    img: "/Photo.png",
-    review:
-      "Using the UniRate has been a game changer for me. It has all the features I require to make informed decisions about my education in no time.",
+    "id": 5,
+    "name": "Akerke B.",
+    "status": "Foundation Year Student at Nazarbayev University",
+    "img": "/Photo.png",
+    "review": "It was hard to find real advice when I applied. UniRate’s forum would’ve been a huge help back then."
   },
   {
-    id: 6,
-    name: "Lauren M.",
-    status: "Interaction Design Scholar at Riverstone University",
-    img: "/almaty.png",
-    review:
-      "Using the UniRate has been a game changer for me. It has all the features I require to make informed decisions about my education in no time.",
-  },
-];
+    "id": 6,
+    "name": "Yerassyl M.",
+    "status": "2nd Year Law Student at Eurasian National University",
+    "img": "/Photo.png",
+    "review": "I made spreadsheets to compare programs. If UniRate existed, it would’ve saved me a ton of effort."
+  }
+]
+
 
 const StoriesList = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -64,6 +59,7 @@ const StoriesList = () => {
         id="carouselExample"
         className="carousel slide"
         data-bs-ride="carousel"
+
       >
         <div className="carousel-inner">
           {[...Array(Math.ceil(universities.length / 3))].map(
@@ -76,7 +72,7 @@ const StoriesList = () => {
               >
                 <div
                   className="d-flex justify-content-center"
-                  style={{ gap: "32px" }}
+                  style={{ gap: "32px", height: "500px", margin: "auto" }}
                 >
                   {universities
                     .slice(groupIndex * 3, groupIndex * 3 + 3)
@@ -98,15 +94,21 @@ const StoriesList = () => {
                           alignItems: "center",
                         }}
                       >
-                        <img
-                          src={uni.img}
-                          className="card-img-top"
+                        <div
                           style={{
-                            borderRadius: "60px",
                             width: "120px",
                             height: "120px",
+                            overflow: "hidden",
+                            borderRadius: "50%",
                           }}
-                        />
+                        >
+                          <img
+                            src={uni.img}
+                            className="card-img-top"
+                            style={{}}
+                          />
+                        </div>
+
                         <div
                           className="card-body"
                           style={{ position: "relative", textAlign: "center" }}
@@ -124,16 +126,19 @@ const StoriesList = () => {
                               fontSize: "14px",
                               lineHeight: "160%",
                               color: "rgba(55, 65, 81, 1)",
-                              width: '60%',
-                              margin: 'auto'
-
+                              width: "60%",
+                              margin: "0 auto",
+                              height: "10px",
                             }}
                           >
                             {uni.status}
                           </p>
                         </div>
 
-                        <p className="" style={{ marginBottom: "12px", textAlign: 'center' }}>
+                        <p
+                          className=""
+                          style={{ marginBottom: "12px", textAlign: "center" }}
+                        >
                           {`"${uni.review}"`}
                         </p>
                       </div>

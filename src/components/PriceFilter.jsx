@@ -3,7 +3,7 @@ import styles from "../assets/styles/PriceRangeFilter.module.css"; // ✅ Пра
 import minus from "../assets/icons/Minus.svg";
 const CatlogPriceFilter = () => {
   const initialMinPrice = 0;
-  const initialMaxPrice = 1000;
+  const initialMaxPrice = 8000000;
 
   const [sliderMinValue] = useState(initialMinPrice);
   const [sliderMaxValue] = useState(initialMaxPrice);
@@ -111,7 +111,9 @@ const CatlogPriceFilter = () => {
             max={maxVal - minGap}
           />
         </div>
-          <img src={minus} alt="" style={{marginRight: '20px'}}/>
+        <div>
+          <img src={minus} alt="" />
+        </div>
         <div className={styles.maxBox}>
           <span>$</span>
           <input

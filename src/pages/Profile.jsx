@@ -265,39 +265,8 @@ function Profile() {
           </div>
           <hr style={{ border: "1px solid rgba(230, 232, 236, 1)" }} />
 
-          <h2>Device history</h2>
 
-          <div className={prof.container}>
-            <div className={prof.pcontainer}>
-              <p>Password</p>
-              <p style={{ color: "rgba(144, 144, 144, 1)" }}>
-                Last updated 1 month ago
-              </p>
-            </div>
-            <EmptyButton content="Log out device" />
-          </div>
-          <hr style={{ border: "1px solid rgba(230, 232, 236, 1)" }} />
 
-          <div className={prof.container}>
-            <div className={prof.pcontainer}>
-              <p>Password</p>
-              <p style={{ color: "rgba(144, 144, 144, 1)" }}>
-                Last updated 1 month ago
-              </p>
-            </div>
-            <EmptyButton content="Log out device" />
-          </div>
-          <hr style={{ border: "1px solid rgba(230, 232, 236, 1)" }} />
-
-          <div className={prof.container}>
-            <div className={prof.pcontainer}>
-              <p>Session</p>
-              <p style={{ color: "rgba(144, 144, 144, 1)" }}>
-                May 14, 2021 at 08:36pm{" "}
-              </p>
-            </div>
-            <EmptyButton content="Log out device" />
-          </div>
         </div>
       </div>
       <br />

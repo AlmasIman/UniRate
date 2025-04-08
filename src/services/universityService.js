@@ -25,7 +25,7 @@ export const getAllUniversities = async () => {
 // Получение топ университетов
 export const getTopUniversities = async () => {
   try {
-    const response = await api.get('university/open-api/universities/top');
+    const response = await api.get('university/open-api/universities/top?limit=10');    
     return response.data;
   } catch (error) {
     console.error('Ошибка при получении топ университетов:', error);

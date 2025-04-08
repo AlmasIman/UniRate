@@ -1,5 +1,5 @@
 import Select from "react-select";
-import React from "react";
+import React, { useState } from "react";
 
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
@@ -11,6 +11,7 @@ import map from "../assets/icons/MapPinLine.svg";
 import dollar from "../assets/icons/dollar-circle.svg";
 import documentfilter from "../assets/icons/document-filter.svg";
 import UniversityCardCarousel from "../components/UniversityCardCarousel.jsx";
+
 function Universities() {
   const cityOptions = [
     { value: "Atyrau", label: "Atyrau" },
@@ -18,28 +19,94 @@ function Universities() {
     { value: "Astana", label: "Astana" },
   ];
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [universityData, setUniversityData] = useState(null);
+
+  // Fetch function for searching by university name
+  const fetchUniversityByName = async (name) => {
+    if (!name) return
+
+    try {
+      const response = await fetch(
+        `https://unirate.kz/university/open-api/universities/name/${name}`
+      );
+      const data = await response.json();
+      setUniversityData(data); // Save the response to state
+    } catch (error) {
+      console.error("Error fetching university:", error);
+    }
+  };
+
+  // Handler for the search icon click
+  const handleSearchClick = () => {
+    fetchUniversityByName(searchQuery);
+  };
+
   return (
     <>
       <Header />
       <div className={unistyle.searchBox}>
         <input
           type="text"
-          name=""
-          id=""
           placeholder="Search for university…"
           className={unistyle.searchInput}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)} // Update search query
         />
-        <img src={search} alt="" />
+        {/* Trigger search on click */}
+        <img
+          src={search}
+          alt="Search"
+          onClick={handleSearchClick} // Add click event to trigger search
+          style={{ cursor: "pointer" }} // Makes the icon look clickable
+        />
       </div>
+
+      {universityData && universityData.name && (
+          <div className={unistyle.searchReasult}>
+            <h2>Search Results:</h2>
+            <div className={unistyle.studDiv}>
+              <img
+                src="/public/almaty.png"
+                alt={universityData.name}
+                style={{
+                  width: "620px",
+                  height: "457px",
+                  borderRadius: "20px",
+                }}
+              />
+              {/* universityData.logoUrl */}
+              <div className={unistyle.content}>
+                <h1>{universityData.name}</h1>
+
+                <p>{universityData.description}</p>
+                <p>
+                  <strong>Location:</strong> {universityData.location}
+                </p>
+                <p>
+                  <strong>Rating:</strong> {universityData.rating} / 5
+                </p>
+                <a
+                  href={universityData.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Visit Website
+                </a>
+              </div>
+            </div>
+          </div>
+      )}
+
       <div className={unistyle.filterBox}>
         <h3 className={unistyle.title}>Filters</h3>
         <div className={unistyle.filter}>
-          <div style={{ width: '23%', }}>
+          <div style={{ width: "23%" }}>
             <div className={unistyle.filterTitle}>
-              <img src={map} alt="" />
+              <img src={map} alt="Map" />
               <Select
                 options={cityOptions}
-                placeholder="Search for city" // Custom placeholder
+                placeholder="Search for city"
                 styles={{
                   control: (base) => ({
                     ...base,
@@ -53,10 +120,12 @@ function Universities() {
                   }),
                   option: (base, { isFocused }) => ({
                     ...base,
-                    backgroundColor: isFocused ? "rgba(20, 174, 130, 0.05)" : "white",
+                    backgroundColor: isFocused
+                      ? "rgba(20, 174, 130, 0.05)"
+                      : "white",
                     fontSize: "14px",
-                    textAlign: "center"
-                    }),
+                    textAlign: "center",
+                  }),
                 }}
               />
             </div>
@@ -68,7 +137,7 @@ function Universities() {
                 value="Dormitory"
                 className={unistyle.checkboxStyle}
               />
-              <label for="Dormitory"> Dormitory</label>
+              <label htmlFor="Dormitory"> Dormitory</label>
             </div>
             <br />
             <div className={unistyle.checkboxDiv}>
@@ -79,21 +148,21 @@ function Universities() {
                 value="Military"
                 className={unistyle.checkboxStyle}
               />
-              <label for="Military"> Military</label>
+              <label htmlFor="Military"> Military</label>
             </div>
           </div>
 
-          <div style={{ width: '23%'}}>
+          <div style={{ width: "23%" }}>
             <div className={unistyle.filterTitle}>
-              <img src={dollar} alt="" />
+              <img src={dollar} alt="Dollar" />
               <p>Price</p>
             </div>
             <MultiRangeSlider />
           </div>
 
-          <div style={{ width: '23%'}}>
+          <div style={{ width: "23%" }}>
             <div className={unistyle.filterTitle}>
-              <img src={documentfilter} alt="" />
+              <img src={documentfilter} alt="Filter" />
               <p>Price</p>
             </div>
             <div className={unistyle.checkboxDiv}>
@@ -104,7 +173,7 @@ function Universities() {
                 name="sorting"
                 className={unistyle.roundedInput}
               />
-              <label for="Highest"> Lowest to Highest</label>
+              <label htmlFor="Highest"> Lowest to Highest</label>
             </div>
             <br />
             <div className={unistyle.checkboxDiv}>
@@ -115,7 +184,7 @@ function Universities() {
                 value="Lowest"
                 className={unistyle.roundedInput}
               />
-              <label for="Lowest"> Highest to Lowest</label>
+              <label htmlFor="Lowest"> Highest to Lowest</label>
             </div>
           </div>
         </div>

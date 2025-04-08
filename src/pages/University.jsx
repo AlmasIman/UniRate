@@ -1,7 +1,7 @@
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import oneuni from "../assets/styles/OneUniversity.module.css";
-import favourite from "../assets/icons/favourites.svg";
+import like from "../assets/icons/favourites.svg";
 import star from "../assets/icons/Star.svg";
 import Button from "../components/Button";
 import FacultyList from "../components/FacultyList.jsx";
@@ -9,15 +9,50 @@ import EmptyBtn from "../components/EmptyBtn.jsx";
 import emptyStar from "../assets/icons/emptyStar.svg";
 import arrow from "../assets/icons/ArrowBtn.svg";
 import Comment from "../components/Comment.jsx";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import the Link component from react-router-dom
+import { getCurrentUser } from "../services/authService.js";
+
 function University() {
-  function giveRate() {}
+  const { id } = useParams(); // Get the university ID from the URL
+  const [university, setUniversity] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getCurrentUser();
+      setIsAuthenticated(!!user); 
+    };
+    
+    fetchUser();
+  }, []);
+  useEffect(() => {
+    const fetchUniversityData = async () => {
+      const response = await fetch(
+        `https://unirate.kz/university/open-api/universities/${id}`
+      );
+      const data = await response.json();
+      setUniversity(data);
+    };
+
+    fetchUniversityData();
+  }, [id]);
+
+  if (!university) {
+    return <div>Loading...</div>;
+  }
+
+  const stars = new Array(5)
+    .fill(false)
+    .map((_, index) => index < university.rating);
+
   return (
     <>
       <Header />
 
       <div className={oneuni.uniInfoMainContainer}>
         <div className={oneuni.unibox}>
-          <img src="../../public/shym.png" alt="" className={oneuni.uniImg} />
+          <img src={oneuni.logoUrl} alt="" className={oneuni.uniImg} />
           <div
             style={{
               display: "flex",
@@ -28,18 +63,23 @@ function University() {
           >
             <div>
               <div className={oneuni.Title}>
-                <h1>SDU</h1>
-                <img src={favourite} alt="" />
+                <h1>{university.name}</h1>
+                {
+                  isAuthenticated ? (<img src={like} alt="" />) : null
+                }
+                
               </div>
-              <div className={oneuni.rate}>
+              <div className="rate">
                 <div>
-                  <img src={star} alt="" />
-                  <img src={star} alt="" />
-                  <img src={star} alt="" />
-                  <img src={star} alt="" />
-                  <img src={star} alt="" />
+                  {stars.map((isFilled, index) => (
+                    <img
+                      key={index}
+                      src={isFilled ? star : emptyStar} // Assuming you have a starEmpty for empty stars
+                      alt={`star-${index}`}
+                    />
+                  ))}
                 </div>
-                <p>(120)</p>
+                <p>({university.ratingCount})</p>
               </div>
             </div>
 
@@ -50,7 +90,7 @@ function University() {
                 >
                   Average tuition price
                 </p>
-                <p>760 000</p>
+                <p>{university.baseCost}</p>
               </div>
               <div style={{ display: "flex", gap: "64px" }}>
                 <p
@@ -58,7 +98,7 @@ function University() {
                 >
                   Dormitory
                 </p>
-                <p>exist</p>
+                <p>{university.dormitory ? "Yes" : "No"}</p>
               </div>
               <div style={{ display: "flex", gap: "64px" }}>
                 <p
@@ -66,10 +106,10 @@ function University() {
                 >
                   Military department
                 </p>
-                <p>No</p>
+                <p>{university.militaryDepartment ? "Yes" : "No"}</p>
               </div>
             </div>
-            <Button content="Calculate tuition cost" />
+            <Button content="Calculate tuition cost" path="/calculator" />
           </div>
         </div>
       </div>
@@ -102,36 +142,11 @@ function University() {
             Be the first to review
           </p>
           <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
-            <img
-              src={emptyStar}
-              alt=""
-              className={oneuni.starRateGive}
-              onClick={giveRate()}
-            />
-            <img
-              src={emptyStar}
-              alt=""
-              className={oneuni.starRateGive}
-              onClick={giveRate()}
-            />
-            <img
-              src={emptyStar}
-              alt=""
-              className={oneuni.starRateGive}
-              onClick={giveRate()}
-            />
-            <img
-              src={emptyStar}
-              alt=""
-              className={oneuni.starRateGive}
-              onClick={giveRate()}
-            />
-            <img
-              src={emptyStar}
-              alt=""
-              className={oneuni.starRateGive}
-              onClick={giveRate()}
-            />
+            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
+            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
+            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
+            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
+            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
@@ -189,7 +204,7 @@ function University() {
       </div>
       <br />
       <br />
-      <div style={{textAlign: "center"}}>
+      <div style={{ textAlign: "center" }}>
         <EmptyBtn content="Load more 100+" />
       </div>
       <br />

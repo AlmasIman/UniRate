@@ -28,6 +28,9 @@ import Notifications from "./pages/Notifications.jsx";
 import FAQ from "./pages/FAQ.jsx";
 import Terms from "./pages/TermsAndConditions.jsx";
 import Confirm from "./pages/LoginPages/Confirm.jsx"
+import ExThread from "./pages/exThread.jsx"
+
+import FavuniExample from "./pages/favuniExample.jsx";
 
 function App() {
   return (
@@ -39,18 +42,20 @@ function App() {
         
         <Route path="/" element={<Home />} />
         <Route path="/universities" element={<Universities />} />
-        <Route path="/university" element={<University />} />
+        <Route path="/university/:id" element={<University />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/university/speciality" element={<Speciality />} />
         <Route path="/calculator" element={<FinanceCalculator />} />
         <Route path="/forum" element={<Forum />} />
-        <Route path="/thread" element={<Thread />} />
+        <Route path="/thread/:forumId" element={<Thread />} /> {/* Thread page */}
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/favouriteuniversities" element={<FavouriteUniversities />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
         
+        <Route path="/te" element={<ExThread />} />
+        <Route path="/favunasd" element={<FavuniExample />} />
 
       </Routes>
     </Router>

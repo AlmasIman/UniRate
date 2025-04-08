@@ -3,73 +3,106 @@ import Footer from "../layouts/Footer.jsx";
 import favstyle from "../assets/styles/favouriteUni.module.css";
 import Button from "../components/Button.jsx";
 import FavouriteUniCarusel from "../components/FavouriteUniversitiesListCarousel.jsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import messageQuest from "../assets/icons/message-question.svg";
 import trash from "../assets/icons/trash.svg";
-const universities = [
-  {
-    id: 1,
-    value: "nazarbaev",
-    label: "Nazarbaev University",
-    faculties: [
-      { name: "Engineering", expenses: 30000 },
-      { name: "Computer Science", expenses: 28000 },
-      { name: "Business", expenses: 32000 },
-    ],
-    dormitory: "Yes",
-    militaryEducation: "No",
-    rating: 5.0,
-  },
-  {
-    id: 2,
-    value: "kbtu",
-    label: "kbtu",
-    faculties: [
-      { name: "Engineering", expenses: 30000 },
-      { name: "Computer Science", expenses: 28000 },
-      { name: "Business", expenses: 32000 },
-    ],
-    dormitory: "Yes",
-    militaryEducation: "No",
-    rating: 5.0,
-  },
+import { getCurrentUser } from "../services/authService.js";
+import { fetchFavourites } from "../services/favouriteService.js";
+// const universities = [
+//   {
+//     id: 1,
+//     value: "nazarbaev",
+//     label: "Nazarbaev University",
+//     faculties: [
+//       { name: "Engineering", expenses: 30000 },
+//       { name: "Computer Science", expenses: 28000 },
+//       { name: "Business", expenses: 32000 },
+//     ],
+//     dormitory: "Yes",
+//     militaryEducation: "No",
+//     rating: 5.0,
+//   },
+//   {
+//     id: 2,
+//     value: "kbtu",
+//     label: "kbtu",
+//     faculties: [
+//       { name: "Engineering", expenses: 30000 },
+//       { name: "Computer Science", expenses: 28000 },
+//       { name: "Business", expenses: 32000 },
+//     ],
+//     dormitory: "Yes",
+//     militaryEducation: "No",
+//     rating: 5.0,
+//   },
 
-  {
-    id: 3,
-    value: "sdu",
-    label: "Suleimen Demirel University",
-    faculties: [
-      { name: "Engineering", expenses: 12000 },
-      { name: "Computer Science", expenses: 10000 },
-      { name: "Business", expenses: 11000 },
-    ],
-    dormitory: "Yes",
-    militaryEducation: "No",
-    rating: 4.0,
-  },
-  {
-    id: 4,
-    value: "kbu",
-    label: "Kazakh British University",
-    faculties: [
-      { name: "Engineering", expenses: 15000 },
-      { name: "Computer Science", expenses: 14000 },
-      { name: "Business", expenses: 16000 },
-    ],
-    dormitory: "No",
-    militaryEducation: "Yes",
-    rating: 3.4,
-  },
-];
+//   {
+//     id: 3,
+//     value: "sdu",
+//     label: "Suleimen Demirel University",
+//     faculties: [
+//       { name: "Engineering", expenses: 12000 },
+//       { name: "Computer Science", expenses: 10000 },
+//       { name: "Business", expenses: 11000 },
+//     ],
+//     dormitory: "Yes",
+//     militaryEducation: "No",
+//     rating: 4.0,
+//   },
+//   {
+//     id: 4,
+//     value: "kbu",
+//     label: "Kazakh British University",
+//     faculties: [
+//       { name: "Engineering", expenses: 15000 },
+//       { name: "Computer Science", expenses: 14000 },
+//       { name: "Business", expenses: 16000 },
+//     ],
+//     dormitory: "No",
+//     militaryEducation: "Yes",
+//     rating: 3.4,
+//   },
+// ];
 
-function FavouriteUniversities() {
+function FavuniExample() {
   const [selectedUniversities, setSelectedUniversities] = useState([]);
   const [selectedFaculties, setSelectedFaculties] = useState([]);
-  const [isOn, setIsOn] = useState(false);
   const [error, setError] = useState("");
   const [facultyEnabled, setFacultyEnabled] = useState(false);
   const [isFiltered, setIsFiltered] = useState(false);
+  const [universities, setUniversities] = useState([]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const userRes = await getCurrentUser();
+        if (!userRes) return;
+
+        const userId = userRes.id;
+
+        const favRes = await fetchFavourites(userId);
+        const favData = favRes;
+
+        const universityOptions = favData.map((uni) => ({
+          value: uni.universityId,
+          label: uni.name,
+          faculties: uni.faculty || [],
+          rating: uni.rating || 0,
+          baseCost: uni.baseCost || 0,
+          dormitory: uni.dormitory || false,
+          militaryDepartment: uni.militaryDepartment || false,
+          logoUrl: uni.logoUrl || "",
+          location: uni.location || "",
+        }));
+        setUniversities(universityOptions);
+      } catch (err) {
+        console.error("Ошибка при получении данных", err);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
 
   const handleClearList = () => {
     setSelectedUniversities([]);
@@ -235,9 +268,6 @@ function FavouriteUniversities() {
           </div>
         </div>
         <div className={favstyle.comparisonResult}>
-          <h3 style={{ fontSize: "20px", fontWeight: "600" }}>
-            Program selection
-          </h3>
           <div
             style={{
               display: "flex",
@@ -246,25 +276,10 @@ function FavouriteUniversities() {
               alignItems: "center",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-                fontSize: "16px",
-                fontWeight: "400",
-                color: "rgba(24, 33, 53, 1)",
-              }}
-            >
-              <label className={favstyle.switch}>
-                <input
-                  type="checkbox"
-                  checked={isOn}
-                  onChange={() => setIsOn(!isOn)}
-                />
-                <span className={favstyle.slider}></span>
-              </label>
-              <p>Show only differences</p>
-            </div>
+            <h3 style={{ fontSize: "20px", fontWeight: "600" }}>
+              Program selection
+            </h3>
+
             <div
               style={{
                 display: "flex",
@@ -323,14 +338,13 @@ function FavouriteUniversities() {
 
                 if (!uniData) return null;
 
-                // Отбираем только выбранные факультеты
                 const selectedFacultyExpenses = uniData.faculties
                   .filter((faculty) =>
                     selectedFaculties.some(
                       (selected) => selected.value === faculty.name
                     )
                   )
-                  .map((faculty) => faculty.expenses);
+                  .map((faculty) => faculty.baseCost);
 
                 // Вычисляем средние расходы для выбранных факультетов
                 const avgExpenses =
@@ -364,12 +378,13 @@ function FavouriteUniversities() {
                     {isFiltered
                       ? universities.find((u) => u.value === uni.value)
                           ?.dormitory
+                        ? "Yes"
+                        : "No"
                       : "-"}
                   </p>
                 </div>
               ))}
             </div>
-
             {/* Военное образование */}
             <div className={favstyle.uniContentDiv}>
               <div className={favstyle.rateNa}>Military education</div>
@@ -378,7 +393,9 @@ function FavouriteUniversities() {
                   <p>
                     {isFiltered
                       ? universities.find((u) => u.value === uni.value)
-                          ?.militaryEducation
+                          ?.militaryDepartment
+                        ? "Yes"
+                        : "No"
                       : "-"}
                   </p>
                 </div>
@@ -428,4 +445,4 @@ function FavouriteUniversities() {
   );
 }
 
-export default FavouriteUniversities;
+export default FavuniExample;

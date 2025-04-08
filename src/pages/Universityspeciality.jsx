@@ -99,9 +99,9 @@ function Speciality() {
       </div>
 
       <div className={spec.descriptinSectionDiv}>
-        <div style={{display: "flex", gap: "16px"}}>
-        <p className={`${spec.slider} ${spec.sliderActive}`}>Description</p>
-        <p className={spec.slider}>Syllabus</p>
+        <div style={{ display: "flex", gap: "16px" }}>
+          <p className={`${spec.slider} ${spec.sliderActive}`}>Description</p>
+          <p className={spec.slider}>Syllabus</p>
         </div>
         <p className={spec.descriptionParagraph}>
           The Information Systems Department plays a crucial role in managing
@@ -114,8 +114,7 @@ function Speciality() {
         </p>
       </div>
 
-
-      <FinanceCalculator/>
+      <FinanceCalculator />
 
       <Footer />
     </>
