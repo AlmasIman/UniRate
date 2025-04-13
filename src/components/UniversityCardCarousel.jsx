@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import { addToFavorites } from "../services/favouriteService.js";
 import { getCurrentUser } from "../services/authService.js";
 import deleted from "../assets/icons/delete.svg";
+import { deleteFromFavorites } from "../services/favouriteService.js"; // Import the deleteFromFavorites function
+
 const Carousel = () => {
   const [universities, setUniversities] = useState([]);
   const [favourites, setFavourites] = useState([]);
@@ -19,9 +21,9 @@ const Carousel = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getCurrentUser();
-      setIsAuthenticated(!!user); 
+      setIsAuthenticated(!!user);
     };
-    
+
     fetchUser();
   }, []);
   useEffect(() => {
@@ -58,44 +60,56 @@ const Carousel = () => {
 
     fetchData();
   }, []);
-
   const handleDeleteFromFavorites = async (universityId) => {
     try {
-      const user = await getCurrentUser();
-      if (!user) {
-        alert("Войдите в аккаунт, чтобы удалять из избранного.");
-        return;
-      }
-
-      const res = await fetch(
-        `https://unirate.kz/university/open-api/favorites/${user.id}/${universityId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (!res.ok) throw new Error("Ошибка при удалении");
-
-      setFavourites((prev) => prev.filter((id) => id !== universityId));
+      await deleteFromFavorites(universityId);
       alert("Университет удалён из избранного!");
+      // Перезагрузить список избранных после удаления
     } catch (error) {
-      alert("Ошибка при удалении из избранного.");
       console.error(error);
+      alert("Не удалось удалить из избранного");
     }
   };
+  // const handleDeleteFromFavorites = async (universityId) => {
+  //   try {
+  //     const user = await getCurrentUser();
+  //     if (!user) {
+  //       alert("Войдите в аккаунт, чтобы удалять из избранного.");
+  //       return;
+  //     }
+
+  //     const res = await fetch(
+  //       `https://unirate.kz/university/open-api/favorites/${user.id}`,
+  //       {
+  //         method: "DELETE",
+  //       }
+  //     );
+
+  //     if (!res.ok) throw new Error("Ошибка при удалении");
+
+  //     setFavourites((prev) => prev.filter((id) => id !== universityId));
+  //     alert("Университет удалён из избранного!");
+  //   } catch (error) {
+  //     alert("Ошибка при удалении из избранного.");
+  //     console.error(error);
+  //   }
+  // };
 
   if (loading) return <Loading />;
   if (error) return <p>Something went wrong!</p>;
 
+  const visibleCount = window.innerWidth >= 1200 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+  const numGroups = Math.ceil(universities.length / visibleCount);
+
   const handlePrev = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? universities.length - 3 : prevIndex - 3
+      prevIndex === 0 ? Math.max(universities.length - visibleCount, 0) : prevIndex - visibleCount
     );
   };
 
   const handleNext = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex + 3 >= universities.length ? 0 : prevIndex + 3
+      prevIndex + visibleCount >= universities.length ? 0 : prevIndex + visibleCount
     );
   };
 
@@ -172,12 +186,12 @@ const Carousel = () => {
         </div>
         <br />
         <div className="carousel-inner">
-          {[...Array(Math.ceil(universities.length / 3))].map(
+          {[...Array(numGroups)].map(
             (_, groupIndex) => (
               <div
                 key={groupIndex}
                 className={`carousel-item ${
-                  groupIndex === Math.floor(activeIndex / 3) ? "active" : ""
+                  groupIndex === Math.floor(activeIndex / visibleCount) ? "active" : ""
                 }`}
                 style={{
                   height: "550px",
@@ -193,7 +207,7 @@ const Carousel = () => {
                   }}
                 >
                   {universities
-                    .slice(groupIndex * 3, groupIndex * 3 + 3)
+                    .slice(groupIndex * visibleCount, groupIndex * visibleCount + visibleCount)
                     .map((uni) => (
                       <Link
                         to={`/university/${uni.id}`}
@@ -212,40 +226,42 @@ const Carousel = () => {
                               "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05)",
                           }}
                         >
-                          {
-                          (isAuthenticated ? (favourites.includes(uni.id) ? (
-                            <img
-                              src={deleted}
-                              alt="favouriteIcon"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleDeleteFromFavorites(uni.id);
-                              }}
-                              style={{
-                                position: "absolute",
-                                right: "12px",
-                                top: "12px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          ) : (
-                            <img
-                              src={like}
-                              alt="favouriteIcon"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleAddToFavorites(uni.id);
-                              }}
-                              style={{
-                                position: "absolute",
-                                right: "12px",
-                                top: "12px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          )): null)}
+                          {isAuthenticated ? (
+                            favourites.includes(uni.id) ? (
+                              <img
+                                src={deleted}
+                                alt="favouriteIcon"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  handleDeleteFromFavorites(uni.id);
+                                }}
+                                style={{
+                                  position: "absolute",
+                                  right: "12px",
+                                  top: "12px",
+                                  cursor: "pointer",
+                                }}
+                              />
+                            ) : (
+                              
+                              <img
+                                src={like}
+                                alt="favouriteIcon"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  handleAddToFavorites(uni.id);
+                                }}
+                                style={{
+                                  position: "absolute",
+                                  right: "12px",
+                                  top: "12px",
+                                  cursor: "pointer",
+                                }}
+                              />
+                            )
+                          ) : null}
 
                           <img
                             src={uni.logoUrl}
@@ -336,7 +352,7 @@ const Carousel = () => {
         </div>
       </div>
       <div className="d-flex justify-content-center">
-        {[...Array(Math.ceil(universities.length / 3))].map((_, index) => (
+        {[...Array(numGroups)].map((_, index) => (
           <button
             key={index}
             className={`mx-1 `}
@@ -345,12 +361,12 @@ const Carousel = () => {
               height: "12px",
               borderRadius: "50%",
               backgroundColor:
-                index === Math.floor(activeIndex / 3)
+                index === Math.floor(activeIndex / visibleCount)
                   ? "rgba(0, 147, 121, 1)"
                   : "rgba(225, 229, 238, 1)",
               border: "none",
             }}
-            onClick={() => setActiveIndex(index * 3)}
+            onClick={() => setActiveIndex(index * visibleCount)}
           ></button>
         ))}
       </div>

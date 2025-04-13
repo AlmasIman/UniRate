@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import logStyle from "../../assets/styles/Login.module.css";
 import Input from "../../components/InputForm.jsx";
 import LearningBro from "../../assets/LearningBro.svg";
+import StudentsBro from "../../assets/StudentsBro.svg";
 import LoginButton from "../../components/LoginButton.jsx";
+import { Link } from "react-router-dom";
 
 import { login } from "../../services/authService.js";
 
@@ -14,7 +16,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     try {
       await login(email, password);
@@ -29,13 +31,16 @@ function Login() {
       <div className={logStyle.loginLeftSide}>
         <button className={logStyle.logo}>Logo</button>
         <div className={logStyle.contentleftSide}>
-          <h1 className={logStyle.greeting}>Welcome to UniRate!</h1>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vulputate
-            ut laoreet velit ma.
-          </p>
+          <div className={logStyle.backgroundDarker}>
+            <h1 className={logStyle.greeting}>Welcome to UniRate!</h1>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vulputate
+              ut laoreet velit ma.
+            </p>
+          </div>
+
           <img
-            src={LearningBro}
+            src={StudentsBro}
             alt="welcome"
             className={logStyle.welcomeLoginIcon}
           />
@@ -59,16 +64,15 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <a href="#" className={logStyle.forgotPassLink}>
-              Forgot password?
-            </a>
+            <Link to="/forgotPassword">
+              <p className={logStyle.forgotPassLink}>Forgot password?</p>
+            </Link>
             {error && <p className={logStyle.error}>{error}</p>}
           </div>
 
           {/* Кнопка входа теперь внутри <form> */}
           <div onClick={handleLogin}>
             <LoginButton content="Sign In" type="submit" />
-
           </div>
 
           <p className={logStyle.donthaveAAcc}>

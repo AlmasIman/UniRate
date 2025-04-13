@@ -16,6 +16,7 @@ import UniversitiesList from "../components/UniversityCardCarousel.jsx";
 import StoriesList from "../components/StoriesList.jsx";
 import { useRef } from "react";
 import Chatbot from "../components/Chatbot.jsx";
+import LoginButton from "../components/LoginButton.jsx";
 
 function Home() {
   const universitiesRef = useRef(null);
@@ -27,9 +28,8 @@ function Home() {
   return (
     <>
       <Header />
-
-      <div className={homeStyle.banner}>
-        <div className={homeStyle.bannerContent}>
+      <div className={homeStyle.responsiveBanner}>
+        <div className={homeStyle.welcomContent}>
           <h1 className={homeStyle.welcomMessage}>
             UniRate <br /> platform!
           </h1>
@@ -37,18 +37,21 @@ function Home() {
             Discover, Compare, and Choose <br /> the Best Universities Worldwide
             with UniRate
           </p>
-          <div onClick={scrollToUniversities}>
+          <div onClick={scrollToUniversities} className={homeStyle.scrollBtn}>
             <Button path="/" content="Discover" contentIcon={Rocket} />
           </div>
-          <img src={visuals} alt="" className={homeStyle.bgBagnner} />
         </div>
-        <Chatbot />
+
+        <div className={homeStyle.bannerDiv}>
+          <img src={visuals} alt="" className={homeStyle.bgBagnner} />
+          <Chatbot />
+        </div>
       </div>
 
       <div className={homeStyle.ourFeature}>
-        <h2 className={homeStyle.ourFeatureh2}>Our Feature</h2>
+        <h2 className={homeStyle.ourFeatureh2}>Explore Our Core</h2>
         <p className={homeStyle.ourFeatureParag}>
-        Discover the Smart Way to Choose Your Future University
+          Discover the Smart Way to Choose Your Future University
         </p>
         <div className={homeStyle.ourFeatureCARDDiv}>
           <Card
@@ -104,7 +107,10 @@ function Home() {
               placeholder="Enter your email here"
             />
             <div className={homeStyle.emailInputBtn}>
-              <Button path="/" content="Subscribe" contentIcon={emailIcon} />
+              <div className={homeStyle.Btn}>
+                <img src={emailIcon} />
+                Subscribe
+              </div>
             </div>
           </div>
         </div>

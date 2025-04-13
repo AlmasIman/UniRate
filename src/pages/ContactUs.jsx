@@ -2,6 +2,8 @@ import Footer from "../layouts/Footer";
 import Header from "../layouts/Header";
 import contactstyle from "../assets/styles/ContactUs.module.css";
 import Button from "../components/Button.jsx";
+import LearningBro from  "../assets/LearningBro.svg";
+
 function Contacts() {
   return (
     <>
@@ -16,7 +18,7 @@ function Contacts() {
             achieve it.
           </p>
           <br />
-          <div style={{ display: "flex", flexDirection: "row", gap: "16px" }}>
+          <div className={contactstyle.divForInputs} >
             <input
               type="text"
               placeholder="Name"
@@ -39,7 +41,7 @@ function Contacts() {
 
           <Button content="Send Request" />
         </div>
-        <img src="/map.png" alt="" style={{ width: "43%" }} />
+        <img src={LearningBro} alt="" className={contactstyle.imgInContact} />
       </div>
       <Footer />
     </>

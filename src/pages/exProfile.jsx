@@ -15,67 +15,15 @@ import {
 } from "../services/authService.js";
 
 function ExProfile() {
-  const [isImgLoaded, setIsImgLoaded] = useState(false);
-  const [imgSrc, setImgSrc] = useState(profilePic);
-
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState(null);
   const categoryOptions = [
-    { value: "STUDENT", label: "Student" },
-    { value: "APPLICANT", label: "Applicant" },
-    { value: "EMPLOYEE", label: "Employee" },
+    { value: "student", label: "Student" },
+    { value: "teacher", label: "Teacher" },
   ];
-  const [showPopup, setShowPopup] = useState(false); // Состояние для popup-а
-  const [showPopupAvatar, setshowPopupAvatar] = useState(false); // Состояние для popup-а
-  const [newPassword, setNewPassword] = useState(""); // Состояние для нового пароля
-  const [loading, setLoading] = useState(false); // Состояние загрузки
-
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-
-  const avatars = [
-    "https://i.postimg.cc/5X9hQqf2/10avatar.png",
-    "https://i.postimg.cc/Ny5Zps9h/11avatar.png",
-    "https://i.postimg.cc/JHWgrjTm/12avatar.png",
-    "https://i.postimg.cc/5HTTrhLX/13avatar.png",
-    "https://i.postimg.cc/z3n6dPBf/14avatar.png",
-    "https://i.postimg.cc/7GzdrKnm/15avatar.png",
-    "https://i.postimg.cc/rRCHKzb4/16avatar.png",
-    "https://i.postimg.cc/f3PQNtnT/2avatar.png",
-    "https://i.postimg.cc/S2zFNSkL/3avatar.png",
-    "https://i.postimg.cc/GTw04WmW/4avatar.png",
-    "https://i.postimg.cc/9wG6ZL4r/5avatar.png",
-    "https://i.postimg.cc/3Wm5sxLY/6avatar.png",
-    "https://i.postimg.cc/vcyFbwj9/7avatar.png",
-    "https://i.postimg.cc/gnK90BF7/8avatar.png",
-    "https://i.postimg.cc/mPd0YzrN/9avatar.png",
-  ];
-  const handleUpdateAvatar = async () => {
-    if (!selectedAvatar) {
-      alert("Please select an avatar first.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const updated = {
-        ...userData,
-        userProfileImageUrl: selectedAvatar,
-      };
-
-      await updateUserProfile(userData.id, updated);
-      setUserData((prev) => ({
-        ...prev,
-        userProfileImageUrl: selectedAvatar,
-      }));
-      alert("Profile picture updated successfully!");
-      setshowPopupAvatar(false);
-    } catch (error) {
-      console.error("Failed to update avatar:", error);
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [showPopup, setShowPopup] = useState(false); 
+  const [newPassword, setNewPassword] = useState(""); 
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
     async function fetchUser() {
@@ -91,32 +39,15 @@ function ExProfile() {
           telephone: data.telephone,
           status: data.status,
           role: data.role,
-          userProfileImageUrl: data.userProfileImageUrl,
         });
       }
     }
     fetchUser();
   }, []);
-  useEffect(() => {
-    if (userData?.userProfileImageUrl) {
-      const img = new Image();
-      img.src = userData.userProfileImageUrl;
-      img.onload = () => setImgSrc(userData.userProfileImageUrl);
-    }
-  }, [userData]);
 
   const handleSave = async () => {
     try {
-      await updateUserProfile(userData.id, {
-        password: userData.password,
-        username: userData.username,
-        email: userData.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        telephone: userData.telephone,
-        status: userData.status,
-        userProfileImageUrl: userData.userProfileImageUrl,
-      });
+      await updateUserProfile(userData.id, userData);
       setIsEditing(false);
       alert("Profile updated successfully!");
     } catch {
@@ -132,75 +63,15 @@ function ExProfile() {
         <div className={prof.box}>
           <h1 style={{ marginBottom: "32px" }}>Personal Info</h1>
           <div className={prof.profPicBox}>
-            <div className={prof.profileImgWrapper}>
-              {!isImgLoaded && (
-                <div className={prof.imgSkeleton}>Loading...</div>
-              )}
-
-              <img
-                src={imgSrc}
-                alt="profile Picture"
-                className={`${prof.profilePic} ${
-                  isImgLoaded ? "" : prof.hidden
-                }`}
-                onLoad={() => setIsImgLoaded(true)}
-              />
-            </div>
-            <div
-              onClick={() => setshowPopupAvatar(true)}
-              style={{ cursor: "pointer" }}
-            >
+            <img
+              src={profilePic}
+              alt="profile Picture"
+              className={prof.profilePic}
+            />
+            <div>
               <img src={editIcon} alt="icon" /> Change
             </div>
           </div>
-          {showPopupAvatar && (
-            <div>
-              <div className={prof.setAvatarDiv}>
-                <div className={prof.setAvatarContent}>
-                  <h3>Choose your profile picture</h3>
-                  <div className={prof.avatarsPick}>
-                    {avatars.map((avatar, index) => (
-                      <img
-                        key={index}
-                        src={avatar}
-                        alt={`Avatar ${index}`}
-                        onClick={() => setSelectedAvatar(avatar)}
-                        style={{
-                          border:
-                            selectedAvatar === avatar
-                              ? "3px solid blue"
-                              : "1px solid gray",
-                          borderRadius: "50%",
-                          width: "80px",
-                          height: "80px",
-                          cursor: "pointer",
-                        }}
-                      />
-                    ))}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "20px",
-                      justifyContent: "center",
-                      marginTop: "20px",
-                    }}
-                  >
-                    <div onClick={handleUpdateAvatar}>
-                      <Button content={loading ? "Updating..." : "Update"} />
-                    </div>
-                    <p
-                      className={prof.cancelForAvatar}
-                      onClick={() => setshowPopupAvatar(false)}
-                    >
-                      Cancel
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           <div className={prof.acountinfoBox}>
             <p style={{ margin: "22px 0 32px 0" }}>Account info</p>

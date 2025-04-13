@@ -5,14 +5,17 @@
   width: 90%;
   margin: auto;
 }
+.searchDiv {
+  max-width: 769px;
+}
 .searchDiv p {
   color: rgba(63, 62, 94, 1);
   font-weight: 400;
   font-size: 14px;
-  line-height: 182%;
+  line-height: 182%;  
 }
 .searchInput {
-  width: 769px;
+  width: 100%;
   height: 60px;
   gap: 12px;
   border-radius: 20px;

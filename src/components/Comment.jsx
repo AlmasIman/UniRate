@@ -2,7 +2,7 @@ import { useState } from "react";
 import comm from "../assets/styles/Comment.module.css";
 import like from "../assets/icons/like.svg";
 import Button from "../components/Button.jsx";
-
+import  defProf from "../assets/img/profilepic.png"
 function Comment({
   text,
   author = "Anonymous",
@@ -18,7 +18,7 @@ function Comment({
   return (
     <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
       <img
-        src="../../public/avatar_placeholder.png"
+        src={defProf}
         alt=""
         className={comm.avatar}
       />

@@ -19,17 +19,18 @@ export const login = async (email, password) => {
       email,
       password,
     });
-    
-    console.log('API Response:', response.data); 
+
+    console.log("API Response:", response.data);
     if (response.data) {
-      localStorage.setItem("token", response.data); 
-      return { token: response.data }; 
+      localStorage.setItem("token", response.data);
+      return { token: response.data };
     } else {
       throw new Error("Invalid login response");
     }
   } catch (error) {
+    console.error("Reset password code error:", error.response);
     if (error.response) {
-      console.error("Error response:", error.response.data); 
+      console.error("Error response:", error.response.data);
       throw new Error(error.response.data?.message || "Login failed");
     } else {
       console.error("Error:", error);
@@ -85,7 +86,7 @@ export const updateUserPassword = async (username, newPassword) => {
       {
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
+          Accept: "application/json",
         },
       }
     );
@@ -102,44 +103,138 @@ export const updateUserPassword = async (username, newPassword) => {
   }
 };
 
-export const updateUserProfile = async (userId, userData) => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    console.error("Токен отсутствует");
-    return null;
-  }
-
-  const formattedData = {
-    id: userId,
-    username: userData.username,
-    email: userData.email,
-    firstName: userData.fullName.split(" ")[0] || "",
-    lastName: userData.fullName.split(" ")[1] || "",
-    role: userData.category.toUpperCase(),
-    telephone: userData.phoneNumber,
-  };
-
-  console.log(
-    "Отправка запроса на обновление профиля:",
-    userId,
-    JSON.stringify(formattedData, null, 2)
-  );
-
+export async function updateUserProfile(userId, updatedData) {
   try {
+    const token = localStorage.getItem("token");
+
+    const payload = {
+      id: userId,
+      password: updatedData.password,
+      username: updatedData.username,
+      email: updatedData.email,
+      firstName: updatedData.firstName,
+      lastName: updatedData.lastName,
+      telephone: updatedData.telephone,
+      status: updatedData.status,
+      userProfileImageUrl: updatedData.userProfileImageUrl,
+    };
+
     const response = await api.post(
       `registry/api/user/${userId}/update`,
-      formattedData,
+      payload,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
-    console.log("Ответ сервера:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Ошибка обновления профиля:", error.response?.data || error);
-    alert("Ошибка обновления профиля: " + JSON.stringify(error.response?.data));
-    return null;
+    console.error("Error updating user profile:", error);
+    throw error;
+  }
+}
+
+export async function resetPassword(email, newPassword) {
+  try {
+    // eslint-disable-next-line no-unused-vars
+    const response = await api.post("registry/open-api/auth/reset-password", {
+      email,
+      newPassword,
+    });
+    return { success: true, message: "Password updated successfully!" };
+  } catch (error) {
+    console.error("Error resetting password:", error.response);
+    return {
+      success: false,
+      message: error.response?.data?.message || "Failed to update password!",
+    };
+  }
+}
+
+export async function updateUserAvatar(userId, profilePictureUrl) {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await api.put(
+      `registry/api/user/${userId}/update`,
+      { id: userId, url: profilePictureUrl },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating avatar:", error);
+    throw error.response?.data || error;
+  }
+}
+export const requestResetPasswordCode = async (email) => {
+  try {
+    const response = await api.post(
+      `registry/open-api/auth/send-reset-password-code`,
+      null, // пустое тело
+      {
+        params: { email }, // email уходит в query-параметре
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+      }
+    );
+
+    return {
+      success: true,
+      message: response.data?.message || "Reset code sent successfully",
+    };
+  } catch (error) {
+    console.error("Error sending reset code:", error.response?.data || error);
+
+    const messageFromServer = error.response?.data?.message;
+
+    if (messageFromServer?.includes("User with this email")) {
+      return {
+        success: false,
+        message: "Пользователь с таким email не найден.",
+      };
+    }
+
+    return {
+      success: false,
+      message: messageFromServer || "Что-то пошло не так. Попробуй позже.",
+    };
+  }
+};
+
+export const submitResetPassword = async (email, resetCode, newPassword) => {
+  try {
+    const response = await api.post(
+      "registry/open-api/auth/reset-password",
+      {
+        email,
+        resetCode,
+        newPassword,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+    return {
+      success: true,
+      message: response.data?.message || "Password has been reset successfully.",
+    };
+  } catch (error) {
+    console.error("Error submitting reset password:", error.response?.data || error);
+    return {
+      success: false,
+      message: error.response?.data?.message || "Failed to reset password.",
+    };
   }
 };

@@ -13,19 +13,22 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import the Link component from react-router-dom
 import { getCurrentUser } from "../services/authService.js";
+import Loading from "../components/loading.jsx";
 
 function University() {
-  const { id } = useParams(); // Get the university ID from the URL
+  const { id } = useParams(); 
   const [university, setUniversity] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getCurrentUser();
-      setIsAuthenticated(!!user); 
+      setIsAuthenticated(!!user);
     };
-    
+
     fetchUser();
   }, []);
+  
   useEffect(() => {
     const fetchUniversityData = async () => {
       const response = await fetch(
@@ -49,7 +52,6 @@ function University() {
   return (
     <>
       <Header />
-
       <div className={oneuni.uniInfoMainContainer}>
         <div className={oneuni.unibox}>
           <img src={oneuni.logoUrl} alt="" className={oneuni.uniImg} />
@@ -64,10 +66,7 @@ function University() {
             <div>
               <div className={oneuni.Title}>
                 <h1>{university.name}</h1>
-                {
-                  isAuthenticated ? (<img src={like} alt="" />) : null
-                }
-                
+                {isAuthenticated ? <img src={like} alt="" /> : null}
               </div>
               <div className="rate">
                 <div>
@@ -113,14 +112,15 @@ function University() {
           </div>
         </div>
       </div>
-
-      <FacultyList department="Business school" />
-      <br />
-      <FacultyList department="School of Engineering" />
-
-      <div style={{ textAlign: "center", marginTop: "92px" }}>
-        <EmptyBtn content="Load more 100+" />
-      </div>
+      {university.faculty.map((faculty) => (
+        <div key={faculty.facultyDto.id}>
+          <FacultyList
+            department={faculty.facultyDto.name}
+            facultyList={faculty.specialtyDtos}
+          />
+          <br />
+        </div>
+      ))}
       <br />
       <br />
       <div
@@ -174,7 +174,7 @@ function University() {
           </p>
 
           <p style={{ color: "rgba(0, 147, 121, 1)", cursor: "pointer" }}>
-            Go to Forum{" "}
+            Go to Forum
             <svg
               width="20"
               height="21"

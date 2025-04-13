@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import styles from "../assets/styles/PriceRangeFilter.module.css"; // ✅ Правильный импорт
 import minus from "../assets/icons/Minus.svg";
-const CatlogPriceFilter = () => {
+
+const CatlogPriceFilter = forwardRef((props, ref) => {
   const initialMinPrice = 0;
   const initialMaxPrice = 8000000;
 
@@ -96,6 +97,11 @@ const CatlogPriceFilter = () => {
     setIsDragging(false);
   };
 
+  useImperativeHandle(ref, () => ({
+    minVal: minInput,
+    maxVal: maxInput,
+  }));
+
   return (
     <div className={styles.doubleSliderBox}>
       <div className={styles.inputBox}>
@@ -158,6 +164,6 @@ const CatlogPriceFilter = () => {
       </div>
     </div>
   );
-};
+});
 
 export default CatlogPriceFilter;

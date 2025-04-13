@@ -29,8 +29,11 @@ import FAQ from "./pages/FAQ.jsx";
 import Terms from "./pages/TermsAndConditions.jsx";
 import Confirm from "./pages/LoginPages/Confirm.jsx"
 import ExThread from "./pages/exThread.jsx"
-
-import FavuniExample from "./pages/favuniExample.jsx";
+import EnterOTP from "./pages/LoginPages/EnterOTP.jsx";
+import ExProfile from "./pages/exProfile.jsx";
+import ForgotPassword from "./pages/LoginPages/ForgotPassword.jsx";
+import SetNewPass from "./pages/LoginPages/SetNewPassword.jsx";
+import SuccessResetPass from "./pages/LoginPages/SuccessResetPassword.jsx";
 
 function App() {
   return (
@@ -39,15 +42,19 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/confirm" element={<Confirm />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/otp" element={<EnterOTP />} />
+        <Route path="/setNewPassword" element={<SetNewPass />} />
+        <Route path="/success-reset-password" element={<SuccessResetPass />} />
         
         <Route path="/" element={<Home />} />
         <Route path="/universities" element={<Universities />} />
         <Route path="/university/:id" element={<University />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/university/speciality" element={<Speciality />} />
+        <Route path="/university/speciality/:id" element={<Speciality />} />
         <Route path="/calculator" element={<FinanceCalculator />} />
         <Route path="/forum" element={<Forum />} />
-        <Route path="/thread/:forumId" element={<Thread />} /> {/* Thread page */}
+        <Route path="/thread/:forumId" element={<Thread />} /> 
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/favouriteuniversities" element={<FavouriteUniversities />} />
         <Route path="/notifications" element={<Notifications />} />
@@ -55,7 +62,7 @@ function App() {
         <Route path="/terms" element={<Terms />} />
         
         <Route path="/te" element={<ExThread />} />
-        <Route path="/favunasd" element={<FavuniExample />} />
+        <Route path="/exProf" element={<ExProfile />} />
 
       </Routes>
     </Router>

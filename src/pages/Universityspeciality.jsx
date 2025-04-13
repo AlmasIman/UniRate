@@ -3,24 +3,45 @@ import Header from "../layouts/Header";
 import spec from "../assets/styles/universitySpeciality.module.css";
 import Button from "../components/Button";
 import FinanceCalculator from "../components/FinanceCalculator";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 function Speciality() {
+  const { id } = useParams(); // Retrieve the speciality ID from the URL
+  const [speciality, setSpeciality] = useState(null);
+
+  useEffect(() => {
+    const fetchSpeciality = async () => {
+      const response = await fetch(
+        `https://unirate.kz/university/open-api/specialties/${id}`
+      );
+      const data = await response.json();
+      setSpeciality(data);
+    };
+    fetchSpeciality();
+  }, [id]);
+
+  if (!speciality) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <Header />
       <div className={spec.mainDiv}>
-        <div className={spec.path}>
-          <p>Universities</p>
-          <hr />
-          <p>SDU</p>
-          <hr />
-          <p>Engineering</p>
-          <hr />
-          <p style={{ color: "rgba(0, 147, 121, 1)", fontWeight: "600" }}>
-            Information Systems
-          </p>
-        </div>
-
         <div className={spec.uniInfoMainContainer}>
+          <div className={spec.path}>
+            <p>Universities</p>
+            <hr />
+            <p>SDU</p>
+            <hr />
+            <p>Engineering</p>
+            <hr />
+            <p style={{ color: "rgba(0, 147, 121, 1)", fontWeight: "600" }}>
+              {speciality.name}
+            </p>
+          </div>
+
           <div className={spec.unibox}>
             <img src="../../public/shym.png" alt="" className={spec.uniImg} />
             <div
@@ -28,23 +49,13 @@ function Speciality() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "40px",
-                justifyContent: "center",
+                width: "50vw",
               }}
             >
               <div>
                 <div className={spec.Title}>
-                  <h1>Information System</h1>
-                  <p>
-                    The Information Systems Department plays a crucial role in
-                    managing and optimizing the technology infrastructure of our
-                    organization. This team is responsible for developing
-                    innovative solutions that enhance data management,
-                    streamline operations, and support decision-making
-                    processes. With a focus on integrating cutting-edge
-                    technologies, the department ensures that all systems are
-                    secure, efficient, and aligned with the strategic goals of
-                    the company.
-                  </p>
+                  <h1> {speciality.name}</h1>
+                  <p>{speciality.description}</p>
                 </div>
               </div>
 
@@ -89,29 +100,13 @@ function Speciality() {
                   </p>
                   <p>119</p>
                 </div>
-                <div style={{ position: "absolute", bottom: "-40px" }}>
+                <div style={{ position: "absolute", bottom: "0px" }}>
                   <Button content="Calculate tuition cost" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className={spec.descriptinSectionDiv}>
-        <div style={{ display: "flex", gap: "16px" }}>
-          <p className={`${spec.slider} ${spec.sliderActive}`}>Description</p>
-          <p className={spec.slider}>Syllabus</p>
-        </div>
-        <p className={spec.descriptionParagraph}>
-          The Information Systems Department plays a crucial role in managing
-          and optimizing the technology infrastructure of our organization. This
-          team is responsible for developing innovative solutions that enhance
-          data management, streamline operations, and support decision-making
-          processes. With a focus on integrating cutting-edge technologies, the
-          department ensures that all systems are secure, efficient, and aligned
-          with the strategic goals of the company.
-        </p>
       </div>
 
       <FinanceCalculator />

@@ -48,3 +48,87 @@
   border-width: 1px;
   border: 1px solid rgba(216, 216, 216, 1);
 }
+
+.imgInContact {
+  width: 500px;
+}
+.divForInputs {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+@media (max-width: 1000px) {
+  .contactMainDiv {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .paragraphdf {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .message {
+    width: 100%;
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 32px;
+    line-height: 36px;
+  }
+
+  .inputsty {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .message {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .imgInContact {
+    width: 100%;
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 600px) {
+  .divForInputs {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .inputsty {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .message {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .imgInContact {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 400px) {
+  .title {
+    font-size: 26px;
+  }
+
+  .paragraphdf {
+    font-size: 14px;
+  }
+}

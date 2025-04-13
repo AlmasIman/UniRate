@@ -2,22 +2,12 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import arrlowLeft from "../assets/icons/ArrowLeft.svg";
 import arrlowRight from "../assets/icons/ArrowRight.svg";
-const faculties = [
-  { id: 1, name: "Computer Science", img: "../../public/img1.png" },
-  { id: 2, name: "Business Administration", img: "../../public/img2.png" },
-  { id: 3, name: "Mechanical Engineering", img: "../../public/img3.png" },
-  { id: 4, name: "Medicine", img: "../../public/img4.png" },
-  { id: 5, name: "Architecture", img: "../../public/almaty.png" },
-  { id: 6, name: "Medicine", img: "../../public/img4.png" },
-  { id: 7, name: "Mechanical Engineering", img: "../../public/img3.png" },
-  { id: 8, name: "Business Administration", img: "../../public/img2.png" },
-
-];
+import { Link } from "react-router-dom";
 
 const Carousel = (props) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [itemsPerSlide, setItemsPerSlide] = useState(4);
-
+  const faculties = props.facultyList || [];
   useEffect(() => {
     const updateItemsPerSlide = () => {
       if (window.innerWidth < 768) {
@@ -51,7 +41,10 @@ const Carousel = (props) => {
   };
 
   return (
-    <div className="position-relative container py-5" style={{position: "relative"}}>
+    <div
+      className="position-relative container py-5"
+      style={{ position: "relative" }}
+    >
       <div
         className="d-flex justify-content-end position-absolute top-0 end-0"
         style={{ gap: "8px" }}
@@ -101,7 +94,7 @@ const Carousel = (props) => {
         className="carousel slide"
         data-bs-ride="carousel"
       >
-        <div className="carousel-inner" >
+        <div className="carousel-inner">
           {[...Array(Math.ceil(faculties.length / itemsPerSlide))].map(
             (_, groupIndex) => (
               <div
@@ -111,7 +104,6 @@ const Carousel = (props) => {
                     ? "active"
                     : ""
                 }`}
-                
               >
                 <div
                   className="d-flex justify-content-center"
@@ -122,40 +114,43 @@ const Carousel = (props) => {
                       groupIndex * itemsPerSlide,
                       groupIndex * itemsPerSlide + itemsPerSlide
                     )
+         
                     .map((faculty) => (
-                      <div
-                        key={faculty.id}
-                        className="mx-2"
-                        style={{
-                          position: "relative",
-                          width: "295px",
-                          height: "374px",
-                          borderRadius: "20px",
-                          border: "none",
-                          boxShadow:
-                            "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05);",
-                        }}
-                      >
-                        <img
-                          src={faculty.img}
-                          className="card-img-top"
+                      <Link to={`/university/speciality/${faculty.id}`} style={{textDecoration: 'none', color: 'black'}}>
+                        <div
+                          key={faculty.id}
+                          className="mx-2"
                           style={{
-                            borderTopLeftRadius: "20px",
-                            borderTopRightRadius: "20px",
+                            position: "relative",
                             width: "295px",
-                            height: "278px",
+                            height: "374px",
+                            borderRadius: "20px",
+                            border: "none",
+                            boxShadow:
+                              "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05)",
                           }}
-                          alt={faculty.name}
-                        />
-                        <div className="card-body">
-                          <h5
-                            className="card-title"
-                            style={{ margin: "20px 0 12px 20px" }}
-                          >
-                            {faculty.name}
-                          </h5>
+                        >
+                          <img
+                            src="/public/img1.png"
+                            className="card-img-top"
+                            style={{
+                              borderTopLeftRadius: "20px",
+                              borderTopRightRadius: "20px",
+                              width: "295px",
+                              height: "278px",
+                            }}
+                            alt={faculty.name}
+                          />
+                          <div className="card-body">
+                            <h5
+                              className="card-title"
+                              style={{ margin: "20px 0 12px 20px" }}
+                            >
+                              {faculty.name}
+                            </h5>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                 </div>
               </div>
@@ -185,8 +180,6 @@ const Carousel = (props) => {
         )}
       </div>
     </div>
-
-
   );
 };
 

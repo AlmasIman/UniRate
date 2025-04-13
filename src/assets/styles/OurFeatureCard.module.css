@@ -1,13 +1,10 @@
 .card {
-  display: flex;
+  position: relative;
   width: 296px;
   height: 332px;
   flex-direction: column;
   background-color: #ffffff;
-  text-align: center;
   align-items: center;
-  justify-content: center;
-  gap: 30px;
   border-radius: 20px;
   border-width: 1px;
   box-shadow: 34.85px 29.63px 48.34px 0px #14AE820D;
@@ -15,6 +12,8 @@
 .featureIcon {
   width: 72px;
   height: 72px;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 .title {
   color: #2D2D2D;
@@ -25,6 +24,8 @@
   line-height: 130%;
   letter-spacing: -1%;
   text-align: center;
+  height: 60px;
+  margin-bottom: 24px;
 }
 
 .description {

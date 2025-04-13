@@ -62,3 +62,61 @@
   line-height: 20px;
   color: rgba(144, 144, 144, 1);
 }
+/* Tablet */
+@media (max-width: 1024px) {
+  .main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .UniImg {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: cover;
+  }
+
+  .commentsSections {
+    gap: 32px;
+  }
+
+  .title h3 {
+    font-size: 24px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .main {
+    gap: 20px;
+  }
+
+  .UniImg {
+    max-height: 220px;
+    border-radius: 14px;
+  }
+
+  .title h3 {
+    font-size: 20px;
+  }
+
+  .title h5 {
+    font-size: 16px;
+  }
+
+  .title p,
+  .comment {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .commentsSections {
+    gap: 24px;
+  }
+
+  .author {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

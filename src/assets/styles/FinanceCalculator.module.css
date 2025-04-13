@@ -3,6 +3,12 @@
   height: 1122px;
   gap: 24px;
 }
+.mainDivForCalcAndResult {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 32px;
+}
 
 .inputTotalCostfilter {
   width: 380px;
@@ -78,42 +84,20 @@
 }
 
 .checkboxStyle {
-  width: 20px; 
-  height: 20px;
-  accent-color: rgba(0, 147, 121, 1); 
-  cursor: pointer;
-
-
-}
-/* .checkboxStyle {
-  appearance: none;
-  -webkit-appearance: none;
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(0, 147, 121, 1);
-  border-radius: 4px;
+  accent-color: rgba(0, 147, 121, 1);
   cursor: pointer;
-  position: relative;
-  display: inline-block;
-  background-color: white; 
 }
 
-.checkboxStyle:checked {
-  background-color: rgba(0, 147, 121, 1);
+/* Mobile screens */
+@media (max-width: 900px) {
+  .mainDivForCalcAndResult {
+    flex-direction: column;
+    align-items: center;
+  }
+  .calculatorMainDiv {
+    height: fit-content;
+    padding-bottom: 40px;
+  }
 }
-
-.checkboxStyle::before {
-  content: "✔";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 14px;
-  color: white;
-  opacity: 0; 
-  transition: opacity 0.2s ease-in-out;
-}
-
-.checkboxStyle:checked::before {
-  opacity: 1;
-} */

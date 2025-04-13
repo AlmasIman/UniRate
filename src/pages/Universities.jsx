@@ -1,5 +1,6 @@
 import Select from "react-select";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
@@ -11,35 +12,80 @@ import map from "../assets/icons/MapPinLine.svg";
 import dollar from "../assets/icons/dollar-circle.svg";
 import documentfilter from "../assets/icons/document-filter.svg";
 import UniversityCardCarousel from "../components/UniversityCardCarousel.jsx";
-
+import uniPlacehodlder from "/public/uniPlaceholder.jpg";
 function Universities() {
   const cityOptions = [
-    { value: "Atyrau", label: "Atyrau" },
     { value: "Almaty", label: "Almaty" },
     { value: "Astana", label: "Astana" },
+    { value: "Atyrau", label: "Atyrau" },
+    { value: "Shymkent", label: "Shymkent" },
+    { value: "Karaganda", label: "Karaganda" },
+    { value: "Aktobe", label: "Aktobe" },
+    { value: "Taraz", label: "Taraz" },
+    { value: "Pavlodar", label: "Pavlodar" },
+    { value: "Oskemen", label: "Oskemen" },
+    { value: "Semey", label: "Semey" },
+    { value: "Kostanay", label: "Kostanay" },
+    { value: "Kyzylorda", label: "Kyzylorda" },
+    { value: "Oral", label: "Oral" },
+    { value: "Aktau", label: "Aktau" },
   ];
 
   const [searchQuery, setSearchQuery] = useState("");
   const [universityData, setUniversityData] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [hasDormitory, setHasDormitory] = useState(false);
+  const [hasMilitary, setHasMilitary] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [sortOrder, setSortOrder] = useState(null);
+  const priceRef = useRef();
 
-  // Fetch function for searching by university name
   const fetchUniversityByName = async (name) => {
-    if (!name) return
+    if (!name) return;
 
     try {
       const response = await fetch(
         `https://unirate.kz/university/open-api/universities/name/${name}`
       );
       const data = await response.json();
-      setUniversityData(data); // Save the response to state
+      setUniversityData(data); 
     } catch (error) {
       console.error("Error fetching university:", error);
     }
   };
 
-  // Handler for the search icon click
   const handleSearchClick = () => {
     fetchUniversityByName(searchQuery);
+  };
+
+  const handleApplyFilters = async () => {
+    try {
+      const response = await fetch(
+        "https://unirate.kz/university/open-api/universities/search",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            searchFiled: searchQuery,
+            city: selectedCity,
+            minTuition: priceRef.current?.minVal || 0,
+            maxTuition: priceRef.current?.maxVal || 0,
+            hasMilitaryDepartment: hasMilitary,
+            hasDormitory,
+            rating: 0,
+            page: 0,
+            size: 10,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      setUniversityData(data.content || []); // assuming backend returns single or array of universities
+    } catch (error) {
+      console.error("Error applying filters:", error);
+    }
   };
 
   return (
@@ -62,51 +108,18 @@ function Universities() {
         />
       </div>
 
-      {universityData && universityData.name && (
-          <div className={unistyle.searchReasult}>
-            <h2>Search Results:</h2>
-            <div className={unistyle.studDiv}>
-              <img
-                src="/public/almaty.png"
-                alt={universityData.name}
-                style={{
-                  width: "620px",
-                  height: "457px",
-                  borderRadius: "20px",
-                }}
-              />
-              {/* universityData.logoUrl */}
-              <div className={unistyle.content}>
-                <h1>{universityData.name}</h1>
-
-                <p>{universityData.description}</p>
-                <p>
-                  <strong>Location:</strong> {universityData.location}
-                </p>
-                <p>
-                  <strong>Rating:</strong> {universityData.rating} / 5
-                </p>
-                <a
-                  href={universityData.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit Website
-                </a>
-              </div>
-            </div>
-          </div>
-      )}
-
       <div className={unistyle.filterBox}>
         <h3 className={unistyle.title}>Filters</h3>
         <div className={unistyle.filter}>
-          <div style={{ width: "23%" }}>
+          <div className={unistyle.filterContentWidth}>
             <div className={unistyle.filterTitle}>
               <img src={map} alt="Map" />
               <Select
                 options={cityOptions}
                 placeholder="Search for city"
+                onChange={(selectedOption) =>
+                  setSelectedCity(selectedOption?.value)
+                }
                 styles={{
                   control: (base) => ({
                     ...base,
@@ -136,6 +149,8 @@ function Universities() {
                 name="Dormitory"
                 value="Dormitory"
                 className={unistyle.checkboxStyle}
+                checked={hasDormitory}
+                onChange={(e) => setHasDormitory(e.target.checked)}
               />
               <label htmlFor="Dormitory"> Dormitory</label>
             </div>
@@ -147,20 +162,22 @@ function Universities() {
                 name="Military"
                 value="Military"
                 className={unistyle.checkboxStyle}
+                checked={hasMilitary}
+                onChange={(e) => setHasMilitary(e.target.checked)}
               />
               <label htmlFor="Military"> Military</label>
             </div>
           </div>
 
-          <div style={{ width: "23%" }}>
+          <div className={unistyle.filterContentWidth}>
             <div className={unistyle.filterTitle}>
               <img src={dollar} alt="Dollar" />
               <p>Price</p>
             </div>
-            <MultiRangeSlider />
+            <MultiRangeSlider ref={priceRef} />
           </div>
 
-          <div style={{ width: "23%" }}>
+          <div className={unistyle.filterContentWidth}>
             <div className={unistyle.filterTitle}>
               <img src={documentfilter} alt="Filter" />
               <p>Price</p>
@@ -172,6 +189,7 @@ function Universities() {
                 value="Highest"
                 name="sorting"
                 className={unistyle.roundedInput}
+                onChange={() => setSortOrder("Highest")}
               />
               <label htmlFor="Highest"> Lowest to Highest</label>
             </div>
@@ -183,18 +201,63 @@ function Universities() {
                 name="sorting"
                 value="Lowest"
                 className={unistyle.roundedInput}
+                onChange={() => setSortOrder("Lowest")}
               />
               <label htmlFor="Lowest"> Highest to Lowest</label>
             </div>
           </div>
         </div>
-        <div className={unistyle.applybtn}>
+        <div onClick={handleApplyFilters} className={unistyle.applybtn}>
           <Button content="Apply Filters" />
         </div>
       </div>
 
-      <br />
+      {Array.isArray(universityData) && universityData.length > 0 && (
+        <div className={unistyle.searchReasult}>
+          <h2>Search Results:</h2>
+          <div className={unistyle.resultList}>
+            {universityData.map((uni) => (
+              <Link
+                to={`/university/${uni.id}`}
+                style={{ textDecoration: "none", color: "#212529" }}
+              >
+                <div key={uni.id} className={unistyle.uniCard}>
+                  <img
+                    src={!uni.logoUrl ? uniPlacehodlder : uni.logoUrl}
+                    alt={uni.name}
+                    className={unistyle.uniLogoImg}
+                  />
+                  <div className={unistyle.info}>
+                    <h3>{uni.name}</h3>
+                    <p>{uni.description}</p>
+                    <p>
+                      <strong>Location:</strong> {uni.location}
+                    </p>
+                    <p>
+                      <strong>Rating:</strong> {uni.rating} / 5
+                    </p>
+                    <a
+                      href={uni.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ textDecoration: "none" }}
+                    >
+                      Visit Website
+                    </a>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
+      {Array.isArray(universityData) && universityData.length === 0 && (
+        <div className={unistyle.searchReasult}>
+          <h2>Nothing is found</h2>
+          <p>Try adjusting your filters or search terms.</p>
+        </div>
+      )}
       <div className={unistyle.uniListContainer}>
         <p>Most Popular</p>
         <h1>University lists</h1>

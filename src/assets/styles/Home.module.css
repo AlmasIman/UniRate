@@ -1,56 +1,76 @@
-.banner {
-  position: relative;
+.responsiveBanner {
   display: flex;
-  height: 626px;
-  top: 0;
-  right: 0;
-  left: 0;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.banner .bannerContent {
+.welcomContent {
   display: flex;
   flex-direction: column;
-  padding-top: 90px;
-  padding-right: 80px;
-  padding-bottom: 90px;
-  padding-left: 80px;
+  gap: 20px;
+  flex: 1;
 }
+
 .welcomMessage {
   font-family: "Poppins";
   font-weight: 700;
   font-size: 67px;
   line-height: 130%;
   letter-spacing: -2.5%;
-  margin-bottom: 20px;
+  color: rgba(45, 45, 45, 1);
 }
+
 .unirateSlogan {
-  width: 648px;
-  height: 64px;
   font-family: "Mulish";
   font-weight: 400;
   font-size: 21px;
   line-height: 150%;
-  letter-spacing: 0%;
-  color: #2d2d2d;
-  margin-bottom: 40px;
+}
+
+.scrollBtn {
+  margin-top: 20px;
+}
+
+.bannerDiv {
+  padding-top: 50px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .chatIcon {
   position: absolute;
-  width: 50px;
-  height: 40px;
-  right: 19px;
-  bottom: 66px;
-  cursor: pointer;
+  bottom: -20px;
 }
 
-.bgBagnner {
-  position: absolute;
-  right: 80px;
-  top: 90px;
-  z-index: -1;
+/* ------------ Mobile & Tablet Responsive ------------- */
+@media (max-width: 900px) {
+  .responsiveBanner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .welcomMessage {
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    letter-spacing: -2%;
+  }
+
+  .unirateSlogan {
+    font-size: 18px;
+  }
+
+  .bgBagnner {
+    width: 90%;
+  }
+
 }
 
 /* 
@@ -78,11 +98,14 @@
 .ourFeature .ourFeatureParag {
   font-family: "Poppins";
   font-weight: 700;
-  font-size: 38px;
+  font-size: 30px;
   line-height: 130%;
   letter-spacing: -2%;
   text-align: center;
   margin-top: 20px;
+}
+.ourFeatureh2 {
+  font-size: 24px;
 }
 .ourFeatureCARDDiv {
   display: flex;
@@ -139,6 +162,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   padding-top: 90px;
   padding-bottom: 60px;
   background-color: rgba(248, 255, 253, 1);
@@ -169,7 +193,6 @@
   border-radius: 20px;
   padding-top: 60px;
   padding-bottom: 60px;
-
 }
 .ourFeatureParag {
   font-family: "Poppins";
@@ -192,6 +215,7 @@
   position: relative;
   width: fit-content;
   margin: 40px auto;
+  height: fit-content;
 }
 
 .emailInput {
@@ -207,6 +231,58 @@
   position: absolute;
   right: 0;
   top: 0;
+}
+.Btn {
+  display: flex;
+  width: 199px;
+  height: 60px;
+  gap: 10px;
+  border-radius: 20px;
+  background-color: #009379;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  text-decoration: black;
+}
+
+@media (max-width: 600px) {
+  .newsletterMainDiv .newsletter .ourFeatureParag{
+    font-size: 28px;
+  
+  }
+  .newsletterMainDiv .newsletter .unistylemessage{
+  font-size: 15px;
+
+  }
+  .emailInputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .emailInputBtn {
+    position: relative;
+  }
+  .newsletter {
+    height: fit-content;
+  }
+  .Btn {
+    width: 100%;
+  }
+}
+@media (max-width: 499px) {
+  .Btn {
+    width: 300px;
+  }
+  .emailInput {
+    width: 300px;
+  }
 }
 
 /*  */
