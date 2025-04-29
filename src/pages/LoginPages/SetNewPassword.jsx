@@ -6,6 +6,7 @@ import LoginButton from "../../components/LoginButton.jsx";
 import arrowback from "../../assets/icons/ArrowLeft.svg";
 import { useState } from "react";
 import { submitResetPassword } from "../../services/authService";
+import logo from "/public/logo1.svg";
 
 function SetNewPass() {
   const location = useLocation();
@@ -30,6 +31,7 @@ function SetNewPass() {
 
     const result = await submitResetPassword(email, resetCode, password);
     if (result.success) {
+      sessionStorage.removeItem("otpVerified");
       setSuccess(result.message);
       setTimeout(() => navigate("/success-reset-password"), 1500);
     } else {
@@ -40,14 +42,21 @@ function SetNewPass() {
   return (
     <div className={logStyle.mainBox}>
       <div className={logStyle.loginLeftSide}>
-        <button className={logStyle.logo}>Logo</button>
+        <img src={logo} alt="" className={logStyle.logo} />
         <div className={logStyle.contentleftSide}>
-          <h1 className={logStyle.greeting}>Welcome to UniRate!</h1>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vulputate
-            ut laoreet velit ma.
-          </p>
-          <img src={risingHand} alt="welcome" />
+          <div className={logStyle.backgroundDarker}>
+            <h1 className={logStyle.greeting}>Welcome to UniRate!</h1>
+            <p>
+              Find and compare universities in Kazakhstan—quick, easy, and all
+              in one place.
+            </p>
+          </div>
+
+          <img
+            src={risingHand}
+            alt="welcome"
+            className={logStyle.welcomeLoginIcon}
+          />
         </div>
       </div>
 

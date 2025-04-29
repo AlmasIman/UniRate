@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import risingHand from "../../assets/RaisingHandBro.svg";
 import { useState } from "react";
 import { requestResetPasswordCode } from "../../services/authService.js";
+import logo from "/public/logo1.svg";
 
 function ForgotPassword() {
   const navigate = useNavigate();
@@ -18,9 +19,20 @@ function ForgotPassword() {
     e.preventDefault();
     setError("");
     setSuccess("");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setError("Email is required.");
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
     console.log("Sending reset code to:", email);
     const result = await requestResetPasswordCode(email);
     if (result.success) {
+      sessionStorage.setItem("isEmailProvided", "true");
+
       setSuccess(result.message);
       navigate("/otp", { state: { email } });
     } else {
@@ -35,20 +47,21 @@ function ForgotPassword() {
   return (
     <div className={logStyle.mainBox}>
       <div className={logStyle.loginLeftSide}>
-        <button className={logStyle.logo}>Logo</button>
+        <img src={logo} alt="" className={logStyle.logo} />
         <div className={logStyle.contentleftSide}>
           <div className={logStyle.backgroundDarker}>
             <h1 className={logStyle.greeting}>Welcome to UniRate!</h1>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vulputate
-              ut laoreet velit ma.
+              Find and compare universities in Kazakhstan—quick, easy, and all
+              in one place.
             </p>
-            <img
-              src={risingHand}
-              alt="welcome"
-              className={logStyle.welcomeLoginIcon}
-            />
           </div>
+
+          <img
+            src={risingHand}
+            alt="welcome"
+            className={logStyle.welcomeLoginIcon}
+          />
         </div>
       </div>
 
@@ -82,7 +95,7 @@ function ForgotPassword() {
             />
             <br />
             {error && (
-              <p style={{ color: "red", marginTop: "10px" }}>{error}</p>
+              <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>
             )}
             {success && (
               <p style={{ color: "green", marginTop: "10px" }}>{success}</p>

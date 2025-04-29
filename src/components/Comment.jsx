@@ -2,13 +2,14 @@ import { useState } from "react";
 import comm from "../assets/styles/Comment.module.css";
 import like from "../assets/icons/like.svg";
 import Button from "../components/Button.jsx";
-import  defProf from "../assets/img/profilepic.png"
+
 function Comment({
   text,
-  author = "Anonymous",
-  role = "User",
-  postedTime = "Just now",
+  author,
+  role,
+  postedTime,
   onReply,
+  profileImg,
 }) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyText, setReplyText] = useState("");
@@ -18,14 +19,14 @@ function Comment({
   return (
     <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
       <img
-        src={defProf}
+        src={profileImg}
         alt=""
         className={comm.avatar}
       />
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
           <p>{author}</p>
-          <p className={comm.status}>{role}</p>
+          <p className={comm.status}>{role || "User"}</p>
         </div>
         <p className={comm.comment}>{text}</p>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>

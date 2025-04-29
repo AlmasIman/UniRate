@@ -47,6 +47,7 @@
 .chatIcon {
   position: absolute;
   bottom: -20px;
+  cursor: pointer;
 }
 
 /* ------------ Mobile & Tablet Responsive ------------- */
@@ -139,6 +140,10 @@
     width: 90%;
     height: auto;
     padding: 20px;
+  }
+  .chatIcon {
+    right: 10px;
+    bottom: -30px;
   }
 }
 

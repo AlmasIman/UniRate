@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  FaFacebookF,
-  FaLinkedinIn,
-  FaTwitter,
-  FaInstagram,
-  FaGlobe,
-} from "react-icons/fa";
-import googlePlay from "../assets/icons/google.svg";
+import { FaGlobe } from "react-icons/fa";
 import appStore from "../assets/icons/appstoresvg.svg";
 import styles from "../assets/styles/Footer.module.css";
 import instagram from "../assets/icons/Instagram.svg";
 import twitter from "../assets/icons/Twitter.svg";
 import linkedin from "../assets/icons/Linkedin.svg";
 import facebook from "../assets/icons/Facebook.svg";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -42,16 +36,19 @@ const Footer = () => {
 
       <div className={styles.footerColumn} style={{ minWidth: "300px" }}>
         <h3>Get the app</h3>
-        <img src={googlePlay} alt="Google Play" width="200" />
         <img src={appStore} alt="App Store" width="200" />
       </div>
 
       <div className={styles.footerBottom}>
-        <div>
+        {/* <div>
           <FaGlobe /> English
-        </div>
-        <div>FAQ</div>
-        <div>Terms and conditions</div>
+        </div> */}
+        <Link to="/faq" style={{textDecoration: 'none', color: 'rgba(163, 163, 163, 1)'}}>
+          <div>FAQ</div>
+        </Link>
+        <Link to="/terms" style={{textDecoration: 'none', color: 'rgba(163, 163, 163, 1)'}}>
+          <div>Terms and conditions</div>
+        </Link>
       </div>
       <div className={styles.reserved}>
         © 2025. UniRate All rights reserved.

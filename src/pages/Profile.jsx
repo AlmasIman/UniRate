@@ -12,7 +12,12 @@ import {
   getCurrentUser,
   updateUserProfile,
   resetPassword,
+  updateUserAvatar,
 } from "../services/authService.js";
+
+import Success from "../layouts/SuccessAlert.jsx";
+import Error from "../layouts/ErrorAlert.jsx";
+import Warning from "../layouts/WarningAlert.jsx";
 
 function ExProfile() {
   const [isImgLoaded, setIsImgLoaded] = useState(false);
@@ -31,7 +36,9 @@ function ExProfile() {
   const [loading, setLoading] = useState(false); // Состояние загрузки
 
   const [selectedAvatar, setSelectedAvatar] = useState(null);
-
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [warningMessage, setWarningMessage] = useState("");
   const avatars = [
     "https://i.postimg.cc/5X9hQqf2/10avatar.png",
     "https://i.postimg.cc/Ny5Zps9h/11avatar.png",
@@ -49,29 +56,25 @@ function ExProfile() {
     "https://i.postimg.cc/gnK90BF7/8avatar.png",
     "https://i.postimg.cc/mPd0YzrN/9avatar.png",
   ];
+
   const handleUpdateAvatar = async () => {
     if (!selectedAvatar) {
-      alert("Please select an avatar first.");
+      setWarningMessage("Please select an avatar first.");
       return;
     }
 
     setLoading(true);
     try {
-      const updated = {
-        ...userData,
-        userProfileImageUrl: selectedAvatar,
-      };
-
-      await updateUserProfile(userData.id, updated);
+      await updateUserAvatar(userData.id, selectedAvatar);
       setUserData((prev) => ({
         ...prev,
         userProfileImageUrl: selectedAvatar,
       }));
-      alert("Profile picture updated successfully!");
+      setSuccessMessage("Profile picture updated successfully!");
       setshowPopupAvatar(false);
     } catch (error) {
       console.error("Failed to update avatar:", error);
-      alert("Something went wrong. Please try again.");
+      setErrorMessage("Failed to update avatar.Please try again!");
     } finally {
       setLoading(false);
     }
@@ -118,16 +121,30 @@ function ExProfile() {
         userProfileImageUrl: userData.userProfileImageUrl,
       });
       setIsEditing(false);
-      alert("Profile updated successfully!");
+      setSuccessMessage("Profile updated successfully!");
     } catch {
-      alert("Failed to update profile.");
+      setErrorMessage("Failed to update profile.");
     }
   };
 
   return (
     <>
+      {successMessage && (
+        <Success
+          message={successMessage}
+          onClose={() => setSuccessMessage("")}
+        />
+      )}{" "}
+      {errorMessage && (
+        <Error message={errorMessage} onClose={() => setErrorMessage("")} />
+      )}{" "}
+      {warningMessage && (
+        <Warning
+          message={warningMessage}
+          onClose={() => setWarningMessage("")}
+        />
+      )}
       <Header />
-
       <div className={prof.personalInfoSection}>
         <div className={prof.box}>
           <h1 style={{ marginBottom: "32px" }}>Personal Info</h1>
@@ -287,8 +304,11 @@ function ExProfile() {
                       status: selected.value.toUpperCase(),
                     })
                   }
-                  placeholder="Select"
-                  isDisabled={!isEditing}
+                  placeholder={
+                    !userData || userData.status === null
+                      ? "Select category"
+                      : userData.status
+                  }
                   styles={{
                     control: (base) => ({
                       ...base,
@@ -331,7 +351,6 @@ function ExProfile() {
           </div>
         </div>
       </div>
-
       <div className={prof.mainLoginandsecuritySection}>
         <div className={prof.box}>
           <h1 className={prof.h1Title}>Login and security</h1>

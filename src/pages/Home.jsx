@@ -4,25 +4,61 @@ import visuals from "../assets/icons/Visuals.svg";
 import { Link } from "react-router-dom";
 import Button from "../components/Button.jsx";
 import Rocket from "../assets/icons/RocketLaunch.svg";
-import Card from "../components/OurFeatureCard.jsx";
-import money from "../assets/icons/money.svg";
-import chat2 from "../assets/icons/chat2.svg";
-import map from "../assets/icons/map.svg";
-import point from "../assets/icons/point.svg";
 import emailIcon from "../assets/icons/email.svg";
 import Footer from "../layouts/Footer.jsx";
 // import StorySrud from "../components/StorysFromStud.jsx";
 import UniversitiesList from "../components/UniversityCardCarousel.jsx";
-import StoriesList from "../components/StoriesList.jsx";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Chatbot from "../components/Chatbot.jsx";
 import LoginButton from "../components/LoginButton.jsx";
-
+import ReviewCarousel from "../components/ReviewCarousel.jsx";
+import OurFeature from "../components/OurFeature.jsx";
+import TopUnis from "../components/ReactCarouselForUniversity.jsx";
+import InfiniteLooper from "../components/BannerLoopCarousel.jsx";
+import Confetti from "../assets/icons/Confetti.png";
+import courthouse from "../assets/icons/courthouse.png";
+import GlobeHemisphereWest from "../assets/icons/GlobeHemisphereWest.png";
 function Home() {
   const universitiesRef = useRef(null);
+  const [email, setEmail] = useState("");
 
   const scrollToUniversities = () => {
     universitiesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSubscribe = async () => {
+    if (!email || !email.includes("@")) {
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://unirate.kz/registry/open-api/notifications/subscribe?email=${encodeURIComponent(
+          email
+        )}`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (response.ok) {
+        alert("Successfully subscribed!");
+        setEmail("");
+      } else {
+        let errorMessage = "Subscription failed.";
+        try {
+          const text = await response.text();
+          if (text) errorMessage = text;
+        } catch {
+          // no-op
+        }
+        alert(errorMessage);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -47,51 +83,71 @@ function Home() {
           <Chatbot />
         </div>
       </div>
+      <br />
+      <br />
+      <InfiniteLooper speed={15} direction="right">
+        <div className="contentBlock contentBlock--one">
+          <img src={Confetti} alt="" />
+        </div>
+        <div className="contentBlock contentBlock--one">
+          The best universities waiting for you!
+        </div>
+        <div className="contentBlock contentBlock--one">
+          <img src={GlobeHemisphereWest} alt="" />
+        </div>
+        <div className="contentBlock contentBlock--one">
+          Admission 2025 -2026
+        </div>
+        <div className="contentBlock contentBlock--one">
+          <img src={courthouse} alt="" />
+        </div>
+        <div className="contentBlock contentBlock--one">
+          The best universities waiting for you!
+        </div>
+      </InfiniteLooper>
 
-      <div className={homeStyle.ourFeature}>
-        <h2 className={homeStyle.ourFeatureh2}>Explore Our Core</h2>
-        <p className={homeStyle.ourFeatureParag}>
-          Discover the Smart Way to Choose Your Future University
+      <OurFeature />
+
+      <br />
+      <br />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
+          textAlign: "center",
+        }}
+        ref={universitiesRef}
+      >
+        <p
+          style={{
+            fontFamily: "Mulish",
+            fontWeight: "400",
+            fontSize: "16px",
+          }}
+        >
+          Discover top universities in Kazakhstan.
         </p>
-        <div className={homeStyle.ourFeatureCARDDiv}>
-          <Card
-            featureIcon={map}
-            cardTitle="University Search & Comparison."
-            cardDescription="Search and compare universities based on programs, rankings, and location to find the best fit for you."
-          />
-          <Card
-            featureIcon={money}
-            cardTitle="Financial Calculator."
-            cardDescription="Plan your budget with our financial calculator, which helps you estimate tuition, living expenses, and other costs."
-          />
-          <Card
-            featureIcon={point}
-            cardTitle="University Rankings."
-            cardDescription="View up-to-date rankings and compare universities by reputation in various disciplines."
-          />
-          <Card
-            featureIcon={chat2}
-            cardTitle="Connect with Students & Alumni."
-            cardDescription="Engage with real students and alumni to get valuable advice and insights to guide your decisions."
-          />
-        </div>
+        <h1
+          style={{
+            fontFamily: "Poppins",
+            fontWeight: "700",
+            fontSize: "38px",
+          }}
+        >
+          Most Popular
+        </h1>
       </div>
+      <br />
+      <br />
 
-      <div className={homeStyle.uniListContainer} ref={universitiesRef}>
-        <p>Most Popular</p>
-        <h1>University lists</h1>
+      <TopUnis />
 
-        <div className={homeStyle.studDiv}>
-          <UniversitiesList />
-        </div>
-      </div>
+      <br />
+      <br />
 
-      <div className={homeStyle.uniListContainer2}>
-        <p>See how our landing page platform is making an impact.</p>
-        <h1>Real Stories from Satisfied Students</h1>
-
-        <StoriesList />
-      </div>
+      <ReviewCarousel />
 
       <div className={homeStyle.newsletterMainDiv}>
         <div className={homeStyle.newsletter}>
@@ -105,10 +161,12 @@ function Home() {
               type="email"
               className={homeStyle.emailInput}
               placeholder="Enter your email here"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <div className={homeStyle.emailInputBtn}>
-              <div className={homeStyle.Btn}>
-                <img src={emailIcon} />
+              <div className={homeStyle.Btn} onClick={handleSubscribe}>
+                <img src={emailIcon} alt="Email Icon" />
                 Subscribe
               </div>
             </div>

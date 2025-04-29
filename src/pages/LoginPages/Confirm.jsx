@@ -5,6 +5,8 @@ import CodeInput from "./CodeInput.jsx";
 import StudentsBro from "../../assets/StudentsBro.svg";
 import { activateAccount } from "../../services/authService.js"; // Подключаем API
 import { useNavigate } from "react-router-dom";
+import logo from "/public/logo1.svg";
+import ProtectedRoute from "../../components/ProtectedRoute.jsx";
 
 function ConfirmEmail() {
   const [isVerified, setIsVerified] = useState(false);
@@ -16,6 +18,8 @@ function ConfirmEmail() {
     try {
       await activateAccount(enteredCode);
       setIsVerified(true);
+      sessionStorage.removeItem("isRegisterInfoSended");
+
       setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
       setError(err.message || "Invalid confirmation code");
@@ -25,8 +29,8 @@ function ConfirmEmail() {
   return (
     <div className={styles.mainBox}>
       <div className={styles.loginLeftSide}>
-        <button className={styles.logo}>Logo</button>
-        <div className={styles.contentleftSide}>
+      <img src={logo} alt=""className={styles.logo} />
+      <div className={styles.contentleftSide}>
           <div className={styles.backgroundDarker}>
             <h1 className={styles.greeting}>Welcome to UniRate!</h1>
             <p>We have sent a confirmation code to your email.</p>
@@ -38,9 +42,8 @@ function ConfirmEmail() {
           </div>
         </div>
       </div>
-
-      {!isVerified ? (
-        <div className={styles.loginRightSide}>
+      <div className={styles.loginRightSide}>
+        {!isVerified ? (
           <div className={styles.contentrightSideConfirm}>
             <h1 className={styles.confirmH2}>Confirm your e-mail</h1>
             <p className={styles.createAccParagraph}>
@@ -52,9 +55,7 @@ function ConfirmEmail() {
               Confirm
             </button>
           </div>
-        </div>
-      ) : (
-        <div className={styles.loginRightSideHidden}>
+        ) : (
           <div className={styles.contentrightSideConfirm}>
             <h1 className={styles.confirmH2}>Success!</h1>
             <p className={styles.createAccParagraph}>
@@ -67,8 +68,8 @@ function ConfirmEmail() {
               Sign In
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

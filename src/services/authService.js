@@ -55,18 +55,17 @@ export const getCurrentUser = async () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return response.data;
+    return { ...response.data, token };
   } catch (error) {
     console.error("Ошибка получения пользователя:", error);
     return null;
   }
 };
 
-// Активация аккаунта
 export const activateAccount = async (code) => {
   try {
     const response = await api.post("registry/open-api/auth/activation", null, {
-      params: { code }, // Код передаётся как query параметр
+      params: { code }, 
     });
 
     return response.data;
@@ -154,32 +153,55 @@ export async function resetPassword(email, newPassword) {
   }
 }
 
-export async function updateUserAvatar(userId, profilePictureUrl) {
+// export async function updateUserAvatar(userId, profilePictureUrl) {
+//   try {
+//     const token = localStorage.getItem("token");
+//     const response = await api.put(
+//       `registry/api/user/${userId}/update`,
+//       { id: userId, url: profilePictureUrl },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error updating avatar:", error);
+//     throw error.response?.data || error;
+//   }
+// }
+
+export async function updateUserAvatar(userId, imageUrl) {
   try {
     const token = localStorage.getItem("token");
+
     const response = await api.put(
-      `registry/api/user/${userId}/update`,
-      { id: userId, url: profilePictureUrl },
+      `registry/api/user/${userId}/profile-url`,
+      null,
       {
+        params: { url: imageUrl },
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
         },
       }
     );
+
     return response.data;
   } catch (error) {
-    console.error("Error updating avatar:", error);
-    throw error.response?.data || error;
+    console.error("Ошибка при обновлении аватара:", error);
+    throw error;
   }
 }
+
 export const requestResetPasswordCode = async (email) => {
   try {
     const response = await api.post(
       `registry/open-api/auth/send-reset-password-code`,
-      null, // пустое тело
+      null, 
       {
-        params: { email }, // email уходит в query-параметре
+        params: { email }, 
         headers: {
           "Content-Type": "application/json",
           Accept: "*/*",

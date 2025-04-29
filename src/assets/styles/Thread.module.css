@@ -1,12 +1,20 @@
-
-
 .threadPath {
   display: flex;
   flex-direction: row;
   gap: 8px;
   align-items: center;
 }
-.threadPath hr{
+
+.threadPath a {
+  text-decoration: none;
+  color: rgba(99, 99, 99, 1);
+}
+.threadPath p {
+  font-family: "Poppins";
+  font-weight: 600;
+  color: rgba(0, 147, 121, 1);
+}
+.threadPath hr {
   height: 14px;
   border: 1px solid rgba(99, 99, 99, 1);
 }
@@ -24,8 +32,7 @@
   flex-direction: column;
 }
 
-.UserCommentsList hr{
+.UserCommentsList hr {
   height: 168px;
   border: 1px solid rgba(230, 232, 236, 1);
 }
-

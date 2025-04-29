@@ -6,8 +6,9 @@ import LearningBro from "../../assets/LearningBro.svg";
 import StudentsBro from "../../assets/StudentsBro.svg";
 import LoginButton from "../../components/LoginButton.jsx";
 import { Link } from "react-router-dom";
+import logo from "/public/logo1.svg";
 
-import { login } from "../../services/authService.js";
+import { login as loginService } from "../../services/authService.js";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,12 +16,31 @@ function Login() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+
+
+
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    if (!email && !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+    if (!email) {
+      setError("Please fill in your email.");
+      return;
+    }
+    if (!password) {
+      setError("Please fill in your password.");
+      return;
+    }
+    
     try {
-      await login(email, password);
+      const response = await loginService(email, password);
+      loginService(response);
       navigate("/");
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
     } catch (err) {
       setError(err.message || "Login failed");
     }
@@ -29,13 +49,13 @@ function Login() {
   return (
     <div className={logStyle.mainBox}>
       <div className={logStyle.loginLeftSide}>
-        <button className={logStyle.logo}>Logo</button>
+        <img src={logo} alt="" className={logStyle.logo} />
         <div className={logStyle.contentleftSide}>
           <div className={logStyle.backgroundDarker}>
             <h1 className={logStyle.greeting}>Welcome to UniRate!</h1>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vulputate
-              ut laoreet velit ma.
+              Find and compare universities in Kazakhstan—quick, easy, and all
+              in one place.
             </p>
           </div>
 

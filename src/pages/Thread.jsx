@@ -9,13 +9,24 @@ import Button from "../components/Button.jsx";
 import Comment from "../components/Comment.jsx";
 import EmptyBtn from "../components/EmptyBtn.jsx";
 import { getCurrentUser } from "../services/authService.js"; // Предполагается, что эта функция находится в utils/auth
-
+import {
+  fetchForumById,
+  postComment,
+  fetchForumReviews,
+  replyToComment,
+} from "../services/forumService.js";
+import defProf from "../assets/img/profilepic.png";
+import { useAuth } from "../contexts/AuthContext";
+import Warning from "../layouts/WarningAlert";
 function Thread() {
-  const { forumId } = useParams(); // Access the forumId from the URL
-  const [forum, setForum] = useState(null); // State to store the forum data
+  const { forumId } = useParams();
+  const [forum, setForum] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
-
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const { isAuthenticated } = useAuth();
+  const [showWarning, setShowWarning] = useState(false);
   const cityOptions = [
     { value: "NU", label: "NU" },
     { value: "SDU", label: "SDU" },
@@ -23,79 +34,148 @@ function Thread() {
   ];
 
   useEffect(() => {
-    // Fetch the specific forum based on forumId
-    fetch(`https://unirate.kz/university/open-api/forums/${forumId}`)
-      .then((response) => response.json())
+    fetchForumById(forumId)
       .then((data) => setForum(data))
       .catch((error) => console.error("Error fetching forum:", error));
+
+    fetchForumReviews(forumId, page, 20, "desc")
+      .then((data) => {
+        setPage(1);
+        const reviews = data.content.map((review) => ({
+          id: review.id,
+          text: review.comment,
+          author: review.userName,
+          role: review.status,
+          postedTime: new Date(review.createdAt).toLocaleString(),
+          profileImg: review.profileImgUrl ? review.profileImgUrl : defProf,
+          replies: review.comments.map((reply) => ({
+            text: reply.comment,
+            author: reply.userName,
+            role: reply.status,
+            postedTime: new Date(reply.createdAt).toLocaleString(),
+            profileImg: reply.profileImgUrl,
+          })),
+        }));
+        setComments(reviews);
+      })
+      .catch((error) => console.error("Error fetching forum reviews:", error));
   }, [forumId]);
+
+  const loadMoreReviews = () => {
+    fetchForumReviews(forumId, page, 20, "desc")
+      .then((data) => {
+        const newReviews = data.content.map((review) => ({
+          id: review.id,
+          text: review.comment,
+          author: review.userName,
+          role: review.status,
+          postedTime: new Date(review.createdAt).toLocaleString(),
+          profileImg: review.profileImgUrl ? review.profileImgUrl : defProf,
+          replies: review.comments.map((reply) => ({
+            text: reply.comment,
+            author: reply.userName,
+            role: reply.status,
+            postedTime: new Date(reply.createdAt).toLocaleString(),
+            profileImg: reply.profileImgUrl,
+          })),
+        }));
+
+        setComments((prev) => [...prev, ...newReviews]);
+        setPage((prevPage) => prevPage + 1);
+        if (data.last) {
+          setHasMore(false);
+        }
+      })
+      .catch((error) => console.error("Error loading more reviews:", error));
+  };
+  const handleReturnMessage = () => {
+    setShowWarning(true);
+  };
 
   const handlePostComment = async () => {
     if (newComment.trim() === "") return;
-  
+
     try {
       const currentUser = await getCurrentUser();
-  
-      if (!currentUser || !currentUser.id) {
-        console.error("User not authenticated");
-        return;
-      }
-  
-      const requestBody = {
-        forumId: forumId,
+
+      const newPostedComment = await postComment({
+        forumId,
         userId: currentUser.id,
         comment: newComment,
-        rating: 0,
-      };
-  
-      console.log("Sending request with:", requestBody);
-  
-      const response = await fetch("https://unirate.kz/university/api/reviews", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
       });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to post comment. Server responded: ${errorText}`);
-      }
-  
-      const newPostedComment = await response.json();
+
       setComments((prevComments) => [
         ...prevComments,
-        { text: newPostedComment.comment, id: newPostedComment.id, replies: [] },
+        {
+          text: newPostedComment.comment,
+          id: newPostedComment.id,
+          author: currentUser.userName,
+          role: currentUser.role,
+          postedTime: new Date().toLocaleString(),
+          profileImg: newPostedComment.profileImgUrl || defProf,
+          replies: [],
+        },
       ]);
-  
+
       setNewComment("");
     } catch (error) {
       console.error("Error posting comment:", error);
     }
   };
-  const handlePostReply = (commentId, replyText) => {
+
+  const handlePostReply = async (commentId, replyText) => {
     if (replyText.trim()) {
-      setComments((prevComments) =>
-        prevComments.map((comment) =>
-          comment.id === commentId
-            ? { ...comment, replies: [...comment.replies, replyText] }
-            : comment
-        )
-      );
+      try {
+        const currentUser = await getCurrentUser();
+
+        if (!currentUser || !currentUser.id) {
+          setShowWarning(true);
+          return;
+        }
+
+        const newReply = await replyToComment(
+          commentId,
+          currentUser.id,
+          replyText
+        );
+
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.id === commentId
+              ? {
+                  ...comment,
+                  replies: [
+                    ...comment.replies,
+                    {
+                      text: newReply.comment,
+                      author: currentUser.userName,
+                      role: currentUser.role,
+                      postedTime: new Date().toLocaleString(),
+                    },
+                  ],
+                }
+              : comment
+          )
+        );
+      } catch (error) {
+        console.error("Error posting reply:", error);
+      }
     }
   };
 
   return (
     <>
+      {showWarning && (
+        <Warning
+          message="You need to log in first"
+          onClose={() => setShowWarning("")}
+        />
+      )}
+
       <Header />
       <div className={threadStyle.forumAdmissnDiv}>
         <div className={threadStyle.threadPath}>
-          <p>Forum</p>
-          <hr />
-          <p>Threads</p>
-          <hr />
-          <p>Admission</p>
+          <a href="/forum">Forum</a>
           <hr />
           <p>{forum ? forum.name : "Loading..."}</p>
         </div>
@@ -152,7 +232,6 @@ function Thread() {
                 }}
               >
                 <img src={messages} alt="" />
-                <p>{comments.length} comments</p>
               </div>
               <div
                 style={{
@@ -170,11 +249,23 @@ function Thread() {
             </div>
             <div className={threadStyle.commentSectionDiv}>
               <h3>Add a comment</h3>
+              {isAuthenticated ? null : (
+                <p
+                  style={{
+                    color: "red",
+                    fontWeight: "500",
+                    fontSize: "14px",
+                  }}
+                >
+                  if you wanna send message, log in
+                </p>
+              )}
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <input
                   type="text"
                   placeholder="Share your thought"
                   value={newComment}
+                  disabled={!isAuthenticated}
                   onChange={(e) => setNewComment(e.target.value)}
                   style={{
                     width: "81%",
@@ -183,11 +274,16 @@ function Thread() {
                     border: "1px solid rgba(216, 216, 216, 1)",
                   }}
                 />
-                <div onClick={handlePostComment}>
+                <div
+                  onClick={
+                    isAuthenticated ? handlePostComment : handleReturnMessage
+                  }
+                >
                   <Button content="Post it" />
                 </div>
               </div>
             </div>
+
             <div className={threadStyle.UserCommentsList}>
               <h3>Comments</h3>
               {comments.length === 0 ? (
@@ -197,9 +293,13 @@ function Thread() {
                   <div key={comment.id} style={{ marginTop: "32px" }}>
                     <Comment
                       text={comment.text}
+                      author={comment.author}
+                      role={comment.role}
+                      postedTime={comment.postedTime}
                       onReply={(replyText) =>
                         handlePostReply(comment.id, replyText)
                       }
+                      profileImg={comment.profileImg}
                     />
                     <div
                       style={{
@@ -212,7 +312,11 @@ function Thread() {
                         comment.replies.map((reply, index) => (
                           <div key={index} style={{ marginTop: "16px" }}>
                             <Comment
-                              text={reply}
+                              text={reply.text}
+                              author={reply.author}
+                              role={reply.role}
+                              postedTime={reply.postedTime}
+                              profileImg={reply.profileImg}
                               onReply={(replyText) =>
                                 handlePostReply(comment.id, replyText)
                               }
@@ -223,11 +327,26 @@ function Thread() {
                   </div>
                 ))
               )}
-              {comments.length > 3 && <EmptyBtn content="Load more" />}
             </div>
+            {hasMore && (
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                onClick={loadMoreReviews}
+              >
+                <Button content="Load More" />
+              </div>
+            )}
           </>
         )}
       </div>
+      <br />
+      <br />
+      <br />
       <Footer />
     </>
   );

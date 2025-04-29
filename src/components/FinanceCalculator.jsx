@@ -67,10 +67,7 @@ function FinanceCalculator() {
         </p>
       </div>
 
-      <div
-      className={fin.mainDivForCalcAndResult}
- 
-      >
+      <div className={fin.mainDivForCalcAndResult}>
         <div className={fin.inputTotalCostfilter}>
           <h5>Calculate the total cost of education</h5>
           <div

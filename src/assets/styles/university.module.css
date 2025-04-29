@@ -219,65 +219,8 @@ label {
   margin-top: 20px;
 }
 
-/* 📱 Адаптивность */
-@media (max-width: 1024px) {
-  .filterBox {
-    padding: 20px;
-  }
 
-  .filter {
-    flex-direction: column;
-    gap: 20px;
-  }
 
-  .applybtn {
-    position: static;
-    margin-top: 20px;
-  }
-  .filterContentWidth {
-    width: 290px;
-  }
-}
-
-@media (max-width: 768px) {
-  .filterBox {
-    width: 90%;
-    padding: 15px;
-  }
-
-  .title {
-    font-size: 18px;
-  }
-
-  .filterTitle p {
-    font-size: 12px;
-  }
-
-  .selectCity {
-    width: 100%;
-  }
-
-  .applybtn {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .filterBox {
-    padding: 10px;
-  }
-
-  .title {
-    font-size: 16px;
-  }
-
-  .filter {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-}
 .searchReasult {
   display: flex;
   flex-direction: column;
@@ -307,12 +250,21 @@ label {
   gap: 20px;
   font-family: "Poppins";
   justify-content: center;
-  cursor: pointer;
 }
 
 .uniLogoImg {
-  width: 20%;
-  height: 200px;
+  width: 500px;
+  height: 340px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.description {
+  color: rgba(122, 122, 122, 1);
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
 }
 
 .info {
@@ -320,4 +272,91 @@ label {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+/* 📱 Адаптивность */
+@media (max-width: 1024px) {
+  .filterBox {
+    padding: 48px 48px;
+  }
+
+  .filter {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .applybtn {
+    position: static;
+    margin-top: 20px;
+  }
+  .filterContentWidth {
+    width: 290px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filterBox {
+    width: 90%;
+    padding: 48px 48px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .filterTitle p {
+    font-size: 12px;
+  }
+
+  .selectCity {
+    width: 100%;
+  }
+
+  .applybtn {
+    width: 100%;
+    text-align: center;
+  }
+
+
+  .uniCard {
+    flex-direction: column;
+    padding: 40px;
+  }
+  .info {
+    width: 100%;
+  }
+  .uniLogoImg{
+    width: 100%;
+  }
+
+
+
+}
+
+
+@media (max-width: 480px) {
+  .filterBox {
+    padding: 24px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .filter {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .uniCard {
+    flex-direction: column;
+    padding: 50px;
+  }
+  .uniLogoImg{
+    width: 300px;
+    height: 200px;
+  }
+  .info {
+    width: 100%;
+  }
+  
 }

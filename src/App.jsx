@@ -3,10 +3,10 @@ import "./App.css";
 import Login from "./pages/LoginPages/Login.jsx";
 import SignUp from "./pages/LoginPages/Signup.jsx";
 import Home from "./pages/Home.jsx";
-import Universities from  "./pages/Universities.jsx";
+import Universities from "./pages/Universities.jsx";
 import University from "./pages/University.jsx";
 import Speciality from "./pages/Universityspeciality.jsx";
-import FinanceCalculator from "./pages/FinanceCalculator.jsx"
+import FinanceCalculator from "./pages/FinanceCalculator.jsx";
 import Forum from "./pages/Forum.jsx";
 import Thread from "./pages/Thread.jsx";
 import Contacts from "./pages/ContactUs.jsx";
@@ -27,42 +27,109 @@ import Profile from "./pages/Profile.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import FAQ from "./pages/FAQ.jsx";
 import Terms from "./pages/TermsAndConditions.jsx";
-import Confirm from "./pages/LoginPages/Confirm.jsx"
-import ExThread from "./pages/exThread.jsx"
+import Confirm from "./pages/LoginPages/Confirm.jsx";
 import EnterOTP from "./pages/LoginPages/EnterOTP.jsx";
-import ExProfile from "./pages/exProfile.jsx";
 import ForgotPassword from "./pages/LoginPages/ForgotPassword.jsx";
 import SetNewPass from "./pages/LoginPages/SetNewPassword.jsx";
 import SuccessResetPass from "./pages/LoginPages/SuccessResetPassword.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import { useAuth } from "./contexts/AuthContext.jsx";
+import Dashboard from "./pages/admin/Dashboard.jsx";
 
 function App() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/confirm" element={<Confirm />} />
+        <Route
+          path="/confirm"
+          element={
+            <ProtectedRoute
+              condition={
+                sessionStorage.getItem("isRegisterInfoSended") === "true"
+              }
+              redirectTo="/signup"
+            >
+              <Confirm />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
-        <Route path="/otp" element={<EnterOTP />} />
-        <Route path="/setNewPassword" element={<SetNewPass />} />
-        <Route path="/success-reset-password" element={<SuccessResetPass />} />
-        
+
+        <Route
+          path="/otp"
+          element={
+            <ProtectedRoute
+              condition={sessionStorage.getItem("isEmailProvided") === "true"}
+              redirectTo="/forgotPassword"
+            >
+              <EnterOTP />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/setNewPassword"
+          element={
+            <ProtectedRoute
+              condition={sessionStorage.getItem("otpVerified") === "true"}
+              redirectTo="/forgotPassword"
+            >
+              <SetNewPass />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/success-reset-password"
+          element={
+            <ProtectedRoute
+              condition={
+                sessionStorage.getItem("isPasswordResetted") === "true"
+              }
+              redirectTo="/forgotPassword"
+            >
+              <SuccessResetPass />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/" element={<Home />} />
         <Route path="/universities" element={<Universities />} />
-        <Route path="/university/:id" element={<University />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/university/speciality/:id" element={<Speciality />} />
+        <Route path="/view-university/:id" element={<University />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute condition={isAuthenticated} redirectTo="/">
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-university/speciality/:id"
+          element={<Speciality />}
+        />
         <Route path="/calculator" element={<FinanceCalculator />} />
         <Route path="/forum" element={<Forum />} />
-        <Route path="/thread/:forumId" element={<Thread />} /> 
+        <Route path="/thread/:forumId" element={<Thread />} />
         <Route path="/contacts" element={<Contacts />} />
-        <Route path="/favouriteuniversities" element={<FavouriteUniversities />} />
-        <Route path="/notifications" element={<Notifications />} />
+        <Route
+          path="/favouriteuniversities"
+          element={
+            <ProtectedRoute condition={isAuthenticated} redirectTo="/">
+              <FavouriteUniversities />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
-        
-        <Route path="/te" element={<ExThread />} />
-        <Route path="/exProf" element={<ExProfile />} />
+
+
+        <Route path="/admin/dashboard/adminid" element={
+          <Dashboard />
+          
+          } />
 
       </Routes>
     </Router>

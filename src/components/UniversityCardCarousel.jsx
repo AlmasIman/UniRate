@@ -70,46 +70,27 @@ const Carousel = () => {
       alert("Не удалось удалить из избранного");
     }
   };
-  // const handleDeleteFromFavorites = async (universityId) => {
-  //   try {
-  //     const user = await getCurrentUser();
-  //     if (!user) {
-  //       alert("Войдите в аккаунт, чтобы удалять из избранного.");
-  //       return;
-  //     }
-
-  //     const res = await fetch(
-  //       `https://unirate.kz/university/open-api/favorites/${user.id}`,
-  //       {
-  //         method: "DELETE",
-  //       }
-  //     );
-
-  //     if (!res.ok) throw new Error("Ошибка при удалении");
-
-  //     setFavourites((prev) => prev.filter((id) => id !== universityId));
-  //     alert("Университет удалён из избранного!");
-  //   } catch (error) {
-  //     alert("Ошибка при удалении из избранного.");
-  //     console.error(error);
-  //   }
-  // };
 
   if (loading) return <Loading />;
   if (error) return <p>Something went wrong!</p>;
 
-  const visibleCount = window.innerWidth >= 1200 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+  const visibleCount =
+    window.innerWidth >= 1200 ? 3 : window.innerWidth >= 768 ? 2 : 1;
   const numGroups = Math.ceil(universities.length / visibleCount);
 
   const handlePrev = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? Math.max(universities.length - visibleCount, 0) : prevIndex - visibleCount
+      prevIndex === 0
+        ? Math.max(universities.length - visibleCount, 0)
+        : prevIndex - visibleCount
     );
   };
 
   const handleNext = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex + visibleCount >= universities.length ? 0 : prevIndex + visibleCount
+      prevIndex + visibleCount >= universities.length
+        ? 0
+        : prevIndex + visibleCount
     );
   };
 
@@ -186,169 +167,156 @@ const Carousel = () => {
         </div>
         <br />
         <div className="carousel-inner">
-          {[...Array(numGroups)].map(
-            (_, groupIndex) => (
+          {[...Array(numGroups)].map((_, groupIndex) => (
+            <div
+              key={groupIndex}
+              className={`carousel-item ${
+                groupIndex === Math.floor(activeIndex / visibleCount)
+                  ? "active"
+                  : ""
+              }`}
+              style={{
+                height: "550px",
+              }}
+            >
               <div
-                key={groupIndex}
-                className={`carousel-item ${
-                  groupIndex === Math.floor(activeIndex / visibleCount) ? "active" : ""
-                }`}
+                className="d-flex "
                 style={{
-                  height: "550px",
+                  width: "90%",
+                  justifyContent: "center",
+                  margin: "auto",
+                  gap: "32px",
                 }}
               >
-                <div
-                  className="d-flex "
-                  style={{
-                    width: "90%",
-                    justifyContent: "center",
-                    margin: "auto",
-                    gap: "32px",
-                  }}
-                >
-                  {universities
-                    .slice(groupIndex * visibleCount, groupIndex * visibleCount + visibleCount)
-                    .map((uni) => (
-                      <Link
-                        to={`/university/${uni.id}`}
-                        style={{ textDecoration: "none" }}
+                {universities
+                  .slice(
+                    groupIndex * visibleCount,
+                    groupIndex * visibleCount + visibleCount
+                  )
+                  .map((uni) => (
+                    <Link
+                      key={uni.id}
+                      to={`/view-university/${uni.id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <div
+                        key={uni.id}
+                        className="card mx-2"
+                        style={{
+                          position: "relative",
+                          width: "405px",
+                          minHeight: "476px",
+                          borderRadius: "20px",
+                          border: "none",
+                          boxShadow:
+                            "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05)",
+                        }}
                       >
-                        <div
-                          key={uni.id}
-                          className="card mx-2"
-                          style={{
-                            position: "relative",
-                            width: "405px",
-                            minHeight: "476px",
-                            borderRadius: "20px",
-                            border: "none",
-                            boxShadow:
-                              "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05)",
-                          }}
-                        >
-                          {isAuthenticated ? (
-                            favourites.includes(uni.id) ? (
-                              <img
-                                src={deleted}
-                                alt="favouriteIcon"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  handleDeleteFromFavorites(uni.id);
-                                }}
-                                style={{
-                                  position: "absolute",
-                                  right: "12px",
-                                  top: "12px",
-                                  cursor: "pointer",
-                                }}
-                              />
-                            ) : (
-                              
-                              <img
-                                src={like}
-                                alt="favouriteIcon"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  handleAddToFavorites(uni.id);
-                                }}
-                                style={{
-                                  position: "absolute",
-                                  right: "12px",
-                                  top: "12px",
-                                  cursor: "pointer",
-                                }}
-                              />
-                            )
-                          ) : null}
-
-                          <img
-                            src={uni.logoUrl}
-                            className="card-img-top"
-                            style={{
-                              borderTopLeftRadius: "20px",
-                              borderTopRightRadius: "20px",
-                              width: "100%",
-                              height: "278px",
-                            }}
-                            alt={uni.name}
-                          />
-                          <div
-                            className="card-body"
-                            style={{ position: "relative" }}
-                          >
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center",
+                        {isAuthenticated ? (
+                          favourites.includes(uni.id) ? (
+                            <img
+                              src={deleted}
+                              alt="favouriteIcon"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleDeleteFromFavorites(uni.id);
                               }}
-                            >
-                              <h5
-                                className="card-title"
-                                style={{
-                                  margin: "20px 0 12px 0",
-                                  display: "-webkit-box",
-                                  WebkitLineClamp: "1",
-                                  WebkitBoxOrient: "vertical",
-                                  overflow: "hidden",
-                                }}
-                              >
-                                {uni.name}
-                              </h5>
-                              <p
-                                style={{
-                                  border: "1px solid rgba(45, 45, 45, 1)",
-                                  width: "41px",
-                                  height: "38px",
-                                  textAlign: "center",
-                                  paddingTop: "6px",
-                                  borderRadius: "4px",
-                                }}
-                              >
-                                {uni.rating}
-                              </p>
-                            </div>
-                            <br />
-                            <p
-                              className=""
                               style={{
-                                textAlign: "start",
-                                width: "90%",
+                                position: "absolute",
+                                right: "12px",
+                                top: "12px",
+                                cursor: "pointer",
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={like}
+                              alt="favouriteIcon"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleAddToFavorites(uni.id);
+                              }}
+                              style={{
+                                position: "absolute",
+                                right: "12px",
+                                top: "12px",
+                                cursor: "pointer",
+                              }}
+                            />
+                          )
+                        ) : null}
+
+                        <img
+                          src={uni.logoUrl}
+                          className="card-img-top"
+                          style={{
+                            borderTopLeftRadius: "20px",
+                            borderTopRightRadius: "20px",
+                            width: "100%",
+                            height: "278px",
+                          }}
+                          alt={uni.name}
+                        />
+                        <div
+                          className="card-body"
+                          style={{ position: "relative" }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <h5
+                              className="card-title"
+                              style={{
+                                margin: "20px 0 12px 0",
                                 display: "-webkit-box",
-                                WebkitLineClamp: "3",
+                                WebkitLineClamp: "1",
                                 WebkitBoxOrient: "vertical",
                                 overflow: "hidden",
                               }}
                             >
-                              {uni.description}
-                            </p>
-                            <span
-                              className="badge"
+                              {uni.name}
+                            </h5>
+                            <p
                               style={{
-                                height: "32px",
-                                borderRadius: "8px",
-                                backgroundColor: "rgba(229, 244, 242, 1)",
-                                fontFamily: "Mulish",
-                                fontSize: "16px",
-                                lineHeight: "150%",
-                                fontWeight: "400",
-                                color: "black",
-                                padding: "4px",
+                                border: "1px solid rgba(45, 45, 45, 1)",
+                                width: "41px",
+                                height: "38px",
+                                textAlign: "center",
+                                paddingTop: "6px",
+                                borderRadius: "4px",
                               }}
                             >
-                              {uni.pros}
-                            </span>
+                              {uni.rating}
+                            </p>
                           </div>
+                          <br />
+                          <p
+                            className=""
+                            style={{
+                              textAlign: "start",
+                              width: "90%",
+                              display: "-webkit-box",
+                              WebkitLineClamp: "3",
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                            }}
+                          >
+                            {uni.description}
+                          </p>
                         </div>
-                      </Link>
-                    ))}
-                </div>
+                      </div>
+                    </Link>
+                  ))}
               </div>
-            )
-          )}
+            </div>
+          ))}
         </div>
       </div>
       <div className="d-flex justify-content-center">

@@ -28,7 +28,9 @@
   width: 50%;
   display: flex;
   justify-content: center;
+  
 }
+
 
 .loginRightSideForSignUp {
   width: 50%;
@@ -40,8 +42,8 @@
 
 .logo {
   position: absolute;
+  width: 130px;
 }
-
 .contentleftSide {
   color: white;
   display: flex;
@@ -250,7 +252,7 @@
     flex-direction: column;
   }
   .backgroundDarker {
-    background-color: rgba(45, 45, 45, 0.5);
+    background-color: rgba(45, 45, 45, 0.438);
     position: absolute;
     width: 100%;
     height: fit-content;
@@ -259,14 +261,16 @@
     top: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    text-align: start;
     padding: 100px;
     gap: 20px;
+    justify-content: center;
+    align-items: center;
   }
 
   .backgroundDarker p {
     width: 90%;
+    font-size: 16px;
+    z-index: 3;
   }
   .loginLeftSide,
   .loginRightSide,
@@ -287,12 +291,12 @@
     align-items: center;
     text-align: center;
   }
-
   .greeting {
-    width: 100%;
-    font-size: 40px;
+    width: auto;
+    font-size: 30px;
     line-height: 36px;
     height: auto;
+    z-index: 3;
   }
 
   .BtnLong {
@@ -305,7 +309,9 @@
   .welcomeLoginIcon {
     position: absolute;
     width: 90%;
+    height: 90%;
     top: 0;
+    z-index: 1;
   }
 
   .codeInput {
@@ -348,4 +354,15 @@
   .resendCode {
     font-size: 14px;
   }
+}
+
+
+@media (max-width: 375px) {
+
+.greeting {
+  width: 300px;
+}
+.backgroundDarker p {
+  width: 300px;
+}
 }

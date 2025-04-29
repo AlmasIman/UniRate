@@ -10,12 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fontsource/dm-sans": "^5.2.5",
     "@fontsource/inter": "^5.2.5",
     "@fontsource/mulish": "^5.2.5",
     "@fontsource/poppins": "^5.2.5",
     "@fontsource/rubik": "^5.2.5",
     "@google/generative-ai": "^0.24.0",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",

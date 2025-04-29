@@ -11,8 +11,9 @@ import MultiRangeSlider from "../components/PriceFilter.jsx";
 import map from "../assets/icons/MapPinLine.svg";
 import dollar from "../assets/icons/dollar-circle.svg";
 import documentfilter from "../assets/icons/document-filter.svg";
-import UniversityCardCarousel from "../components/UniversityCardCarousel.jsx";
 import uniPlacehodlder from "/public/uniPlaceholder.jpg";
+import TopUnis from "../components/ReactCarouselForUniversity.jsx";
+
 function Universities() {
   const cityOptions = [
     { value: "Almaty", label: "Almaty" },
@@ -41,19 +42,33 @@ function Universities() {
   const priceRef = useRef();
 
   const fetchUniversityByName = async (name) => {
-    if (!name) return;
+    if (!name) {
+      setUniversityData([]);
+      return;
+    }
 
     try {
       const response = await fetch(
         `https://unirate.kz/university/open-api/universities/name/${name}`
       );
+
+      if (!response.ok) {
+        setUniversityData([]);
+        return;
+      }
+
       const data = await response.json();
-      setUniversityData(data); 
+
+      if (!data || Object.keys(data).length === 0) {
+        setUniversityData([]);
+      } else {
+        setUniversityData(Array.isArray(data) ? data : [data]);
+      }
     } catch (error) {
       console.error("Error fetching university:", error);
+      setUniversityData([]); // Очистим, если ошибка
     }
   };
-
   const handleSearchClick = () => {
     fetchUniversityByName(searchQuery);
   };
@@ -97,14 +112,17 @@ function Universities() {
           placeholder="Search for university…"
           className={unistyle.searchInput}
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // Update search query
-        />
-        {/* Trigger search on click */}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearchClick();
+          }}
+        />{" "}
+     
         <img
           src={search}
           alt="Search"
-          onClick={handleSearchClick} // Add click event to trigger search
-          style={{ cursor: "pointer" }} // Makes the icon look clickable
+          onClick={handleSearchClick} 
+          style={{ cursor: "pointer" }} 
         />
       </div>
 
@@ -136,6 +154,8 @@ function Universities() {
                     backgroundColor: isFocused
                       ? "rgba(20, 174, 130, 0.05)"
                       : "white",
+                    color: "black",
+
                     fontSize: "14px",
                     textAlign: "center",
                   }),
@@ -215,12 +235,9 @@ function Universities() {
       {Array.isArray(universityData) && universityData.length > 0 && (
         <div className={unistyle.searchReasult}>
           <h2>Search Results:</h2>
+          <br />
           <div className={unistyle.resultList}>
             {universityData.map((uni) => (
-              <Link
-                to={`/university/${uni.id}`}
-                style={{ textDecoration: "none", color: "#212529" }}
-              >
                 <div key={uni.id} className={unistyle.uniCard}>
                   <img
                     src={!uni.logoUrl ? uniPlacehodlder : uni.logoUrl}
@@ -229,43 +246,71 @@ function Universities() {
                   />
                   <div className={unistyle.info}>
                     <h3>{uni.name}</h3>
-                    <p>{uni.description}</p>
-                    <p>
-                      <strong>Location:</strong> {uni.location}
+                    <p className={unistyle.description}>{uni.description}</p>
+                    <p className={unistyle.description}>
+                      <strong style={{ color: "black" }}>Location:</strong>{" "}
+                      {uni.location}
                     </p>
-                    <p>
-                      <strong>Rating:</strong> {uni.rating} / 5
+                    <p className={unistyle.description}>
+                      <strong style={{ color: "black" }}>Rating:</strong>{" "}
+                      {uni.rating} / 5
                     </p>
-                    <a
-                      href={uni.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none" }}
-                    >
-                      Visit Website
-                    </a>
+                    <div style={{display:'flex', justifyContent: 'flex-end'}}>
+                      <Button content="Visit Website" path={uni.website} />
+                    </div>
                   </div>
                 </div>
-              </Link>
             ))}
           </div>
         </div>
       )}
 
-      {Array.isArray(universityData) && universityData.length === 0 && (
-        <div className={unistyle.searchReasult}>
-          <h2>Nothing is found</h2>
-          <p>Try adjusting your filters or search terms.</p>
-        </div>
-      )}
-      <div className={unistyle.uniListContainer}>
-        <p>Most Popular</p>
-        <h1>University lists</h1>
+      {universityData &&
+        Array.isArray(universityData) &&
+        universityData.length === 0 && (
+          <div className={unistyle.searchReasult}>
+            <h2>Nothing is found</h2>
+            <p>Try adjusting your filters or search terms.</p>
+          </div>
+        )}
 
-        <div className={unistyle.studDiv}>
-          <UniversityCardCarousel />
-        </div>
+      <br />
+      <br />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "20px",
+          textAlign: "center",
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "Mulish",
+            fontWeight: "400",
+            fontSize: "16px",
+          }}
+        >
+          Discover top universities in Kazakhstan.
+        </p>
+        <h1
+          style={{
+            fontFamily: "Poppins",
+            fontWeight: "700",
+            fontSize: "38px",
+          }}
+        >
+          Most Popular
+        </h1>
       </div>
+      <br />
+      <br />
+
+      <TopUnis />
+
+      <br />
+      <br />
       <br />
 
       <Footer />

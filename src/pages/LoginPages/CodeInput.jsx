@@ -6,13 +6,13 @@ const CodeInput = ({ length = 4, onCodeChange }) => {
   const inputsRef = useRef([]);
 
   const handleChange = (index, e) => {
-    const value = e.target.value.replace(/\D/, ""); // Разрешаем только цифры
+    const value = e.target.value.replace(/\D/, ""); 
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
 
     const fullCode = newCode.join("");
-    onCodeChange(fullCode); // Передаем полный код в ConfirmEmail
+    onCodeChange(fullCode); 
 
     if (value && index < length - 1) {
       inputsRef.current[index + 1].focus();
@@ -23,13 +23,13 @@ const CodeInput = ({ length = 4, onCodeChange }) => {
     if (e.key === "Backspace") {
       const newCode = [...code];
       if (newCode[index]) {
-        newCode[index] = ""; // Очищаем текущий ввод
+        newCode[index] = ""; 
       } else if (index > 0) {
-        inputsRef.current[index - 1].focus(); // Переключаемся на предыдущий ввод
-        newCode[index - 1] = ""; // Очищаем предыдущий ввод
+        inputsRef.current[index - 1].focus(); 
+        newCode[index - 1] = ""; 
       }
       setCode(newCode);
-      onCodeChange(newCode.join("")); // Обновляем код
+      onCodeChange(newCode.join("")); 
     }
   };
 

@@ -10,11 +10,7 @@
 }
 
 .navbar .logo {
-  font-family: "Rubik", sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 28px;
-  letter-spacing: 0px;
+  width: 120px;
 }
 .navigation {
   display: flex;
@@ -35,6 +31,11 @@ header hr {
   text-align: center;
   text-decoration: none;
   color: #009379;
+}
+.link :hover {
+  color: #009379;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .hamburger {
@@ -60,7 +61,7 @@ header hr {
   cursor: pointer;
   display: none;
 }
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .humburger {
     display: flex;
   }
@@ -69,7 +70,6 @@ header hr {
     top: 70px;
     left: 0;
     right: 0;
-    width: 100%;
     background-color: white;
     z-index: 1000;
     flex-direction: column;
@@ -78,7 +78,6 @@ header hr {
     display: none;
     overflow-y: auto;
     pointer-events: auto;
-
     border-radius: 16px;
     padding-top: 20px;
     padding-right: 16px;
@@ -98,7 +97,6 @@ header hr {
     flex-wrap: wrap;
   }
 }
-
 .backdrop {
   position: fixed;
   top: 0;

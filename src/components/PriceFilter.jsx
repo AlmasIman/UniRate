@@ -106,7 +106,7 @@ const CatlogPriceFilter = forwardRef((props, ref) => {
     <div className={styles.doubleSliderBox}>
       <div className={styles.inputBox}>
         <div className={styles.minBox}>
-          <span>$</span>
+          <span>₸</span>
           <input
             type="number"
             value={minInput}
@@ -117,11 +117,9 @@ const CatlogPriceFilter = forwardRef((props, ref) => {
             max={maxVal - minGap}
           />
         </div>
-        <div>
           <img src={minus} alt="" />
-        </div>
         <div className={styles.maxBox}>
-          <span>$</span>
+          <span>₸</span>
           <input
             type="number"
             value={maxInput}

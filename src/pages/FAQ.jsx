@@ -8,24 +8,29 @@ import faq from "../assets/styles/Faq.module.css";
 
 const faqData = [
   {
-    question: "Posuere amet vel egestas malesuada vel odio neque.",
+    question: "What is Unirate?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dictum arcu, dolor, molestie feugiat rutrum id urna quisque purus. Sit ut non urna auctor libero, dictumst ut adipiscing. Platea non convallis vel iaculis nec odio. Nulla habitant felis laoreet pharetra scelerisque placerat scelerisque interdum. Lacus habitasse neque, scelerisque aliquet. Nec, bibendum viverra vitae, molestie cum ut. Pharetra lectus volutpat arcu ut ultrices eu sit volutpat. Pretium egestas in massa cursus ornare. Amet, non gravida rutrum luctus ",
+      "Unirate is a platform that helps students explore and compare universities in Kazakhstan. We provide detailed information about programs, admission scores, grants, reviews, and career paths to help you make informed decisions.",
   },
   {
-    question: "Posuere amet vel egestas malesuada vel odio neque.",
+    question: "Is Unirate free to use?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dictum arcu, dolor, molestie feugiat rutrum id urna quisque purus. Sit ut non urna auctor libero, dictumst ut adipiscing. Platea non convallis vel iaculis nec odio. Nulla habitant felis laoreet pharetra scelerisque placerat scelerisque interdum. Lacus habitasse neque, scelerisque aliquet. Nec, bibendum viverra vitae, molestie cum ut. Pharetra lectus volutpat arcu ut ultrices eu sit volutpat. Pretium egestas in massa cursus ornare. Amet, non gravida rutrum luctus ",
+      "Yes, Unirate is completely free for all users. You can browse universities, programs, and student reviews without any charges or sign-up.",
   },
   {
-    question: "Posuere amet vel egestas malesuada vel odio neque.",
+    question: "How accurate is the information on Unirate?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dictum arcu, dolor, molestie feugiat rutrum id urna quisque purus. Sit ut non urna auctor libero, dictumst ut adipiscing. Platea non convallis vel iaculis nec odio. Nulla habitant felis laoreet pharetra scelerisque placerat scelerisque interdum. Lacus habitasse neque, scelerisque aliquet. Nec, bibendum viverra vitae, molestie cum ut. Pharetra lectus volutpat arcu ut ultrices eu sit volutpat. Pretium egestas in massa cursus ornare. Amet, non gravida rutrum luctus ",
+      "We gather our data from official sources such as the Ministry of Education of Kazakhstan, university websites, and verified student contributions. We regularly update content to ensure accuracy.",
   },
   {
-    question: "Posuere amet vel egestas malesuada vel odio neque.",
+    question: "I’m a high school student. How can Unirate help me?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dictum arcu, dolor, molestie feugiat rutrum id urna quisque purus. Sit ut non urna auctor libero, dictumst ut adipiscing. Platea non convallis vel iaculis nec odio. Nulla habitant felis laoreet pharetra scelerisque placerat scelerisque interdum. Lacus habitasse neque, scelerisque aliquet. Nec, bibendum viverra vitae, molestie cum ut. Pharetra lectus volutpat arcu ut ultrices eu sit volutpat. Pretium egestas in massa cursus ornare. Amet, non gravida rutrum luctus ",
+      "Unirate helps you: Discover suitable university programs. Learn about admission requirements and scores. See real student reviews. Understand career prospects based on your interests.",
+  },
+  {
+    question: "How can I contact the Unirate team?",
+    answer:
+      "You can reach out to us via our Contact Us page or email us directly at support@unirate.kz. We’re happy to help!",
   },
 ];
 
@@ -33,11 +38,10 @@ function FAQ() {
   const [openIndexes, setOpenIndexes] = useState([]);
 
   const toggleAccordion = (index) => {
-    setOpenIndexes(
-      (prevIndexes) =>
-        prevIndexes.includes(index)
-          ? prevIndexes.filter((i) => i !== index) 
-          : [...prevIndexes, index] 
+    setOpenIndexes((prevIndexes) =>
+      prevIndexes.includes(index)
+        ? prevIndexes.filter((i) => i !== index)
+        : [...prevIndexes, index]
     );
   };
   return (

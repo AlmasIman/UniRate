@@ -1,79 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import arrlowLeft from "../assets/icons/ArrowLeft.svg";
 import arrlowRight from "../assets/icons/ArrowRight.svg";
 import { Link } from "react-router-dom";
-
-const Carousel = (props) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [itemsPerSlide, setItemsPerSlide] = useState(4);
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import '../assets/styles/facultylistStyle.css'
+const CarouselComponent = (props) => {
   const faculties = props.facultyList || [];
-  useEffect(() => {
-    const updateItemsPerSlide = () => {
-      if (window.innerWidth < 768) {
-        setItemsPerSlide(1);
-      } else if (window.innerWidth < 992) {
-        setItemsPerSlide(2);
-      } else {
-        setItemsPerSlide(4);
-      }
-    };
 
-    updateItemsPerSlide();
-    window.addEventListener("resize", updateItemsPerSlide);
-    return () => window.removeEventListener("resize", updateItemsPerSlide);
-  }, []);
-
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === 0
-        ? faculties.length - itemsPerSlide
-        : prevIndex - itemsPerSlide
-    );
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex + itemsPerSlide >= faculties.length
-        ? 0
-        : prevIndex + itemsPerSlide
-    );
-  };
+  const CustomButtonGroup = ({ next, previous }) => (
+    <div
+      style={{
+        position: "absolute",
+        top: "0",
+        right: "0",
+        display: "flex",
+        gap: "8px",
+      }}
+    >
+      <button
+        onClick={previous}
+        style={{
+          backgroundColor: "white",
+          width: "36px",
+          height: "36px",
+          border: "none",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img src={arrlowLeft} alt="Previous" />
+      </button>
+      <button
+        onClick={next}
+        style={{
+          backgroundColor: "white",
+          width: "36px",
+          height: "36px",
+          border: "none",
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img src={arrlowRight} alt="Next" />
+      </button>
+    </div>
+  );
 
   return (
     <div
       className="position-relative container py-5"
-      style={{ position: "relative" }}
+      style={{
+        position: "relative",
+      }}
     >
-      <div
-        className="d-flex justify-content-end position-absolute top-0 end-0"
-        style={{ gap: "8px" }}
-      >
-        <button
-          onClick={handlePrev}
-          style={{
-            backgroundColor: "white",
-            width: "36px",
-            height: "36px",
-            border: "none",
-            borderRadius: "50%",
-          }}
-        >
-          <img src={arrlowLeft} alt="Previous" />
-        </button>
-        <button
-          onClick={handleNext}
-          style={{
-            backgroundColor: "white",
-            width: "36px",
-            height: "36px",
-            border: "none",
-            borderRadius: "50%",
-          }}
-        >
-          <img src={arrlowRight} alt="Next" />
-        </button>
-      </div>
       <h1
         style={{
           fontFamily: "Poppins",
@@ -89,98 +74,95 @@ const Carousel = (props) => {
 
       <br />
 
-      <div
-        id="carouselExample"
-        className="carousel slide"
-        data-bs-ride="carousel"
+      <Carousel
+        responsive={{
+          superLargeDesktop: { breakpoint: { max: 4000, min: 1400 }, items: 4 },
+          desktop: { breakpoint: { max: 1400, min: 1000 }, items: 3 },
+          tablet: { breakpoint: { max: 1000, min: 768 }, items: 2 },
+          mobile: { breakpoint: { max: 768, min: 0 }, items: 1 },
+        }}
+        infinite={true}
+        autoPlay={false}
+        itemClass="carousel-item-padding-32px" // Here, set the padding to 32px
+        customButtonGroup={<CustomButtonGroup />}
+        renderButtonGroupOutside={true}
+        arrows={false}
+        partialVisible={true}
+        focusOnSelect={true}
       >
-        <div className="carousel-inner">
-          {[...Array(Math.ceil(faculties.length / itemsPerSlide))].map(
-            (_, groupIndex) => (
-              <div
-                key={groupIndex}
-                className={`carousel-item ${
-                  groupIndex === Math.floor(activeIndex / itemsPerSlide)
-                    ? "active"
-                    : ""
-                }`}
-              >
-                <div
-                  className="d-flex justify-content-center"
-                  style={{ gap: "32px" }}
-                >
-                  {faculties
-                    .slice(
-                      groupIndex * itemsPerSlide,
-                      groupIndex * itemsPerSlide + itemsPerSlide
-                    )
-         
-                    .map((faculty) => (
-                      <Link to={`/university/speciality/${faculty.id}`} style={{textDecoration: 'none', color: 'black'}}>
-                        <div
-                          key={faculty.id}
-                          className="mx-2"
-                          style={{
-                            position: "relative",
-                            width: "295px",
-                            height: "374px",
-                            borderRadius: "20px",
-                            border: "none",
-                            boxShadow:
-                              "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05)",
-                          }}
-                        >
-                          <img
-                            src="/public/img1.png"
-                            className="card-img-top"
-                            style={{
-                              borderTopLeftRadius: "20px",
-                              borderTopRightRadius: "20px",
-                              width: "295px",
-                              height: "278px",
-                            }}
-                            alt={faculty.name}
-                          />
-                          <div className="card-body">
-                            <h5
-                              className="card-title"
-                              style={{ margin: "20px 0 12px 20px" }}
-                            >
-                              {faculty.name}
-                            </h5>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                </div>
-              </div>
-            )
-          )}
-        </div>
-      </div>
-      <div className="d-flex justify-content-center mt-3">
-        {[...Array(Math.ceil(faculties.length / itemsPerSlide))].map(
-          (_, index) => (
-            <button
-              key={index}
-              className={`mx-1`}
+        {faculties.map((faculty) => (
+          <Link
+            key={faculty.id}
+            to={`/view-university/speciality/${faculty.id}`}
+            style={{
+              textDecoration: "none",
+              color: "black",
+              marginTop: "50px",
+              marginBottom: "50px",
+              display: "flex", // Center the cards in the container
+              justifyContent: "center",
+            }}
+          >
+            <div
+              className="mx-2"
               style={{
-                width: "8.9px",
-                height: "12px",
-                borderRadius: "50%",
-                backgroundColor:
-                  index === Math.floor(activeIndex / itemsPerSlide)
-                    ? "rgba(0, 147, 121, 1)"
-                    : "rgba(225, 229, 238, 1)",
+                position: "relative",
+                width: "295px",
+                height: "374px",
+                borderRadius: "20px",
                 border: "none",
+                boxShadow:
+                  "34.85px 29.63px 48.34px 0px rgba(20, 174, 130, 0.05)",
+                marginRight: "20px", // Ensure there's space between items
               }}
-              onClick={() => setActiveIndex(index * itemsPerSlide)}
-            ></button>
-          )
-        )}
-      </div>
+            >
+              <div
+                style={{
+                  position: "relative",
+                  width: "295px",
+                  height: "278px",
+                }}
+              >
+                <img
+                  src={faculty.specialtyImageUrl}
+                  className="card-img-top"
+                  style={{
+                    borderTopLeftRadius: "20px",
+                    borderTopRightRadius: "20px",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                  alt={faculty.name}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(48, 55, 51, 0.3)",
+                    borderTopLeftRadius: "20px",
+                    borderTopRightRadius: "20px",
+                  }}
+                />
+              </div>
+              <div className="card-body">
+                <h5
+                  className="card-title"
+                  style={{ margin: "20px 0 12px 20px" }}
+                >
+                  {faculty.name}
+                </h5>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </Carousel>
     </div>
   );
 };
 
-export default Carousel;
+export default CarouselComponent;

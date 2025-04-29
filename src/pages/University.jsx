@@ -2,7 +2,7 @@ import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import oneuni from "../assets/styles/OneUniversity.module.css";
 import like from "../assets/icons/favourites.svg";
-import star from "../assets/icons/Star.svg";
+import filledStar from "../assets/icons/Star.svg";
 import Button from "../components/Button";
 import FacultyList from "../components/FacultyList.jsx";
 import EmptyBtn from "../components/EmptyBtn.jsx";
@@ -10,25 +10,88 @@ import emptyStar from "../assets/icons/emptyStar.svg";
 import arrow from "../assets/icons/ArrowBtn.svg";
 import Comment from "../components/Comment.jsx";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom"; // Import the Link component from react-router-dom
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { getCurrentUser } from "../services/authService.js";
 import Loading from "../components/loading.jsx";
+import defPic from "../assets/img/profilepic.png";
+import { rateUniversity } from "../services/universityService.js"; // функция отправки рейтинга
+import { fetchByUniID, getStatisticOfForum } from "../services/forumService.js";
+import { useAuth } from "../contexts/AuthContext";
+import { postComment, replyToComment } from "../services/forumService.js";
+import Warning from "../layouts/WarningAlert";
 
 function University() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [university, setUniversity] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getCurrentUser();
-      setIsAuthenticated(!!user);
-    };
+  const [reviews, setReviews] = useState([]);
+  const [hovered, setHovered] = useState(0);
+  const [selected, setSelected] = useState(0);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [reviewStats, setReviewStats] = useState({
+    reviewCount: 0,
+    averageRating: 0,
+  });
+  const { isAuthenticated } = useAuth();
+  const [showWarning, setShowWarning] = useState(false);
+  const [forumId, setForumId] = useState(null);
+  const navigate = useNavigate();
+  const [newCommentText, setNewCommentText] = useState("");
 
-    fetchUser();
-  }, []);
-  
+  const handlePostComment = async () => {
+    try {
+      const user = await getCurrentUser();
+      if (!user) throw new Error("You must be logged in to post a comment");
+
+      if (reviews.length > 0) {
+        const forumId = reviews[0].forumId;
+        const result = await postComment({
+          forumId,
+          userId: user.id,
+          comment: newCommentText,
+        });
+
+        setReviews((prev) => [result, ...prev]); // add new comment to top
+        setNewCommentText(""); // clear input
+        fetchReviews(); // reload comments
+      }
+    } catch (error) {
+      console.error("Failed to post comment:", error);
+    }
+  };
+  const handleReturnMessage = () => {
+    setShowWarning(true);
+  };
+
+  const handleForumClick = (forumId) => {
+    navigate(`/thread/${forumId}`);
+  };
+  const handleClick = async (rating) => {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      setError("Please. Log in to rate.");
+      return;
+    }
+
+    setSelected(rating);
+    await rateUniversity(university.id, rating);
+    setMessage("Thanks for your rating! 🙌");
+  };
+
+  useEffect(() => {
+    // const fetchComments = async () => {
+    //   try {
+    //     const data = await fetchByUniID(id);
+    //     setReviews(data); // save fetched reviews into state
+    //   } catch (error) {
+    //     console.error("Failed to fetch comments:", error);
+    //   }
+    // };
+
+    // fetchComments();
+    fetchReviews();
+  }, [id]);
   useEffect(() => {
     const fetchUniversityData = async () => {
       const response = await fetch(
@@ -41,8 +104,42 @@ function University() {
     fetchUniversityData();
   }, [id]);
 
+  const fetchReviews = async () => {
+    try {
+      const reviewsData = await fetchByUniID(id);
+      setReviews(reviewsData);
+
+      if (reviewsData.length > 0) {
+        const forumId = reviewsData[0].forumId;
+        const stats = await getStatisticOfForum(forumId);
+        setReviewStats(stats);
+      }
+    } catch (error) {
+      console.error("Failed to fetch reviews or statistics:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchReviewsAndStats = async () => {
+      try {
+        const reviewsData = await fetchByUniID(id);
+        setReviews(reviewsData);
+
+        if (reviewsData.length > 0) {
+          const forumId = reviewsData[0].forumId;
+          const stats = await getStatisticOfForum(forumId);
+          setReviewStats(stats);
+          setForumId(forumId);
+        }
+      } catch (error) {
+        console.error("Failed to fetch reviews or statistics:", error);
+      }
+    };
+
+    fetchReviewsAndStats();
+  }, [id]);
   if (!university) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const stars = new Array(5)
@@ -51,19 +148,20 @@ function University() {
 
   return (
     <>
+      {showWarning && (
+        <Warning
+          message="You need to log in first"
+          onClose={() => setShowWarning("")}
+        />
+      )}
+
       <Header />
       <div className={oneuni.uniInfoMainContainer}>
         <div className={oneuni.unibox}>
-          <img src={oneuni.logoUrl} alt="" className={oneuni.uniImg} />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "40px",
-              justifyContent: "center",
-            }}
-          >
-            <div>
+          <img src={university.logoUrl} alt="" className={oneuni.uniImg} />
+
+          <div className={oneuni.mainContent}>
+            <div className={oneuni.infoDiv}>
               <div className={oneuni.Title}>
                 <h1>{university.name}</h1>
                 {isAuthenticated ? <img src={like} alt="" /> : null}
@@ -73,7 +171,7 @@ function University() {
                   {stars.map((isFilled, index) => (
                     <img
                       key={index}
-                      src={isFilled ? star : emptyStar} // Assuming you have a starEmpty for empty stars
+                      src={isFilled ? filledStar : emptyStar} // Assuming you have a starEmpty for empty stars
                       alt={`star-${index}`}
                     />
                   ))}
@@ -112,6 +210,7 @@ function University() {
           </div>
         </div>
       </div>
+
       {university.faculty.map((faculty) => (
         <div key={faculty.facultyDto.id}>
           <FacultyList
@@ -121,6 +220,7 @@ function University() {
           <br />
         </div>
       ))}
+
       <br />
       <br />
       <div
@@ -128,7 +228,7 @@ function University() {
           display: "flex",
           flexDirection: "column",
           gap: "40px",
-          width: "1105px",
+          width: "80%",
           margin: "auto",
         }}
       >
@@ -142,24 +242,72 @@ function University() {
             Be the first to review
           </p>
           <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
-            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
-            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
-            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
-            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
-            <img src={emptyStar} alt="" className={oneuni.starRateGive} />
+            {[1, 2, 3, 4, 5].map((star) => (
+              <img
+                key={star}
+                src={star <= (hovered || selected) ? filledStar : emptyStar}
+                alt={`${star} star`}
+                className={oneuni.starRateGive}
+                onClick={() => handleClick(star)}
+                onMouseEnter={() => setHovered(star)}
+                onMouseLeave={() => setHovered(0)}
+                style={{ cursor: "pointer" }}
+              />
+            ))}
           </div>
+          {message && (
+            <p
+              style={{
+                marginTop: "10px",
+                color: "rgba(0, 147, 121, 1)",
+                fontSize: "14px",
+                fontWeight: "bold",
+              }}
+            >
+              {message}
+            </p>
+          )}
+
+          {error && (
+            <p
+              style={{
+                marginTop: "10px",
+                color: "red",
+                fontSize: "14px",
+                fontWeight: "bold",
+              }}
+            >
+              {error}
+            </p>
+          )}
         </div>
-        <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+        {isAuthenticated ? null : (
+          <p
+            style={{
+              color: "red",
+              fontWeight: "500",
+              fontSize: "14px",
+            }}
+          >
+            if you wanna send message, log in
+          </p>
+        )}
+        <div className={oneuni.inputMessageDiv}>
           <input
             type="text"
             className={oneuni.review}
-            placeholder="Share your thought"
+            disabled={!isAuthenticated}
+            placeholder="Share your thoughts..."
+            value={newCommentText}
+            onChange={(e) => setNewCommentText(e.target.value)}
           />
-          <button className={oneuni.postBtn}>
+          <button
+            className={oneuni.postBtn}
+            onClick={isAuthenticated ? handlePostComment : handleReturnMessage}
+          >
             Post it <img src={arrow} alt="" />
           </button>
         </div>
-
         <div
           style={{
             display: "flex",
@@ -170,10 +318,13 @@ function University() {
           <p
             style={{ fontWeight: "600", fontSize: "24px", lineHeight: "32px" }}
           >
-            3 comments
+            {reviewStats.reviewCount} comments
           </p>
 
-          <p style={{ color: "rgba(0, 147, 121, 1)", cursor: "pointer" }}>
+          <p
+            style={{ color: "rgba(0, 147, 121, 1)", cursor: "pointer" }}
+            onClick={() => handleForumClick(forumId)}
+          >
             Go to Forum
             <svg
               width="20"
@@ -185,27 +336,56 @@ function University() {
               <path
                 d="M3.125 10.0845H16.875"
                 stroke="rgba(0, 147, 121, 1)"
-                stroke-width="1.66667"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M11.25 4.45947L16.875 10.0845L11.25 15.7095"
                 stroke="rgba(0, 147, 121, 1)"
-                stroke-width="1.66667"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.66667"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
           </p>
         </div>
-        <Comment />
-        <Comment />
+        {reviews.length > 0 ? (
+          reviews.map((review) => (
+            <Comment
+              key={review.id}
+              text={review.comment} // comment text
+              author={review.userName} // username
+              role={review.status} // role ("Admin", "User", etc.)
+              postedTime={new Date(review.createdAt).toLocaleDateString()} // formatted date
+              profileImg={review.profileImgUrl || defPic} // fallback if missing
+              onReply={async (replyText) => {
+                try {
+                  const user = await getCurrentUser();
+                  if (!user) {
+                    handleReturnMessage();
+                    throw new Error("You must be logged in to reply");
+                  }
+
+                  await replyToComment(review.id, user.id, replyText);
+
+                  console.log("Reply posted successfully");
+                  fetchReviews(); // reload comments
+                  // Optional: re-fetch reviews to show the new reply
+                } catch (error) {
+                  console.error("Failed to post reply:", error);
+                }
+              }}
+            />
+          ))
+        ) : (
+          <p>No reviews yet. Be the first to add one!</p>
+        )}{" "}
       </div>
       <br />
       <br />
       <div style={{ textAlign: "center" }}>
-        <EmptyBtn content="Load more 100+" />
+        <EmptyBtn content="See more" />
       </div>
       <br />
       <br />

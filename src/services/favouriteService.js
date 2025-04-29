@@ -1,6 +1,6 @@
 import api from "./api.js";
 
-const API_URL = 'university/open-api';
+const API_URL = 'university/api';
 
 export const addToFavorites = async (userId, universityId) => {
   const token = localStorage.getItem("token");
@@ -11,7 +11,7 @@ export const addToFavorites = async (userId, universityId) => {
 
   try {
     const response = await api.post(
-      "university/open-api/favorites", // примерный эндпоинт
+      "university/api/favorites", // примерный эндпоинт
       {
         userId,
         universityId,
@@ -56,11 +56,25 @@ export const deleteFromFavorites = async (favoriteId) => {
 };
 
 export const fetchFavourites = async (userId) => {
-    try {
-      const response = await api.get(`university/open-api/favorites/user/${userId}`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching favourites:", error);
-      throw error;
-    }
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  try {
+    const response = await api.get(
+      `university/api/favorites/user/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching favourites:", error);
+    throw error;
+  }
 };

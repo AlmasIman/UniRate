@@ -4,11 +4,16 @@ import spec from "../assets/styles/universitySpeciality.module.css";
 import Button from "../components/Button";
 import FinanceCalculator from "../components/FinanceCalculator";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function Speciality() {
   const { id } = useParams(); // Retrieve the speciality ID from the URL
   const [speciality, setSpeciality] = useState(null);
+
+  const tutuitionCost = useRef(null);
+  const scrollToTutuitionCost = () => {
+    tutuitionCost.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     const fetchSpeciality = async () => {
@@ -33,23 +38,24 @@ function Speciality() {
           <div className={spec.path}>
             <p>Universities</p>
             <hr />
-            <p>SDU</p>
+            <p>{speciality.universityName}</p>
             <hr />
-            <p>Engineering</p>
+            <p>{speciality.facultyName}</p>
             <hr />
-            <p style={{ color: "rgba(0, 147, 121, 1)", fontWeight: "600" }}>
-              {speciality.name}
-            </p>
+            <p className={spec.activePath}>{speciality.name}</p>
           </div>
-
+    <br />
           <div className={spec.unibox}>
-            <img src="../../public/shym.png" alt="" className={spec.uniImg} />
+            <img
+              src={speciality.specialtyImageUrl}
+              alt=""
+              className={spec.uniImg}
+            />
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: "40px",
-                width: "50vw",
               }}
             >
               <div>
@@ -74,7 +80,7 @@ function Speciality() {
                   >
                     GOP code
                   </p>
-                  <p>B098</p>
+                  <p>{speciality.gopCode}</p>
                 </div>
                 <div style={{ display: "flex", gap: "64px" }}>
                   <p
@@ -86,7 +92,7 @@ function Speciality() {
                   >
                     Grants
                   </p>
-                  <p>330</p>
+                  <p>{speciality.grants}</p>
                 </div>
                 <div style={{ display: "flex", gap: "64px" }}>
                   <p
@@ -96,20 +102,23 @@ function Speciality() {
                       minWidth: "200px",
                     }}
                   >
-                    Minimum scores
+                    Minimum scores (for grant)
                   </p>
-                  <p>119</p>
+                  <p>{speciality.minScores}</p>
                 </div>
-                <div style={{ position: "absolute", bottom: "0px" }}>
-                  <Button content="Calculate tuition cost" />
-                </div>
+              </div>
+              <div onClick={scrollToTutuitionCost}>
+                <Button content="Calculate tuition cost" />
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <FinanceCalculator />
+      <br />
+      <br />
+      <div ref={tutuitionCost}>
+        <FinanceCalculator />
+      </div>
 
       <Footer />
     </>

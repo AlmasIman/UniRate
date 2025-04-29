@@ -3,10 +3,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import arrlowLeft from "../assets/icons/ArrowLeft.svg";
 import arrlowRight from "../assets/icons/ArrowRight.svg";
 import Loading from "../components/loading.jsx";
-import { Link } from "react-router-dom"; // Import the Link component from react-router-dom
+import { Link } from "react-router-dom"; 
 import { getCurrentUser } from "../services/authService.js";
 import deleted from "../assets/icons/delete.svg";
-import { deleteFromFavorites } from "../services/favouriteService.js"; // Import the deleteFromFavorites function
+import { deleteFromFavorites, fetchFavourites } from "../services/favouriteService.js"; 
 const Carousel = () => {
   const [universities, setUniversities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,13 +17,7 @@ const Carousel = () => {
     const fetchUniversities = async () => {
       try {
         const user = await getCurrentUser();
-        const response = await fetch(
-          `https://unirate.kz/university/open-api/favorites/user/${user.id}`
-        );
-        if (!response.ok) {
-          throw new Error("Ошибка загрузки данных");
-        }
-        const data = await response.json();
+        const data = await fetchFavourites(user.id);
         setUniversities(data);
       } catch (err) {
         setError(err.message);
@@ -32,7 +26,6 @@ const Carousel = () => {
       }
     };
 
-
     fetchUniversities();
   }, []);
 
@@ -40,7 +33,6 @@ const Carousel = () => {
     try {
       await deleteFromFavorites(favoriteId);
       alert("Университет удалён из избранного!");
-      // Перезагрузить список избранных после удаления
     } catch (error) {
       console.error(error);
       alert("Не удалось удалить из избранного");
