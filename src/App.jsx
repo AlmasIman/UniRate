@@ -35,9 +35,10 @@ import SuccessResetPass from "./pages/LoginPages/SuccessResetPassword.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import Dashboard from "./pages/admin/Dashboard.jsx";
-
+import AdminLogin from "./pages/admin/AdminLogin.jsx";
+import WrongPlace from "./pages/WronPlaceBuddyPage.jsx";
 function App() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <Router>
@@ -125,12 +126,20 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
 
-
-        <Route path="/admin/dashboard/adminid" element={
-          <Dashboard />
-          
-          } />
-
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/dashboard/"
+          element={
+            <ProtectedRoute
+              condition={isAuthenticated && user.role === "ADMIN"} 
+              redirectTo="/error"
+            >
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        
+        <Route path="/error" element={<WrongPlace />} />
       </Routes>
     </Router>
   );

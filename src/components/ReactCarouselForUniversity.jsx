@@ -41,13 +41,21 @@ const UniversityCarousel = () => {
         setUniversities(data);
 
         if (user) {
-          const favData = await fetchFavourites(user.id);
-          setFavourites(
-            favData.map((fav) => ({
-              id: fav.id,
-              universityId: fav.universityId,
-            }))
-          );
+          try {
+            const favData = await fetchFavourites(user.id);
+            setFavourites(
+              favData.map((fav) => ({
+                id: fav.id,
+                universityId: fav.universityId,
+              }))
+            );
+          } catch (fetchFavError) {
+            if (fetchFavError.response?.status === 404) {
+              setFavourites([]);
+            } else {
+              throw fetchFavError;
+            }
+          }
         }
       } catch (err) {
         setError(err.message);
@@ -70,6 +78,7 @@ const UniversityCarousel = () => {
       await addToFavorites(user.id, universityId);
       setFavourites((prev) => [...prev, { id: universityId, universityId }]);
       alert("Университет добавлен в избранное!");
+      window.location.reload();
     } catch (error) {
       alert("Ошибка при добавлении в избранное.");
       console.error(error);
@@ -107,8 +116,12 @@ const UniversityCarousel = () => {
   if (error) return <p>Что-то пошло не так!</p>;
 
   const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1200 },
+    desktopL: {
+      breakpoint: { max: 3000, min: 1800 },
+      items: 4,
+    },
+    desktopM: {
+      breakpoint: { max: 1800, min: 1200 },
       items: 3,
     },
     tablet: {
@@ -200,9 +213,8 @@ const UniversityCarousel = () => {
         autoPlaySpeed={3000}
         keyBoardControl={true}
         containerClass="carousel-container"
-        itemClass="carousel-item-padding-40-px"
         showDots={true}
-        removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
+        removeArrowOnDeviceType={["tablet", "mobile", "desktopM", "desktopL"]}
         customDot={<CustomDot />}
       >
         {universities.map((uni) => {

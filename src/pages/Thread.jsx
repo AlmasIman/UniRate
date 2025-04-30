@@ -33,32 +33,37 @@ function Thread() {
     { value: "AstanaIT", label: "AstanaIT" },
   ];
 
-  useEffect(() => {
-    fetchForumById(forumId)
-      .then((data) => setForum(data))
-      .catch((error) => console.error("Error fetching forum:", error));
+  const fetchComments = async () => {
+    try {
+      const forumData = await fetchForumById(forumId);
+      setForum(forumData);
 
-    fetchForumReviews(forumId, page, 20, "desc")
-      .then((data) => {
-        setPage(1);
-        const reviews = data.content.map((review) => ({
-          id: review.id,
-          text: review.comment,
-          author: review.userName,
-          role: review.status,
-          postedTime: new Date(review.createdAt).toLocaleString(),
-          profileImg: review.profileImgUrl ? review.profileImgUrl : defProf,
-          replies: review.comments.map((reply) => ({
-            text: reply.comment,
-            author: reply.userName,
-            role: reply.status,
-            postedTime: new Date(reply.createdAt).toLocaleString(),
-            profileImg: reply.profileImgUrl,
-          })),
-        }));
-        setComments(reviews);
-      })
-      .catch((error) => console.error("Error fetching forum reviews:", error));
+      const data = await fetchForumReviews(forumId, 0, 300, "desc");
+      setPage(1);
+
+      const reviews = data.content.map((review) => ({
+        id: review.id,
+        text: review.comment,
+        author: review.userName,
+        role: review.status,
+        postedTime: new Date(review.createdAt).toLocaleString(),
+        profileImg: review.profileImgUrl ? review.profileImgUrl : defProf,
+        replies: review.comments.map((reply) => ({
+          text: reply.comment,
+          author: reply.userName,
+          role: reply.status,
+          postedTime: new Date(reply.createdAt).toLocaleString(),
+          profileImg: reply.profileImgUrl,
+        })),
+      }));
+      setComments(reviews.reverse());
+    } catch (error) {
+      console.error("Error fetching forum or reviews:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
   }, [forumId]);
 
   const loadMoreReviews = () => {
@@ -80,7 +85,7 @@ function Thread() {
           })),
         }));
 
-        setComments((prev) => [...prev, ...newReviews]);
+        setComments((prev) => [...prev, ...newReviews.reverse()]);
         setPage((prevPage) => prevPage + 1);
         if (data.last) {
           setHasMore(false);
@@ -98,26 +103,14 @@ function Thread() {
     try {
       const currentUser = await getCurrentUser();
 
-      const newPostedComment = await postComment({
+      await postComment({
         forumId,
         userId: currentUser.id,
         comment: newComment,
       });
 
-      setComments((prevComments) => [
-        ...prevComments,
-        {
-          text: newPostedComment.comment,
-          id: newPostedComment.id,
-          author: currentUser.userName,
-          role: currentUser.role,
-          postedTime: new Date().toLocaleString(),
-          profileImg: newPostedComment.profileImgUrl || defProf,
-          replies: [],
-        },
-      ]);
-
       setNewComment("");
+      fetchComments(); // Reload all comments
     } catch (error) {
       console.error("Error posting comment:", error);
     }
@@ -133,30 +126,13 @@ function Thread() {
           return;
         }
 
-        const newReply = await replyToComment(
+        await replyToComment(
           commentId,
           currentUser.id,
           replyText
         );
 
-        setComments((prevComments) =>
-          prevComments.map((comment) =>
-            comment.id === commentId
-              ? {
-                  ...comment,
-                  replies: [
-                    ...comment.replies,
-                    {
-                      text: newReply.comment,
-                      author: currentUser.userName,
-                      role: currentUser.role,
-                      postedTime: new Date().toLocaleString(),
-                    },
-                  ],
-                }
-              : comment
-          )
-        );
+        fetchComments(); // Reload all comments
       } catch (error) {
         console.error("Error posting reply:", error);
       }
