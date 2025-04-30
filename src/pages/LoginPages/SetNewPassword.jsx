@@ -29,7 +29,7 @@ function SetNewPass() {
       return;
     }
 
-    const result = await submitResetPassword(email, resetCode, password);
+    const result = await submitResetPassword(email, password);
     if (result.success) {
       sessionStorage.removeItem("otpVerified");
       setSuccess(result.message);

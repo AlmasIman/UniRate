@@ -136,6 +136,7 @@ export async function updateUserProfile(userId, updatedData) {
   }
 }
 
+// function for reset password from profile page
 export async function resetPassword(email, newPassword) {
   try {
     // eslint-disable-next-line no-unused-vars
@@ -153,25 +154,6 @@ export async function resetPassword(email, newPassword) {
   }
 }
 
-// export async function updateUserAvatar(userId, profilePictureUrl) {
-//   try {
-//     const token = localStorage.getItem("token");
-//     const response = await api.put(
-//       `registry/api/user/${userId}/update`,
-//       { id: userId, url: profilePictureUrl },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error updating avatar:", error);
-//     throw error.response?.data || error;
-//   }
-// }
 
 export async function updateUserAvatar(userId, imageUrl) {
   try {
@@ -195,13 +177,85 @@ export async function updateUserAvatar(userId, imageUrl) {
   }
 }
 
+
+
+// export const requestResetPasswordCode = async (email) => {
+//   try {
+//     const response = await api.post(
+//       `registry/open-api/auth/send-reset-password-code`,
+//       null, 
+//       {
+//         params: { email }, 
+//         headers: {
+//           "Content-Type": "application/json",
+//           Accept: "*/*",
+//         },
+//       }
+//     );
+
+//     return {
+//       success: true,
+//       message: response.data?.message || "Reset code sent successfully",
+//     };
+//   } catch (error) {
+//     console.error("Error sending reset code:", error.response?.data || error);
+
+//     const messageFromServer = error.response?.data?.message;
+
+//     if (messageFromServer?.includes("User with this email")) {
+//       return {
+//         success: false,
+//         message: "Пользователь с таким email не найден.",
+//       };
+//     }
+
+//     return {
+//       success: false,
+//       message: messageFromServer || "Что-то пошло не так. Попробуй позже.",
+//     };
+//   }
+// };
+
+const  ex = 3;
+
+// export const submitResetPassword = async (email, resetCode, newPassword) => {
+//   try {
+//     const response = await api.post(
+//       "registry/open-api/auth/reset-password",
+//       {
+//         email,
+//         resetCode,
+//         newPassword,
+//       },
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Accept: "application/json",
+//         },
+//       }
+//     );
+//     return {
+//       success: true,
+//       message: response.data?.message || "Password has been reset successfully.",
+//     };
+//   } catch (error) {
+//     console.error("Error submitting reset password:", error.response?.data || error);
+//     return {
+//       success: false,
+//       message: error.response?.data?.message || "Failed to reset password.",
+//     };
+//   }
+// };
+
+
+
 export const requestResetPasswordCode = async (email) => {
   try {
     const response = await api.post(
       `registry/open-api/auth/send-reset-password-code`,
-      null, 
+      null,
       {
-        params: { email }, 
+        params: { email },
         headers: {
           "Content-Type": "application/json",
           Accept: "*/*",
@@ -215,30 +269,46 @@ export const requestResetPasswordCode = async (email) => {
     };
   } catch (error) {
     console.error("Error sending reset code:", error.response?.data || error);
-
     const messageFromServer = error.response?.data?.message;
-
-    if (messageFromServer?.includes("User with this email")) {
-      return {
-        success: false,
-        message: "Пользователь с таким email не найден.",
-      };
-    }
-
     return {
       success: false,
-      message: messageFromServer || "Что-то пошло не так. Попробуй позже.",
+      message: messageFromServer || "Something went wrong. Please try again later.",
     };
   }
 };
 
-export const submitResetPassword = async (email, resetCode, newPassword) => {
+export const verifyResetPasswordCode = async (email, resetCode) => {
   try {
     const response = await api.post(
-      "registry/open-api/auth/reset-password",
+      `registry/open-api/auth/verify-reset-password-code`,
+      null,
+      {
+        params: { email, resetCode },
+        headers: {
+          Accept: "*/*",
+        },
+      }
+    );
+
+    return {
+      success: true,
+      message: response.data?.message || "Code verified successfully",
+    };
+  } catch (error) {
+    console.error("Error verifying reset code:", error.response?.data || error);
+    return {
+      success: false,
+      message: error.response?.data?.message || "Failed to verify code.",
+    };
+  }
+};
+
+export const submitResetPassword = async (email, newPassword) => {
+  try {
+    const response = await api.post(
+      `registry/open-api/auth/reset-password`,
       {
         email,
-        resetCode,
         newPassword,
       },
       {
@@ -248,12 +318,13 @@ export const submitResetPassword = async (email, resetCode, newPassword) => {
         },
       }
     );
+
     return {
       success: true,
       message: response.data?.message || "Password has been reset successfully.",
     };
   } catch (error) {
-    console.error("Error submitting reset password:", error.response?.data || error);
+    console.error("Error resetting password:", error.response?.data || error);
     return {
       success: false,
       message: error.response?.data?.message || "Failed to reset password.",

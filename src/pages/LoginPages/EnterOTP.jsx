@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import styles from "../../assets/styles/Login.module.css";
 import CodeInput from "./CodeInput.jsx";
 import StudentsBro from "../../assets/StudentsBro.svg";
-import { submitResetPassword } from "../../services/authService.js"; // Подключаем API
+import { verifyResetPasswordCode } from "../../services/authService.js"; // Подключаем API
 import { useNavigate } from "react-router-dom";
 import risingHand from "../../assets/RaisingHandBro.svg";
 import logo from "/public/logo1.svg";
@@ -24,7 +24,7 @@ function ConfirmEmail() {
       }
 
       // Try to validate the reset code by submitting with a fake password
-      const result = await submitResetPassword(email, enteredCode, "temporaryPassword123!");
+      const result = await verifyResetPasswordCode(email, enteredCode);
 
       if (result.success) {
         setIsVerified(true);
