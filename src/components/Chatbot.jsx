@@ -6,7 +6,7 @@ import close from "../assets/icons/x.svg";
 import chat from "../assets/icons/chat.svg";
 import homeStyle from "../assets/styles/Home.module.css";
 
-const apiKey = "AIzaSyBlwq49fRxuAobKjoRimhXnfvAoWnndFuM";
+const apiKey = process.env.REACT_APP_CHAT_BOT_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
 const systemPrompt =
   "You are an assistant on my website that helps Kazakhstani schoolchildren, applicants in choosing a university and provide them with all the necessary information regarding this.(Your answers must be short and informative) The name of my website is UniRate. It helps students, schoolchildren, applicants in choosing a university by providing information. The site has a page universities, which will provide a list of universities and a filter for universities. There is also a page where information about the chosen university is provided, such as name, description, location, rating, faculties, specialties, as well as user reviews. And there is also a forum where users can communicate and ask questions. There is also a financial calculator that will calculate the cost of studying. And there is also a comparison of universities, you choose from two to 4 universities and see their differences and compare them. Also Answer in the same language in which they write to you";
@@ -65,160 +65,166 @@ const Chatbot = () => {
         className={homeStyle.chatIcon}
         onClick={handleOpenChatbot}
       />
-{isChatAvailable && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100vw",
-      height: "100vh",
-      backgroundColor: "rgba(45, 45, 45, 0.5)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 999,
-      padding: "10px",
-    }}
-  >
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        maxWidth: "800px",
-        height: "90%",
-        maxHeight: "95vh",
-        backgroundColor: "white",
-        borderRadius: "10px",
-        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-        display: "flex",
-        flexDirection: "column",
-        paddingTop: "19px",
-        zIndex: 1000,
-        overflow: "hidden",
-      }}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Закрытие */}
-      <div
-        style={{
-          width: "88%",
-          display: "flex",
-          margin: "0 auto",
-          justifyContent: "end",
-        }}
-      >
-        <img
-          src={close}
-          alt="close"
-          style={{
-            width: "30px",
-            cursor: "pointer",
-          }}
-          onClick={handleOpenChatbot}
-        />
-      </div>
-
-      {/* Заголовок и иконка */}
-      <div style={{ width: "88%", margin: "0 auto" }}>
+      {isChatAvailable && (
         <div
           style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(45, 45, 45, 0.5)",
             display: "flex",
-            gap: "15px",
+            justifyContent: "center",
             alignItems: "center",
+            zIndex: 999,
+            padding: "10px",
           }}
         >
-          <img
-            src={aiIcon}
-            alt="icon"
+          <div
             style={{
-              width: "45px",
-              height: "45px",
-              borderRadius: "50%",
-              objectFit: "cover",
+              position: "relative",
+              width: "100%",
+              maxWidth: "800px",
+              height: "90%",
+              maxHeight: "95vh",
+              backgroundColor: "white",
+              borderRadius: "10px",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+              display: "flex",
+              flexDirection: "column",
+              paddingTop: "19px",
+              zIndex: 1000,
+              overflow: "hidden",
             }}
-          />
-          <div>
-            <p style={{ fontSize: "16px", fontWeight: "700" }}>CampusMate</p>
-            <p style={{ fontSize: "12px", color: "rgba(98, 98, 100, 1)" }}>
-              Ai assistant
-            </p>
-          </div>
-        </div>
-        <hr />
-      </div>
-
-      {/* Сообщения */}
-      <div
-        style={{
-          width: "88%",
-          margin: "0 auto",
-          overflowY: "auto",
-          paddingBottom: "20px",
-          flex: 1,
-        }}
-      >
-        {messages.map((msg, index) => (
-          <div key={index}>
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Закрытие */}
             <div
               style={{
-                padding: "10px",
-                margin: "6px 0",
-                borderRadius: "12px",
-                maxWidth: "80%",
-                backgroundColor:
-                  msg.type === "user" ? "white" : "rgba(247, 247, 247, 1)",
-                color: msg.type === "user" ? "black" : "#000",
-                textAlign: msg.type === "user" ? "right" : "left",
-                marginLeft: msg.type === "user" ? "auto" : "unset",
-                marginRight: msg.type === "bot" ? "auto" : "unset",
+                width: "88%",
+                display: "flex",
+                margin: "0 auto",
+                justifyContent: "end",
               }}
             >
-              {msg.text}
+              <img
+                src={close}
+                alt="close"
+                style={{
+                  width: "30px",
+                  cursor: "pointer",
+                }}
+                onClick={handleOpenChatbot}
+              />
             </div>
+
+            {/* Заголовок и иконка */}
+            <div style={{ width: "88%", margin: "0 auto" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "15px",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={aiIcon}
+                  alt="icon"
+                  style={{
+                    width: "45px",
+                    height: "45px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
+                <div>
+                  <p style={{ fontSize: "16px", fontWeight: "700" }}>
+                    CampusMate
+                  </p>
+                  <p
+                    style={{ fontSize: "12px", color: "rgba(98, 98, 100, 1)" }}
+                  >
+                    Ai assistant
+                  </p>
+                </div>
+              </div>
+              <hr />
+            </div>
+
+            {/* Сообщения */}
             <div
               style={{
-                fontSize: "10px",
-                color: "#888",
-                textAlign: msg.type === "user" ? "right" : "left",
-                marginTop: "4px",
+                width: "88%",
+                margin: "0 auto",
+                overflowY: "auto",
+                paddingBottom: "20px",
+                flex: 1,
               }}
             >
-              {msg.time}
+              {messages.map((msg, index) => (
+                <div key={index}>
+                  <div
+                    style={{
+                      padding: "10px",
+                      margin: "6px 0",
+                      borderRadius: "12px",
+                      maxWidth: "80%",
+                      backgroundColor:
+                        msg.type === "user"
+                          ? "white"
+                          : "rgba(247, 247, 247, 1)",
+                      color: msg.type === "user" ? "black" : "#000",
+                      textAlign: msg.type === "user" ? "right" : "left",
+                      marginLeft: msg.type === "user" ? "auto" : "unset",
+                      marginRight: msg.type === "bot" ? "auto" : "unset",
+                    }}
+                  >
+                    {msg.text}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "10px",
+                      color: "#888",
+                      textAlign: msg.type === "user" ? "right" : "left",
+                      marginTop: "4px",
+                    }}
+                  >
+                    {msg.time}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Ввод */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "10px",
+                padding: "10px 6%",
+              }}
+            >
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask something..."
+                style={{
+                  flex: 1,
+                  padding: "12px 20px",
+                  border: "1px solid #ccc",
+                  borderRadius: "20px",
+                  minWidth: "0",
+                }}
+              />
+              <div onClick={sendMessage} disabled={loading}>
+                <Button content={loading ? "Thinking..." : "Send"} />
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Ввод */}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "10px",
-          padding: "10px 6%",
-        }}
-      >
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask something..."
-          style={{
-            flex: 1,
-            padding: "12px 20px",
-            border: "1px solid #ccc",
-            borderRadius: "20px",
-            minWidth: "0",
-          }}
-        />
-        <div onClick={sendMessage} disabled={loading}>
-          <Button content={loading ? "Thinking..." : "Send"} />
         </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
     </div>
   );
 };
