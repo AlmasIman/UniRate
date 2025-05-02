@@ -25,7 +25,9 @@ function Contacts() {
   };
 
   return (
-    <>
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <Header />
       <div className={contactstyle.contactMainDiv}>
         <div>
@@ -73,7 +75,7 @@ function Contacts() {
         <img src={LearningBro} alt="" className={contactstyle.imgInContact} />
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -66,13 +66,34 @@ function FavuniExample() {
     selectedUniversities.some((selected) => selected.value === uni.value)
   );
 
-  const facultyOptions = Array.from(
-    new Set(
-      selectedUniObjects.flatMap((uni) =>
-        uni.faculties.map((faculty) => faculty.name)
-      )
-    )
-  ).map((name) => ({ value: name, label: name }));
+  const allFaculties = selectedUniObjects.flatMap((uni) =>
+    uni.faculties.map((faculty) => ({
+      name: faculty.name,
+      commonName: faculty.commonName,
+    }))
+  );
+
+  const facultyGroups = allFaculties.reduce((acc, { name, commonName }) => {
+    acc[commonName] = acc[commonName] || new Set();
+    acc[commonName].add(name);
+    return acc;
+  }, {});
+
+  const facultyCounts = selectedUniObjects.reduce((acc, uni) => {
+    uni.faculties.forEach((faculty) => {
+      acc[faculty.commonName] = (acc[faculty.commonName] || 0) + 1;
+    });
+    return acc;
+  }, {});
+
+  const sharedFacultyOptions = Object.entries(facultyGroups)
+    .filter(([commonName]) => facultyCounts[commonName] === selectedUniObjects.length)
+    .map(([commonName, namesSet]) => ({
+      value: commonName,
+      label: Array.from(namesSet)[0] || commonName,
+    }));
+
+  const facultyOptions = sharedFacultyOptions;
 
   const handleUniversityChange = (selected) => {
     if (selected.length < 2 || selected.length > 4) {
@@ -236,7 +257,7 @@ function FavuniExample() {
                 fontWeight: "600",
                 cursor: "pointer",
               }}
-              onClick={handleClearList} // Привязываем функцию очистки
+              onClick={handleClearList} 
             >
               <img src={trash} alt="" />
               <p>Clear List</p>
@@ -246,28 +267,44 @@ function FavuniExample() {
             {/* Заголовок таблицы */}
             <div className={favstyle.universities}>
               <div className={favstyle.uniTit}>Universities</div>
-              {selectedUniversities.map((uni) => (
-                <div
-                  key={uni.value}
-                  className={`${favstyle.uniTit} ${favstyle.uniName}`}
-                >
-                  <p>{uni.label}</p>
-                </div>
-              ))}
+              {selectedUniversities.length === 0
+                ? Array(4).fill(null).map((_, idx) => (
+                    <div key={idx} className={`${favstyle.uniTit} ${favstyle.uniName}`}>
+                      <div className={favstyle.skeletonBox}></div>
+                    </div>
+                  ))
+                : selectedUniversities.map((uni) => (
+                  <div
+                    key={uni.value}
+                    className={`${favstyle.uniTit} ${favstyle.uniName}`}
+                  >
+                    <p>{uni.label}</p>
+                  </div>
+                ))}
             </div>
 
             {/* Рейтинг */}
             <div className={favstyle.uniContentDiv}>
               <div className={favstyle.rateNa}>Rating</div>
-              {selectedUniversities.map((uni) => (
-                <div key={uni.value} className={favstyle.uniContent}>
-                  <p>
-                    {isFiltered
-                      ? universities.find((u) => u.value === uni.value)?.rating
-                      : "-"}
-                  </p>
-                </div>
-              ))}
+              {(selectedUniversities.length === 0 || !isFiltered)
+                ? selectedUniversities.length === 0
+                  ? Array(4).fill(null).map((_, idx) => (
+                      <div key={idx} className={favstyle.uniContent}>
+                        <div className={favstyle.skeletonBox}></div>
+                      </div>
+                    ))
+                  : selectedUniversities.map((uni) => (
+                    <div key={uni.value} className={favstyle.uniContent}>
+                      <div className={favstyle.skeletonBox}></div>
+                    </div>
+                  ))
+                : selectedUniversities.map((uni) => (
+                  <div key={uni.value} className={favstyle.uniContent}>
+                    <p>
+                      {universities.find((u) => u.value === uni.value)?.rating}
+                    </p>
+                  </div>
+                ))}
             </div>
 
             {/* Расходы */}
@@ -279,107 +316,149 @@ function FavuniExample() {
                 <p>Expenses ~</p>
                 <img src={messageQuest} alt="" />
               </div>
-              {selectedUniversities.map((uni) => {
-                const uniData = universities.find((u) => u.value === uni.value);
+              {(selectedUniversities.length === 0 || !isFiltered)
+                ? selectedUniversities.length === 0
+                  ? Array(4).fill(null).map((_, idx) => (
+                      <div key={idx} className={favstyle.uniContent}>
+                        <div className={favstyle.skeletonBox}></div>
+                      </div>
+                    ))
+                  : selectedUniversities.map((uni) => (
+                    <div key={uni.value} className={favstyle.uniContent}>
+                      <div className={favstyle.skeletonBox}></div>
+                    </div>
+                  ))
+                : selectedUniversities.map((uni) => {
+                  const uniData = universities.find((u) => u.value === uni.value);
 
-                if (!uniData) return null;
+                  if (!uniData) return null;
 
-                const selectedFacultyExpenses = uniData.faculties
-                  .filter((faculty) =>
-                    selectedFaculties.some(
-                      (selected) => selected.value === faculty.name
-                    )
-                  )
-                  .map((faculty) => faculty.baseCost);
-
-                // Вычисляем средние расходы для выбранных факультетов
-                const avgExpenses =
-                  selectedFacultyExpenses.length > 0
-                    ? Math.round(
-                        selectedFacultyExpenses.reduce(
-                          (acc, expense) => acc + expense,
-                          0
-                        ) / selectedFacultyExpenses.length
+                  const selectedFacultyExpenses = uniData.faculties
+                    .filter((faculty) =>
+                      selectedFaculties.some(
+                        (selected) => selected.value === faculty.commonName
                       )
-                    : 0;
+                    )
+                    .map((faculty) => faculty.baseCost);
 
-                return (
-                  <div key={uni.value} className={favstyle.uniContent}>
-                    <p>
-                      {isFiltered && avgExpenses > 0
-                        ? `${avgExpenses.toLocaleString()} ₸`
-                        : "-"}
-                    </p>
-                  </div>
-                );
-              })}
+                  const avgExpenses =
+                    selectedFacultyExpenses.length > 0
+                      ? Math.round(
+                          selectedFacultyExpenses.reduce(
+                            (acc, expense) => acc + expense,
+                            0
+                          ) / selectedFacultyExpenses.length
+                        )
+                      : 0;
+
+                  return (
+                    <div key={uni.value} className={favstyle.uniContent}>
+                      <p>
+                        {avgExpenses > 0
+                          ? `${avgExpenses.toLocaleString()} ₸`
+                          : <div className={favstyle.skeletonBox}></div>}
+                      </p>
+                    </div>
+                  );
+                })}
             </div>
 
             {/* Общежитие */}
             <div className={favstyle.uniContentDiv}>
               <div className={favstyle.rateNa}>Dormitory</div>
-              {selectedUniversities.map((uni) => (
-                <div key={uni.value} className={favstyle.uniContent}>
-                  <p>
-                    {isFiltered
-                      ? universities.find((u) => u.value === uni.value)
-                          ?.dormitory
+              {(selectedUniversities.length === 0 || !isFiltered)
+                ? selectedUniversities.length === 0
+                  ? Array(4).fill(null).map((_, idx) => (
+                      <div key={idx} className={favstyle.uniContent}>
+                        <div className={favstyle.skeletonBox}></div>
+                      </div>
+                    ))
+                  : selectedUniversities.map((uni) => (
+                    <div key={uni.value} className={favstyle.uniContent}>
+                      <div className={favstyle.skeletonBox}></div>
+                    </div>
+                  ))
+                : selectedUniversities.map((uni) => (
+                  <div key={uni.value} className={favstyle.uniContent}>
+                    <p>
+                      {universities.find((u) => u.value === uni.value)
+                        ?.dormitory
                         ? "Yes"
-                        : "No"
-                      : "-"}
-                  </p>
-                </div>
-              ))}
+                        : "No"}
+                    </p>
+                  </div>
+                ))}
             </div>
             {/* Военное образование */}
             <div className={favstyle.uniContentDiv}>
               <div className={favstyle.rateNa}>Military education</div>
-              {selectedUniversities.map((uni) => (
-                <div key={uni.value} className={favstyle.uniContent}>
-                  <p>
-                    {isFiltered
-                      ? universities.find((u) => u.value === uni.value)
-                          ?.militaryDepartment
+              {(selectedUniversities.length === 0 || !isFiltered)
+                ? selectedUniversities.length === 0
+                  ? Array(4).fill(null).map((_, idx) => (
+                      <div key={idx} className={favstyle.uniContent}>
+                        <div className={favstyle.skeletonBox}></div>
+                      </div>
+                    ))
+                  : selectedUniversities.map((uni) => (
+                    <div key={uni.value} className={favstyle.uniContent}>
+                      <div className={favstyle.skeletonBox}></div>
+                    </div>
+                  ))
+                : selectedUniversities.map((uni) => (
+                  <div key={uni.value} className={favstyle.uniContent}>
+                    <p>
+                      {universities.find((u) => u.value === uni.value)
+                        ?.militaryDepartment
                         ? "Yes"
-                        : "No"
-                      : "-"}
-                  </p>
-                </div>
-              ))}
+                        : "No"}
+                    </p>
+                  </div>
+                ))}
             </div>
 
             {/* Факультеты */}
             <div className={favstyle.uniContentDiv}>
               <div className={favstyle.rateNa}>Faculty</div>
-              {selectedUniversities.map((uni) => {
-                const uniData = universities.find((u) => u.value === uni.value);
+              {(selectedUniversities.length === 0 || !isFiltered)
+                ? selectedUniversities.length === 0
+                  ? Array(4).fill(null).map((_, idx) => (
+                      <div key={idx} className={`${favstyle.uniContent} ${favstyle.facultiesDiv}`}>
+                        <div className={favstyle.skeletonBox}></div>
+                      </div>
+                    ))
+                  : selectedUniversities.map((uni) => (
+                    <div key={uni.value} className={`${favstyle.uniContent} ${favstyle.facultiesDiv}`}>
+                      <div className={favstyle.skeletonBox}></div>
+                    </div>
+                  ))
+                : selectedUniversities.map((uni) => {
+                  const uniData = universities.find((u) => u.value === uni.value);
 
-                // Фильтруем выбранные факультеты по данному университету
-                const faculties = uniData.faculties
-                  .filter((faculty) =>
-                    selectedFaculties.some(
-                      (selected) => selected.value === faculty.name
+                  const faculties = uniData.faculties
+                    .filter((faculty) =>
+                      selectedFaculties.some(
+                        (selected) => selected.value === faculty.commonName
+                      )
                     )
-                  )
-                  .map((faculty) => faculty.name);
+                    .map((faculty) => faculty.name);
 
-                return (
-                  <div
-                    key={uni.value}
-                    className={`${favstyle.uniContent} ${favstyle.facultiesDiv}`}
-                  >
-                    {isFiltered && faculties.length > 0 ? (
-                      faculties.map((facultyName) => (
-                        <p key={facultyName} className={favstyle.facultiesP}>
-                          {facultyName}
-                        </p>
-                      ))
-                    ) : (
-                      <p className={favstyle.facultiesP}>-</p>
-                    )}
-                  </div>
-                );
-              })}
+                  return (
+                    <div
+                      key={uni.value}
+                      className={`${favstyle.uniContent} ${favstyle.facultiesDiv}`}
+                    >
+                      {faculties.length > 0 ? (
+                        faculties.map((facultyName) => (
+                          <p key={facultyName} className={favstyle.facultiesP}>
+                            {facultyName}
+                          </p>
+                        ))
+                      ) : (
+                        <div className={favstyle.skeletonBox}></div>
+                      )}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

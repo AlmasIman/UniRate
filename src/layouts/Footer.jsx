@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
+    <>
     <footer className={styles.footer}>
       <h3 className={styles.logo}>UniRate</h3>
       <div className={styles.footerColumn}>
@@ -54,6 +55,8 @@ const Footer = () => {
         © 2025. UniRate All rights reserved.
       </div>
     </footer>
+    </>
+
   );
 };
 

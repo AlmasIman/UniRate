@@ -18,12 +18,14 @@ function Forum() {
   };
 
   return (
-    <>
+    <div
+      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <Header />
       <div className={fo.mainForum}>
         <div className={fo.searchDiv}>
           <p>University name</p>
-          <div style={{display: 'flex', gap: '20px'}}>
+          <div style={{ display: "flex", gap: "20px" }}>
             <input
               type="text"
               placeholder="Search for university…"
@@ -31,14 +33,19 @@ function Forum() {
               value={searchTerm}
               onInput={(e) => setSearchTerm(e.target.value)}
             />
-            <img src={search} alt="" onClick={handleSearchClick}  style={{cursor: 'pointer'}}/>
+            <img
+              src={search}
+              alt=""
+              onClick={handleSearchClick}
+              style={{ cursor: "pointer" }}
+            />
           </div>
         </div>
         <ForumComponent />
         <br />
       </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

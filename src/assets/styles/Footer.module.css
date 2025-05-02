@@ -7,8 +7,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 132px 80px 80px 80px;
-  
-  
+    flex-wrap: wrap;
 }
 
 .footerColumn {
@@ -85,7 +84,6 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: 0%;
 }
 
 .reserved {

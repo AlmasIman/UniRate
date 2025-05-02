@@ -72,12 +72,16 @@ const reviewers = [
 
 // Carousel breakpoints
 const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1400 },
+  desktopL: {
+    breakpoint: { max: 3000, min: 1800 },
+    items: 4,
+  },
+  desktopM: {
+    breakpoint: { max: 1800, min: 1200 },
     items: 3,
   },
   tablet: {
-    breakpoint: { max: 1380, min: 768 },
+    breakpoint: { max: 1200, min: 768 },
     items: 2,
   },
   mobile: {
@@ -154,7 +158,7 @@ const ReviewCarousel = () => {
         containerClass="carousel-container"
         itemClass="carousel-item-padding-40-px"
         showDots={true}
-        removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
+        removeArrowOnDeviceType={["tablet", "mobile", "desktopM", "desktopL"]}
         customDot={<CustomDot />}
       >
         {reviewers.map((reviewer) => (
