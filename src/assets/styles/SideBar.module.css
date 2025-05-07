@@ -2,7 +2,7 @@
   font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
-  width: 350px;
+  width: 300px;
   background-color: rgba(0, 147, 121, 1);
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
@@ -54,7 +54,7 @@
 .profileMainDiv {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   color: white;
 }
 
@@ -73,7 +73,7 @@
   font-size: 14px;
   font-weight: 400;
   color: rgba(170, 171, 175, 1);
-  width: 200px;
+  width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
 }

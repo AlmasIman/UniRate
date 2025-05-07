@@ -11,9 +11,9 @@ import { useState, useEffect, useRef } from "react";
 
 function SideBar() {
   const links = [
-    { icon: dashboard, label: "Dashboard" },
-    { icon: uni, label: "University" },
-    { icon: forum, label: "Forum" },
+    { icon: dashboard, label: "Dashboard", link: "/admin/dashboard" },
+    { icon: uni, label: "University", link: "/admin/university-module" },
+    { icon: forum, label: "Forum", link: "/admin/forum" },
   ];
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -30,6 +30,10 @@ function SideBar() {
     logout();
     navigate("/");
   };
+  
+  const handleNavigate = (link) => {
+    navigate(link)
+  }
 
   return (
     <div className={style.sidebar}>
@@ -38,8 +42,8 @@ function SideBar() {
         <p className={style.menuLabel}>MENU</p>
 
         <nav className={style.btnsDiv}>
-          {links.map(({ icon, label }, index) => (
-            <div key={index} className={style.navigationsButtons}>
+          {links.map(({ icon, label, link }, index) => (
+            <div key={index} className={style.navigationsButtons} onClick={() => handleNavigate(link)}>
               <img src={icon} alt={label} className={style.icon} />
               <p>{label}</p>
             </div>

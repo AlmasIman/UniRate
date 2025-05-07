@@ -1,0 +1,252 @@
+.mainContentDiv {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 10px;
+}
+
+.pageTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.pageTitle h1 {
+  font-family: "Inter";
+  font-weight: 600;
+  font-size: 36px;
+  color: rgba(40, 5, 89, 1);
+}
+
+.pageTitle p {
+  font-family: "Inter";
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: rgba(152, 152, 163, 1);
+}
+
+.uniContentMainConteinter {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+.pickSection {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  background-color: white;
+  border-radius: 34px;
+  align-items: center;
+  padding-left: 62px;
+}
+.pickSection h1 {
+  font-family: "Inter";
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  color: rgba(40, 5, 89, 1);
+}
+
+.picedSectionContent {
+  border-radius: 18px;
+  padding: 2rem;
+  background-color: white;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.createBtn {
+  background-color: rgba(40, 5, 89, 1);
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 222px;
+  height: 60px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.createBtn:hover {
+  background-color: rgb(86, 11, 190);
+}
+.exportDropdown {
+  position: relative;
+}
+
+.exportBtn {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.exportMenu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: none;
+}
+
+.exportDropdown:hover .exportMenu {
+  display: block;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-bottom: 1.5rem;
+}
+
+.universityTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  table-layout: fixed;
+}
+
+.universityTable th,
+.universityTable td {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.universityTable td {
+  width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.viewBtn {
+  padding: 0.4rem 1rem;
+  border: 1px solid #3e0ca3;
+  color: #3e0ca3;
+  background-color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.viewBtn:hover {
+  background-color: #3e0ca3;
+  color: white;
+}
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+}
+
+.pagiDiv {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+.programDescription {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .mainContentDiv {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .pageTitle h1 {
+    font-size: 24px;
+  }
+
+  .pageTitle p {
+    font-size: 14px;
+  }
+
+  .pickSection {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .headerRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .createBtn {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .exportBtn {
+    width: 100%;
+  }
+
+  .searchInput {
+    width: 100%;
+  }
+
+  .universityTable th,
+  .universityTable td {
+    font-size: 14px;
+    padding: 0.5rem;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pagiDiv {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}

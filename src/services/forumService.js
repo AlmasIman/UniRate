@@ -10,6 +10,34 @@ export async function fetchForumById(forumId) {
   return await response.json();
 }
 
+export async function getAllForum() {
+  const response = await fetch(
+    'https://unirate.kz/university/open-api/forums '
+  );
+  if (!response.ok) {
+    throw new Error("Failed to fetch forum data");
+  }
+  return await response.json();
+
+}
+
+export async function getAllReviews({ page = 0, size = 10, sort = ["createdAt,desc"] } = {}) {
+  const response = await fetch("https://unirate.kz/university/open-api/review", {
+    method: "GET",
+    headers: {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    }
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch reviews. Server responded: ${errorText}`);
+  }
+
+  return await response.json();
+}
+
 export async function postComment({ forumId, userId, comment }) {
   const requestBody = {
     forumId,
@@ -77,33 +105,6 @@ export async function replyToComment(reviewId, userId, comment) {
 
   return await response.json();
 }
-
-// export async function fetchForumReviews(forumId, page, size, sort) {
-//   const currentUser = await getCurrentUser();
-
-//   if (!currentUser || !currentUser.token) {
-//     throw new Error("User is not authenticated");
-//   }
-
-//   // `https://unirate.kz/university/api/reviews/forum/${forumId}?page=${page}&size=${size}&sort=${sort}`,
-//   const response = await fetch(
-//     `https://unirate.kz/university/open-api/review/forum/${forumId}?page=${page}&size=${size}&sort=${sort}`,
-//     {
-//       method: "GET",
-//       headers: {
-//         Accept: "application/json",
-//         Authorization: `Bearer ${currentUser.token}`,
-//       },
-//     }
-//   );
-
-//   if (!response.ok) {
-//     const errorText = await response.text();
-//     throw new Error(`Failed to fetch forum reviews. Server responded: ${errorText}`);
-//   }
-
-//   return await response.json();
-// }
 
 export async function fetchForumReviews(forumId, page, size, sort) {
   const response = await fetch(

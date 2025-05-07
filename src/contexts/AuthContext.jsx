@@ -9,16 +9,26 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const user = await getCurrentUser();
-      if (user) setUser(user);
-      setAuthChecked(true);
+      try {
+        const user = await getCurrentUser(); 
+        if (user) {
+          setUser(user);
+        }
+      } catch (err) {
+        console.error("Auth check failed:", err);
+        localStorage.removeItem("token"); 
+      } finally {
+        setAuthChecked(true);
+      }
     };
+
     checkAuth();
   }, []);
-
+  
   const login = (userData) => {
     localStorage.setItem("token", userData.token);
     setUser(userData);
+    setAuthChecked(true);
   };
 
   const logout = () => {

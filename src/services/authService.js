@@ -62,6 +62,28 @@ export const getCurrentUser = async () => {
   }
 };
 
+export const getAllUsers = async (page = 0, size = 10, sort = "desc") => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await api.get("registry/api/user", {
+      params: {
+        page,
+        size,
+        sort,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "*/*",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching users:", error.response?.data || error);
+    throw error.response?.data || error;
+  }
+};
 export const activateAccount = async (code) => {
   try {
     const response = await api.post("registry/open-api/auth/activation", null, {
@@ -260,3 +282,5 @@ export const submitResetPassword = async (email, newPassword) => {
     };
   }
 };
+
+

@@ -1,19 +1,30 @@
 import messages from "../assets/icons/messages.svg";
 import forumCom from "../assets/styles/forumComponent.module.css";
 import EmptyBtn from "./EmptyBtn.jsx";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // To navigate to thread
-
+import { getAllForum } from "../services/forumService.js";
 function ForumComponent() {
   const [forums, setForums] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://unirate.kz/university/open-api/forums")
-      .then((response) => response.json())
-      .then((data) => setForums(data))
-      .catch((error) => console.error("Error fetching forums:", error));
+    const fetchForum = async () => {
+      try {
+        const data = await getAllForum();
+        setForums(data);
+      } catch (error) {
+        console.error("Error fetching forums:", error);
+      }
+    };
+    fetchForum();
   }, []);
+  // useEffect(() => {
+  //   fetch("https://unirate.kz/university/open-api/forums")
+  //     .then((response) => response.json())
+  //     .then((data) => setForums(data))
+  //     .catch((error) => console.error("Error fetching forums:", error));
+  // }, []);
   const handleForumClick = (forumId) => {
     navigate(`/thread/${forumId}`);
   };

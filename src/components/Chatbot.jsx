@@ -6,7 +6,8 @@ import close from "../assets/icons/x.svg";
 import chat from "../assets/icons/chat.svg";
 import homeStyle from "../assets/styles/Home.module.css";
 
-const apiKey = process.env.REACT_APP_CHAT_BOT_API_KEY;
+// const apiKey = process.env.REACT_APP_CHAT_BOT_API_KEY;
+const apiKey = "AIzaSyBlwq49fRxuAobKjoRimhXnfvAoWnndFuM";
 
 const genAI = new GoogleGenerativeAI(apiKey);
 const systemPrompt =

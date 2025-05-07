@@ -1,4 +1,4 @@
-import api from './api.js';
+import api from "./api.js";
 import { getCurrentUser } from "./authService.js";
 
 // Получение университета по ID
@@ -7,7 +7,7 @@ export const getUniversityById = async (id) => {
     const response = await api.get(`university/open-api/universities/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Ошибка при получении университета:', error);
+    console.error("Ошибка при получении университета:", error);
     throw error;
   }
 };
@@ -15,20 +15,22 @@ export const getUniversityById = async (id) => {
 // Получение всех университетов
 export const getAllUniversities = async () => {
   try {
-    const response = await api.get('university/open-api/universities');
+    const response = await api.get("university/open-api/universities");
     return response.data;
   } catch (error) {
-    console.error('Ошибка при получении всех университетов:', error);
+    console.error("Ошибка при получении всех университетов:", error);
     throw error;
   }
 };
 
 export const getTopUniversities = async () => {
   try {
-    const response = await api.get('university/open-api/universities/top?limit=10');    
+    const response = await api.get(
+      "university/open-api/universities/top?limit=10"
+    );
     return response.data;
   } catch (error) {
-    console.error('Ошибка при получении топ университетов:', error);
+    console.error("Ошибка при получении топ университетов:", error);
     throw error;
   }
 };
@@ -36,10 +38,12 @@ export const getTopUniversities = async () => {
 // Получение университетов с пагинацией
 export const getUniversitiesByPage = async (page) => {
   try {
-    const response = await api.get(`university/open-api/universities/page?page=${page}`);
+    const response = await api.get(
+      `university/open-api/universities/page?page=${page}`
+    );
     return response.data;
   } catch (error) {
-    console.error('Ошибка при получении университетов с пагинацией:', error);
+    console.error("Ошибка при получении университетов с пагинацией:", error);
     throw error;
   }
 };
@@ -47,20 +51,23 @@ export const getUniversitiesByPage = async (page) => {
 // Поиск университетов по имени
 export const searchUniversityByName = async (name) => {
   try {
-    const response = await api.get(`university/open-api/universities/name/${name}`);
+    const response = await api.get(
+      `university/open-api/universities/name/${name}`
+    );
     return response.data;
   } catch (error) {
-    console.error('Ошибка при поиске университета:', error);
+    console.error("Ошибка при поиске университета:", error);
     throw error;
   }
 };
-
 
 export const rateUniversity = async (universityId, rating) => {
   const user = await getCurrentUser();
 
   if (!user) {
-    console.warn("Вы не авторизованы. Пожалуйста, войдите, чтобы поставить рейтинг.");
+    console.warn(
+      "Вы не авторизованы. Пожалуйста, войдите, чтобы поставить рейтинг."
+    );
     return;
   }
   // const url = `https://unirate.kz/university/open-api/universities/${universityId}/rating?rating=${rating}`;
@@ -68,12 +75,12 @@ export const rateUniversity = async (universityId, rating) => {
 
   try {
     const response = await fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'accept': '*/*',
-        'Authorization': `Bearer ${user.token}`
+        accept: "*/*",
+        Authorization: `Bearer ${user.token}`,
       },
-      body: ''
+      body: "",
     });
 
     if (!response.ok) {
@@ -85,5 +92,85 @@ export const rateUniversity = async (universityId, rating) => {
     return data;
   } catch (error) {
     console.error("Ошибка при отправке рейтинга:", error.message);
+  }
+};
+
+export const addUniversity = async (universityData) => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    console.warn(
+      "Вы не авторизованы. Пожалуйста, войдите, чтобы добавить университет."
+    );
+    return;
+  }
+
+  try {
+    const response = await api.post(
+      "/university/api/admin/university",
+      universityData,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при добавлении университета:", error);
+    throw error;
+  }
+};
+
+export const updateUniversity = async (id, universityData) => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    console.warn(
+      "Вы не авторизованы. Пожалуйста, войдите, чтобы обновить университет."
+    );
+    return;
+  }
+
+  try {
+    const response = await api.put(
+      `/university/api/admin/university/${id}`,
+      universityData,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при обновлении университета:", error);
+    throw error;
+  }
+};
+
+export const deleteUniversity = async (id) => {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    console.warn(
+      "Вы не авторизованы. Пожалуйста, войдите, чтобы удалить университет."
+    );
+    return;
+  }
+
+  try {
+    const response = await api.delete(
+      `/university/api/admin/university/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при удалении университета:", error);
+    throw error;
   }
 };

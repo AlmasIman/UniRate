@@ -37,6 +37,14 @@ import { useAuth } from "./contexts/AuthContext.jsx";
 import Dashboard from "./pages/admin/Dashboard.jsx";
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
 import WrongPlace from "./pages/WronPlaceBuddyPage.jsx";
+import UniversityModule from "./pages/admin/UniversityModule.jsx";
+import CreateUniversity from "./pages/admin/CreateUniversity.jsx";
+import ViewUniversity from "./pages/admin/ViewUniverisity.jsx";
+import CreateProgram from "./pages/admin/CreateProgram.jsx";
+import ForumModule from "./pages/admin/ForumModule.jsx";
+import CreateFaculty from "./pages/admin/CreateFaculty.jsx";
+
+
 function App() {
   const { isAuthenticated, user } = useAuth();
 
@@ -126,20 +134,30 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/terms" element={<Terms />} />
 
+        {/* admin side */}
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route
-          path="/admin/dashboard/"
-          element={
-            <ProtectedRoute
-              condition={isAuthenticated && user.role === "ADMIN"} 
-              redirectTo="/error"
-            >
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        
+
+        <Route path="/admin/dashboard" element={<Dashboard />} />
+
+        {/* <ProtectedAdminRoute requiredRole="ADMIN" redirectTo="/error">
+            </ProtectedAdminRoute> */}
+
         <Route path="/error" element={<WrongPlace />} />
+
+        <Route path="/admin/university-module" element={<UniversityModule />} />
+        <Route path="/admin/university-create" element={<CreateUniversity />} />
+        <Route path="/admin/university-view/:id" element={<ViewUniversity />} />
+        <Route
+          path="/admin/university-create-program"
+          element={<CreateProgram />}
+        />
+        <Route
+          path="/admin/university-create-faculty"
+          element={<CreateFaculty />}
+        />
+
+
+        <Route path="/admin/forum" element={<ForumModule />} />
       </Routes>
     </Router>
   );
