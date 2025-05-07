@@ -19,3 +19,14 @@ export const getAllFaculties = async () => {
     throw error;
   }
 };
+
+export const getFacultyById = async (id) => {
+  try {
+    const response = await api.get(`university/open-api/faculties/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Ошибка при получении факультета по ID:', error);
+    throw error;
+  }
+};
+

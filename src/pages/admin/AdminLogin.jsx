@@ -7,6 +7,7 @@ import StudentsBro from "../../assets/StudentsBro.svg";
 import LoginButton from "../../components/LoginButton.jsx";
 import { Link } from "react-router-dom";
 import logo from "/public/logo1.svg";
+import { useAuth } from "../../contexts/AuthContext";
 
 import {
   login as loginService,
@@ -18,6 +19,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,9 +41,9 @@ function Login() {
       localStorage.setItem("token", token);
 
       const user = await getCurrentUser();
+      login({ ...user, token });
 
       if (user?.role === "ADMIN") {
-        localStorage.setItem("user", JSON.stringify(user));
         navigate("/admin/dashboard");
       } else {
         setError("Access denied. You are not an admin.");

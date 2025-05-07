@@ -44,6 +44,11 @@ function ForumModule() {
     navigate("/admin/forum-create");
   };
 
+
+  const navigateToViewForum = (forumId) => {
+    navigate(`/admin/forum-view/${forumId}`);
+  };
+
   useEffect(() => {
     const fetchForums = async () => {
       try {
@@ -162,7 +167,7 @@ function ForumModule() {
                         <td>{forum.name}</td>
                         <td className="descriptionCell">{forum.description}</td>
                         <td>
-                          <button className={adUni.viewBtn}>View</button>
+                          <button className={adUni.viewBtn} onClick={() => navigateToViewForum(forum.id)}>View</button>
                         </td>
                       </tr>
                     ))}

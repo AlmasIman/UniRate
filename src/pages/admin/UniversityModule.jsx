@@ -5,6 +5,7 @@ import createPlusicon from "../../assets/icons/createPlusicon.svg";
 import { getAllUniversities } from "../../services/universityService.js";
 import { getAllSpecialties } from "../../services/specialitites.js";
 import { useNavigate } from "react-router-dom";
+import { getAllFaculties } from "../../services/facultiesService.js";
 
 function UniversityModule() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function UniversityModule() {
   const [activeTab, setActiveTab] = useState("university");
   const [universities, setUniversities] = useState([]);
   const [specialities, setSpecialities] = useState([]);
+  const [faculties, setFaculties] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
@@ -28,17 +30,34 @@ function UniversityModule() {
   const navigateToCreateUniversity = () => {
     navigate("/admin/university-create");
   };
-  const handleViewUni = (uniId) => {
-    navigate(`/admin/university-view/${uniId}`);
-  };
 
   const handleNavigateAddNewProgram = () => {
     navigate("/admin/university-create-program");
   };
 
   const handleNavigateAddNewFaculty = () => {
-    navigate('/admin/university-create-faculty')
+    navigate("/admin/university-create-faculty");
+  };
+
+  const handleViewUni = (uniId) => {
+    navigate(`/admin/university-view/${uniId}`);
+  };
+
+  const handleViewProgram = (programId) => {
+    navigate(`/admin/university-view/program/${programId}`)
   }
+
+  useEffect(() => {
+    const fetchFaculties = async () => {
+      try {
+        const data = await getAllFaculties();
+        setFaculties(data);
+      } catch (error) {
+        console.error("Ошибка при загрузке факультетов:", error);
+      }
+    };
+    fetchFaculties();
+  }, []);
 
   useEffect(() => {
     const fetchUniversities = async () => {
@@ -285,7 +304,7 @@ function UniversityModule() {
                                 {specialities.description}
                               </td>
                               <td>
-                                <button className={adUni.viewBtn}>View</button>
+                                <button onClick={() => handleViewProgram(specialities.id)} className={adUni.viewBtn}>View</button>
                               </td>
                             </tr>
                           ))}
@@ -386,12 +405,11 @@ function UniversityModule() {
                 </div>
 
                 {(() => {
-                  const indexOfLastSpeciality = page * itemsPerPage;
-                  const indexOfFirstSpeciality =
-                    indexOfLastSpeciality - itemsPerPage;
-                  const currentSpecialities = specialities.slice(
-                    indexOfFirstSpeciality,
-                    indexOfLastSpeciality
+                  const indexOfLastFaculty = page * itemsPerPage;
+                  const indexOfFirstFaculty = indexOfLastFaculty - itemsPerPage;
+                  const currentFaculties = faculties.slice(
+                    indexOfFirstFaculty,
+                    indexOfLastFaculty
                   );
 
                   return (
@@ -400,22 +418,17 @@ function UniversityModule() {
                         <thead>
                           <tr>
                             <th>Faculty name</th>
-                            <th>Program name</th>
                             <th>Program Description</th>
-                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {currentSpecialities.map((specialities) => (
-                            <tr key={specialities.id}>
+                          {currentFaculties.map((faculty) => (
+                            <tr key={faculty.id}>
                               <td className={adUni.programDescription}>
-                                {specialities.facultyName}
+                                {faculty.name}
                               </td>
                               <td className={adUni.programDescription}>
-                                {specialities.name}
-                              </td>
-                              <td className={adUni.programDescription}>
-                                {specialities.description}
+                                {faculty.description}
                               </td>
                               <td>
                                 <button className={adUni.viewBtn}>View</button>
@@ -436,7 +449,7 @@ function UniversityModule() {
                       >
                         <p>
                           Page {page} of{" "}
-                          {Math.ceil(specialities.length / itemsPerPage)}
+                          {Math.ceil(faculties.length / itemsPerPage)}{" "}
                         </p>
                         <div
                           className={adUni.pagiDiv}
@@ -459,7 +472,7 @@ function UniversityModule() {
                             {Array.from(
                               {
                                 length: Math.ceil(
-                                  specialities.length / itemsPerPage
+                                  faculties.length / itemsPerPage
                                 ),
                               },
                               (_, i) => (
@@ -472,12 +485,12 @@ function UniversityModule() {
                           <button
                             onClick={() =>
                               page <
-                                Math.ceil(specialities.length / itemsPerPage) &&
+                                Math.ceil(faculties.length / itemsPerPage) &&
                               setPage(page + 1)
                             }
                             disabled={
                               page ===
-                              Math.ceil(specialities.length / itemsPerPage)
+                              Math.ceil(faculties.length / itemsPerPage)
                             }
                           >
                             {">"}

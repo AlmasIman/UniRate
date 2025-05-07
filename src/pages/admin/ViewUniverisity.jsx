@@ -11,6 +11,8 @@ import {
   deleteUniversity
 } from "../../services/universityService";
 
+
+
 function ViewUniversity() {
   const { id } = useParams();
   const [university, setUniversity] = useState(null);

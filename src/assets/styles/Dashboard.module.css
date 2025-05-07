@@ -58,7 +58,14 @@
   justify-content: space-between;
   align-items: center;
 }
+.uniName {
+  width: 230px;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: clip; 
 
+
+}
 .desc {
   font-family: "Inter";
   font-weight: 500;

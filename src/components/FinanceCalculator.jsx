@@ -42,9 +42,9 @@ function FinanceCalculator() {
   const calculateTotal = () => {
     if (!selectedUni || !selectedFaculty) return;
 
-    let totalCost = selectedFaculty.baseCost;
-    if (includeDormitory) totalCost += selectedUni.dormitory;
-    if (includeMilitary) totalCost += selectedUni.militaryDepartment;
+    let totalCost = selectedFaculty.baseCost || 0;
+    if (includeDormitory && selectedUni.dormitoryCost) totalCost += selectedUni.dormitoryCost;
+    if (includeMilitary && selectedUni.militaryDepartmentCost) totalCost += selectedUni.militaryDepartmentCost;
 
     setTotal(totalCost);
   };
@@ -169,35 +169,7 @@ function FinanceCalculator() {
               }}
             />
           </div>
-          {/* <div
-          style={{ display: "flex", gap: "10px", flexDirection: "column" }}
-        >
-          <p>Food costs</p>
 
-          <Select
-            isDisabled={true}
-            placeholder={selectedUni ? selectedUni.foodCost : 0} // Custom placeholder
-            styles={{
-              control: (base) => ({
-                ...base,
-                backgroundColor: "white",
-                border: "1px solid rgba(216, 216, 216, 1)",
-                fontSize: "16px",
-                padding: "5px",
-                width: "326px",
-                height: "60px",
-                borderRadius: "16px",
-              }),
-              option: (base, { isFocused }) => ({
-                ...base,
-                color: 'black',
-                backgroundColor: isFocused
-                  ? "rgba(20, 174, 130, 0.05)"
-                  : "white",
-                fontSize: "14px",
-              }),
-            }}          />
-        </div> */}
           <div
             style={{
               display: "flex",
@@ -215,11 +187,11 @@ function FinanceCalculator() {
                   value="Dormitory"
                   checked={includeDormitory}
                   onChange={() => setIncludeDormitory(!includeDormitory)}
-                  disabled={!selectedUni || !selectedUni.dormitory}
+                  disabled={!selectedUni || !selectedUni.dormitoryCost}
                   className={fin.checkboxStyle}
                 />
                 Dormitory (
-                {selectedUni?.dormitory ? "Available" : "Not Available"})
+                {selectedUni?.dormitoryCost ? "Available" : "Not Available"})
               </div>
               <br />
 
@@ -231,11 +203,11 @@ function FinanceCalculator() {
                   value="Military"
                   checked={includeMilitary}
                   onChange={() => setIncludeMilitary(!includeMilitary)}
-                  disabled={!selectedUni || !selectedUni.militaryDepartment}
+                  disabled={!selectedUni || !selectedUni.militaryDepartmentCost}
                   className={fin.checkboxStyle}
                 />
                 Military (
-                {selectedUni?.militaryDepartment
+                {selectedUni?.militaryDepartmentCost
                   ? "Available"
                   : "Not Available"}
                 )

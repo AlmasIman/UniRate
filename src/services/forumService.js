@@ -176,3 +176,59 @@ export async function getStatisticOfForum(forumId) {
 
   return response.json();
 }
+
+export async function createForum({ name, description, universityId, forumPicture }) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser || !currentUser.token) {
+    throw new Error("User is not authenticated");
+  }
+
+  const requestBody = {
+    name,
+    description,
+    universityId,
+    forumPicture,
+  };
+
+  const response = await fetch("https://unirate.kz/university/open-api/forums", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${currentUser.token}`,
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to create forum. Server responded: ${errorText}`);
+  }
+
+  return await response.json();
+}
+
+export async function deleteByForumId(forumId) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser || !currentUser.token) {
+    throw new Error("User is not authenticated");
+  }
+
+  const response = await fetch(
+    `https://unirate.kz/university/open-api/forums/${forumId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${currentUser.token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to delete forum. Server responded: ${errorText}`);
+  }
+
+  return await response.json();
+}

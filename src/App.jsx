@@ -43,10 +43,14 @@ import ViewUniversity from "./pages/admin/ViewUniverisity.jsx";
 import CreateProgram from "./pages/admin/CreateProgram.jsx";
 import ForumModule from "./pages/admin/ForumModule.jsx";
 import CreateFaculty from "./pages/admin/CreateFaculty.jsx";
+import ViewProgram from "./pages/admin/ViewPrograms.jsx";
+import ViewForum from "./pages/admin/ViewForum.jsx";
+import CreateForum from "./pages/admin/CreateForum.jsx";
 
 
 function App() {
   const { isAuthenticated, user } = useAuth();
+  const isAdmin = isAuthenticated && user?.role === "ADMIN";
 
   return (
     <Router>
@@ -137,27 +141,89 @@ function App() {
         {/* admin side */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* <ProtectedAdminRoute requiredRole="ADMIN" redirectTo="/error">
-            </ProtectedAdminRoute> */}
-
-        <Route path="/error" element={<WrongPlace />} />
-
-        <Route path="/admin/university-module" element={<UniversityModule />} />
-        <Route path="/admin/university-create" element={<CreateUniversity />} />
-        <Route path="/admin/university-view/:id" element={<ViewUniversity />} />
+        <Route
+          path="/admin/university-module"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <UniversityModule />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/university-create"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <CreateUniversity />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/university-view/:id"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <ViewUniversity />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/university-view/program/:id"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <ViewProgram />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/forum-view/:id"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <ViewForum />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/admin/university-create-program"
-          element={<CreateProgram />}
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <CreateProgram />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/admin/university-create-faculty"
-          element={<CreateFaculty />}
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <CreateFaculty />
+            </ProtectedRoute>
+          }
         />
-
-
-        <Route path="/admin/forum" element={<ForumModule />} />
+        <Route
+          path="/admin/forum-create"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <CreateForum />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/forum"
+          element={
+            <ProtectedRoute condition={isAdmin} redirectTo="/error">
+              <ForumModule />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/error" element={<WrongPlace />} />
+        
       </Routes>
     </Router>
   );
